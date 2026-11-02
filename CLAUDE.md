@@ -95,15 +95,33 @@ them flat after sketch 13. Decide in Phase 1.
 Work in phases. **Stop at the end of each phase so the lecturer can check the result
 in a browser before continuing.**
 
-### Phase 0 — set up
-- [ ] `git init`, first commit of the copied files as they are (baseline).
+### Phase 0 — set up (done 2026-11-02)
+- [x] `git init`, first commit of the copied files as they are (baseline).
 - [ ] Ask the lecturer for the GitHub repo name/org (the old one was
       `IADT-Y1-Prog/Prog-Template`). This sets `baseurl` in `_config.yml`.
-- [ ] Add `_config.yml` with `remote_theme: just-the-docs/just-the-docs`, the
+      **Still open:** the lecturer will create a new repo. `baseurl` is a placeholder
+      (`/intro-to-programming`, marked TODO) until the name is known.
+- [x] Add `_config.yml` with `remote_theme: just-the-docs/just-the-docs`, the
       `jekyll-remote-theme` plugin, title, `search_enabled: true`, and an `exclude:` list
       (see Gotchas).
-- [ ] Add a `Gemfile` for optional local preview (`bundle exec jekyll serve`).
-- [ ] Add a `README.md` for the repo itself, saying how to preview and how to add a page.
+- [x] Add a `Gemfile` for optional local preview (`bundle exec jekyll serve`).
+- [x] Add a `README.md` for the repo itself, saying how to preview and how to add a page.
+
+Phase 0 decisions and findings:
+- **Markdown in `src/` and `exercises/` is excluded** from the site. The 4 links in the
+  notes to `src/game/*/PLAN.md` must be changed to
+  `https://github.com/<org>/<repo>/blob/main/src/game/…/PLAN.md` once the repo name is
+  known (Phase 2 script, or by hand in Phase 1 for the sample folders).
+- The theme is pinned: `just-the-docs/just-the-docs@v0.10.1`.
+- Local preview uses plain Jekyll 4.4, not the `github-pages` gem, because github-pages
+  needs Ruby < 4.0 and this machine has Ruby 4.0.7. GitHub itself still builds with
+  Jekyll 3.10.
+- On this machine the remote theme download fails with `certificate verify failed`
+  unless `SSL_CERT_FILE` points at `C:/Ruby40-x64/lib/ruby/4.0.0/etc/ssl/cert.pem`
+  (the bundled `openssl` gem doesn't find Ruby's certificates by itself).
+- Jekyll 4's `**` in `exclude:` doesn't match files at the top of a folder, so the list
+  has both `src/*.md` and `src/**/*.md` (same for `exercises/`).
+- Gems install into `vendor/bundle` (git-ignored, excluded from the site).
 
 ### Phase 1 — sample conversion (3 folders)
 - [ ] Convert `index.html` (home), `00-getting-started/`, `13-ball-bounce/` and

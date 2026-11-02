@@ -1,0 +1,34 @@
+# Site settings for the Intro to Programming notes.
+# GitHub Pages builds the site from this file. Restart `jekyll serve`
+# after editing it, because Jekyll only reads it at start-up.
+
+title: Intro to Programming
+description: p5.js course notes for first-year programming, IADT
+
+# TODO: set this once the GitHub repo exists.
+# The site will live at https://<org>.github.io/<repo>/, so baseurl is "/<repo>".
+baseurl: "/intro-to-programming"
+url: ""
+
+# Just the Docs theme, pinned so a theme update can't change the site unexpectedly.
+remote_theme: just-the-docs/just-the-docs@v0.10.1
+plugins:
+  - jekyll-remote-theme
+
+search_enabled: true
+
+# Files that are not part of the published site.
+# Markdown files in src/ and exercises/ are excluded so GitHub Pages doesn't
+# turn them into site pages; the notes link to them on github.com instead.
+exclude:
+  - CLAUDE.md
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - tools/
+  - vendor/
+  - .gitattributes
+  - src/*.md
+  - src/**/*.md
+  - exercises/*.md
+  - exercises/**/*.md
