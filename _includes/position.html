@@ -1,0 +1,63 @@
+{%- comment -%}
+  A short line under the breadcrumbs that tells students where they are, e.g.
+    section page:  "Sketch 13 of 13 · 6 pages"
+    sub-page:      "Sketch 13 of 13 · Page 3 of 6"
+    game track:    "Game stage 4 of 11 · Page 2 of 4"
+  Section 00 of each track (Getting Started, The Plan) shows only the page part.
+
+  Everything is worked out from the front matter (title, parent, nav_order),
+  so it updates by itself when pages are added.
+  Section numbers come from nav_order, which is the section number + 1.
+{%- endcomment -%}
+
+{%- assign game_group_title = "Developing a game" -%}
+
+{%- comment -%} 1. Find the section (sketch or game stage) this page belongs to. {%- endcomment -%}
+{%- assign section_page = nil -%}
+{%- assign is_section_page = false -%}
+
+{%- if page.parent == nil -%}
+  {%- if page.has_children and page.title != game_group_title -%}
+    {%- assign section_page = page -%}
+    {%- assign is_section_page = true -%}
+  {%- endif -%}
+{%- elsif page.parent == game_group_title -%}
+  {%- assign section_page = page -%}
+  {%- assign is_section_page = true -%}
+{%- else -%}
+  {%- assign section_page = site.html_pages | where: "title", page.parent | first -%}
+{%- endif -%}
+
+{%- if section_page -%}
+
+  {%- comment -%} 2. Which track is it in, and how many sections does that track have? {%- endcomment -%}
+  {%- if section_page.parent == game_group_title -%}
+    {%- assign section_label = "Game stage" -%}
+    {%- assign track_sections = site.html_pages | where: "parent", game_group_title -%}
+  {%- else -%}
+    {%- assign section_label = "Sketch" -%}
+    {%- assign track_sections = site.html_pages
+          | where_exp: "item", "item.parent == nil"
+          | where_exp: "item", "item.has_children == true"
+          | where_exp: "item", "item.title != game_group_title" -%}
+  {%- endif -%}
+  {%- assign section_number = section_page.nav_order | minus: 1 -%}
+  {%- assign last_section_number = track_sections.size | minus: 1 -%}
+
+  {%- comment -%} 3. How many pages does the section have? {%- endcomment -%}
+  {%- assign section_sub_pages = site.html_pages | where: "parent", section_page.title -%}
+  {%- assign page_count = section_sub_pages.size -%}
+
+<p class="position-text">
+  {%- if section_number > 0 -%}
+    {{ section_label }} {{ section_number }} of {{ last_section_number }}
+    {%- if page_count > 0 %} &middot; {% endif -%}
+  {%- endif -%}
+  {%- if is_section_page -%}
+    {%- if page_count > 0 -%}{{ page_count }} pages{%- endif -%}
+  {%- else -%}
+    Page {{ page.nav_order }} of {{ page_count }}
+  {%- endif -%}
+</p>
+
+{%- endif -%}

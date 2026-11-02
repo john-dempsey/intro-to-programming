@@ -12,7 +12,7 @@ $inline-code-text: #6d28d9;
 
 $code-block-background: #1e1e2e;
 $code-block-text: #e2e2f0;
-$code-comment: #7f849c;
+$code-comment: #848aa2; // a little lighter than the old #7f849c, to reach 4.5:1 contrast
 $code-keyword: #c792ea;
 $code-string: #a6e3a1;
 $code-number: #f5a97f;
@@ -149,6 +149,26 @@ ol.sketch-list {
   }
 }
 
+// --- Position line under the breadcrumbs (_includes/position.html) -----------
+
+.position-text {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  color: $muted-text;
+}
+
+// --- "Run this sketch" button at the top of each sketch section --------------
+// btn-color is the theme's own mixin, so this matches its primary buttons.
+
+.btn-run {
+  @include btn-color($white, $btn-primary-color);
+
+  // On its own line, with the sketch's file path underneath.
+  display: block;
+  width: fit-content;
+  margin: 0 0 0.5rem;
+}
+
 // --- Previous / Next buttons (_includes/prev-next.html) ----------------------
 
 .prev-next {
@@ -173,6 +193,13 @@ ol.sketch-list {
 .prev-next .prev-next-next {
   margin-left: auto;
   text-align: right;
+}
+
+// On a phone the buttons stack, so let each one use the full width.
+@media (max-width: 640px) {
+  .prev-next .btn {
+    max-width: none;
+  }
 }
 
 .prev-next-label {

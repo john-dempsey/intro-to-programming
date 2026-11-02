@@ -126,7 +126,7 @@ Phase 0 decisions and findings:
   has both `src/*.md` and `src/**/*.md` (same for `exercises/`).
 - Gems install into `vendor/bundle` (git-ignored, excluded from the site).
 
-### Phase 1 — sample conversion (3 folders) (done 2026-11-02, pushed; Pages not on yet)
+### Phase 1 — sample conversion (3 folders) (done 2026-11-02)
 - [x] Convert `index.html` (home), `00-getting-started/`, `13-ball-bounce/` and
       `game-01-ship/` by hand, or with the script from Phase 2 run on just these folders.
 - [x] Add `_includes/prev-next.html`: Previous / Next buttons built from the sidebar
@@ -138,8 +138,8 @@ Phase 0 decisions and findings:
 - [x] Bring over styles from `tutorial.css` that the content needs (`.sketch-list`,
       `.sketch-desc`, `.tagline`, code block look) into `_sass/custom/custom.scss`.
 - [x] Decide: keep or drop the "On this page" lists, and flat or grouped game track.
-- [ ] Push and enable Pages (Settings → Pages → Deploy from branch → `main` / root).
-      Pushed 2026-11-02; Pages not yet switched on (live URL returned 404).
+- [x] Push and enable Pages (Settings → Pages → Deploy from branch → `main` / root).
+      Live at https://john-dempsey.github.io/intro-to-programming/
       **Checkpoint: the lecturer reviews the sample online.**
 
 Phase 1 decisions and findings:
@@ -185,12 +185,35 @@ Phase 2 findings:
   Links inside `<pre>` code examples are skipped, since they aren't real links.
 - `notes/slides/css/` is now empty and gone; `notes/slides/images/` is still used.
 
-### Phase 3 — polish
-- [ ] Add "Sketch 13 of 27"–style position text, or a progress bar, if the sidebar
+### Phase 3 — polish (done 2026-11-02)
+- [x] Add "Sketch 13 of 27"–style position text, or a progress bar, if the sidebar
       isn't enough.
-- [ ] Add a "Run this sketch" button style for the links into `src/`.
-- [ ] Check the site on a phone; check colour contrast and alt text on all images.
-- [ ] Optional: a GitHub Action that runs the link checker on every push.
+- [x] Add a "Run this sketch" button style for the links into `src/`.
+- [x] Check the site on a phone; check colour contrast and alt text on all images.
+- [x] Optional: a GitHub Action that runs the link checker on every push.
+
+Phase 3 decisions and findings:
+- **Position text** (lecturer's choice over a progress bar): `_includes/position.html`,
+  e.g. "Sketch 13 of 13 · Page 3 of 6", "Game stage 4 of 11 · 4 pages". Section 00 of
+  each track shows only the page part. It is shown under the breadcrumbs by overriding
+  `_includes/components/breadcrumbs.html` with a copy of the v0.10.1 theme file plus one
+  include line. **If the theme version changes, re-copy that file.**
+- **Run button** (lecturer's choice: button + path, a content change in its own commit):
+  each section's "Sketch:" line is now a `.btn.btn-run` link "▶ Run this sketch",
+  then "Sketch: `path`". The arrow uses `&#9654;&#xFE0E;` so Windows doesn't draw it
+  as an emoji. The 2 inline links in the sketch 08 aside were left as they were.
+- **Link checker**: `tools/check_links.py` (plain Python, no installs) and
+  `.github/workflows/check-links.yml`, which builds with `actions/jekyll-build-pages`
+  (GitHub Pages' own Jekyll 3.10) and runs the checker with `--external`.
+- **Accessibility**: all 34 images have descriptive alt text. Colour contrast checked for
+  every colour in `custom.scss`; the code comment colour was lightened from `#7f849c`
+  (4.44:1) to `#848aa2` (4.79:1). Everything else is 5:1 or better.
+- **Phone**: checked at 390px wide in headless Edge (inside an iframe, because headless
+  Edge has a minimum window width that makes a plain screenshot look cut off). Layout
+  fits; code blocks scroll sideways inside their box. Previous / Next go full width
+  when stacked. Not yet checked on a real phone.
+- Editing pages while `jekyll serve` runs can make `sed -i` fail on Windows
+  ("Device or resource busy"); use Python to edit files instead.
 
 ## Gotchas
 - **Markdown files get converted.** GitHub Pages turns `.md` files into `.html` even

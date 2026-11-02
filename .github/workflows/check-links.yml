@@ -1,0 +1,30 @@
+# Builds the site the same way GitHub Pages does, then checks every link.
+# A broken link shows as a red cross next to the commit on GitHub.
+# This does not stop the site from publishing: Pages builds separately.
+
+name: Check links
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the repo
+        uses: actions/checkout@v4
+
+      - name: Build the site with GitHub Pages' Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Check links
+        run: python3 tools/check_links.py --site _site --external

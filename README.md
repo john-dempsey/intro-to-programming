@@ -16,7 +16,7 @@ The site is built by GitHub Pages with Jekyll and the
 | `exercises/` | Starter files and instructions for students |
 | `_config.yml` | Site settings: title, theme, files to leave out |
 | `_includes/`, `_sass/custom/` | Additions to the theme (Previous / Next buttons, styles) |
-| `tools/` | The script that converted the old pages (not part of the site) |
+| `tools/` | The page conversion script and the link checker (not part of the site) |
 
 ## Add a page
 
@@ -37,7 +37,15 @@ The site is built by GitHub Pages with Jekyll and the
    - `nav_order` sets its place in the sidebar.
    - Put quotes around any title that contains `—` or `:`.
 3. Write the content below the front matter. That's all: the sidebar,
-   breadcrumbs and Previous / Next buttons update themselves.
+   breadcrumbs, Previous / Next buttons and the "Sketch 13 of 13 · Page 3 of 6"
+   line update themselves.
+
+To add a "Run this sketch" button that opens a sketch in `src/`, copy this line
+and change the two paths:
+
+```html
+<p><a class="btn btn-run" href="../../../src/13-ball-bounce/index.html" target="_blank" rel="noopener"><span aria-hidden="true">&#9654;&#xFE0E;</span> Run this sketch</a> Sketch: <code>src/13-ball-bounce/sketch.js</code></p>
+```
 
 If a code example contains `{{` or `{%`, wrap it in `{% raw %}` … `{% endraw %}`,
 otherwise Jekyll will try to run it as a template.
@@ -73,6 +81,20 @@ $env:SSL_CERT_FILE = "C:\Ruby40-x64\lib\ruby\4.0.0\etc\ssl\cert.pem"
 The local preview uses Jekyll 4, while GitHub Pages uses Jekyll 3.10.
 The differences don't affect this site, but if something looks different
 online, trust the live site.
+
+## Check links
+
+Every push to `main` runs a GitHub Action (`.github/workflows/check-links.yml`)
+that builds the site and checks every link. If a link is broken, the commit gets
+a red cross on GitHub; click it to see which page and link. The site still publishes.
+
+To run the same check on your own computer after a build:
+
+```sh
+bundle exec jekyll build
+python tools/check_links.py              # links inside the site
+python tools/check_links.py --external   # also links to other websites
+```
 
 ## Publish
 
