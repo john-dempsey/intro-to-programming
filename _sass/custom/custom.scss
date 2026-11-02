@@ -163,10 +163,24 @@ ol.sketch-list {
 .btn-run {
   @include btn-color($white, $btn-primary-color);
 
-  // On its own line, with the sketch's file path underneath.
-  display: block;
-  width: fit-content;
-  margin: 0 0 0.5rem;
+  // Sits beside the sketch's file path, with the path centred against it.
+  // On a narrow screen the path wraps onto the next line.
+  vertical-align: middle;
+  margin: 0 0.75rem 0.5rem 0;
+}
+
+// Keep each file path after the button in one piece when the line wraps.
+.btn-run ~ code {
+  white-space: nowrap;
+}
+
+// On a phone there isn't room beside the button, so it gets its own line
+// and "Sketch: path" sits together underneath.
+@media (max-width: 640px) {
+  .btn-run {
+    display: block;
+    width: fit-content;
+  }
 }
 
 // --- Previous / Next buttons (_includes/prev-next.html) ----------------------
