@@ -1,20 +1,9 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>06 — A Ball Object – Programming concepts · Programming with p5.js</title>
-<link rel="stylesheet" href="../css/tutorial.css">
-<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
-</head>
-<body>
-<nav class="nav">
-  <a class="nav-prev" href="index.html">&laquo; Previous</a>
-  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
-  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
-</nav>
-<main class="page">
-<p class="eyebrow"><a href="index.html">06 — A Ball Object</a></p>
+---
+title: "Programming concepts"
+parent: "06 — A Ball Object"
+nav_order: 1
+---
+
 <h1>Programming concepts</h1>
 <h3>Object literal syntax</h3>
 <pre class="highlight"><code class="language-js">ball = {
@@ -55,8 +44,3 @@ repeatedly — as <code>move()</code> will, from sketch 11 onward.</p>
 literal, which itself needs <code>col</code>) isn't available until <code>setup()</code> runs, so it can't be a <code>const</code>.
 This is the pattern's <em>second</em> appearance, not its first — it recurs through the rest of the
 sketches wherever a global depends on something only available once <code>setup()</code> starts.</p>
-
-</main>
-<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
-</body>
-</html>

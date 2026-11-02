@@ -1,20 +1,10 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Game 07 — Collisions – Reading the sketch · Programming with p5.js</title>
-<link rel="stylesheet" href="../css/tutorial.css">
-<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
-</head>
-<body>
-<nav class="nav">
-  <a class="nav-prev" href="../game-07-collisions/01-programming-concepts.html">&laquo; Previous</a>
-  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
-  <a class="nav-next" href="../game-07-collisions/03-how-i-developed-this.html">Next &raquo;</a>
-</nav>
-<main class="page">
-<p class="eyebrow"><a href="index.html">Game 07 — Collisions</a></p>
+---
+title: "Reading the sketch"
+parent: "Game 07 — Collisions"
+grand_parent: "Developing a game"
+nav_order: 2
+---
+
 <h1>Reading the sketch</h1>
 <h3>Bounds</h3>
 <p>All three classes get a <code>getBounds()</code> method in the same pattern: half the width
@@ -70,8 +60,3 @@ check("overlap in x only", boundsOverlap(square, sameColumnBelow), false);</code
 hand-written rectangles with no ship, bullet or alien involved. The <code>handleCollisions()</code>
 tests then check the bigger picture: a hit removes both, a miss removes neither, the
 <em>right</em> alien is removed, and one bullet can't destroy two aliens.</p>
-
-</main>
-<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
-</body>
-</html>

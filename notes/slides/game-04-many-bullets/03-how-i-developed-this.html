@@ -1,26 +1,16 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Game 04 — Many Bullets – How I developed this · Programming with p5.js</title>
-<link rel="stylesheet" href="../css/tutorial.css">
-<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
-</head>
-<body>
-<nav class="nav">
-  <a class="nav-prev" href="../game-04-many-bullets/02-reading-the-sketch.html">&laquo; Previous</a>
-  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
-  <a class="nav-next" href="../game-04-many-bullets/04-exercises.html">Next &raquo;</a>
-</nav>
-<main class="page">
-<p class="eyebrow"><a href="index.html">Game 04 — Many Bullets</a></p>
+---
+title: "How I developed this"
+parent: "Game 04 — Many Bullets"
+grand_parent: "Developing a game"
+nav_order: 3
+---
+
 <h1>How I developed this</h1>
 <h3>Changing the plan</h3>
 <p>The original game allows one bullet at a time, and that's what the plan said. After playing
 stage 3 for a few minutes, it felt slow. I decided to allow many bullets instead. Plans are
 meant to change as you learn more. I updated the plan to match, so it stayed accurate: see
-<a href="../../../src/game/04-many-bullets/PLAN.md" target="_blank" rel="noopener"><code>src/game/04-many-bullets/PLAN.md</code></a>,
+<a href="https://github.com/john-dempsey/intro-to-programming/blob/main/src/game/04-many-bullets/PLAN.md" target="_blank" rel="noopener"><code>src/game/04-many-bullets/PLAN.md</code></a>,
 which now has a "Changes to the plan" section.</p>
 <h3>Attempt 1: no removal</h3>
 <p>The first version just pushed bullets into the array and moved them. It looked perfect. But
@@ -64,8 +54,3 @@ gone.</li>
 <pre class="highlight"><code class="language-plaintext">git commit -am "Update plan: allow many bullets"
 git commit -am "Game stage 4: debug overlay showing bullet count"
 git commit -am "Game stage 4: many bullets, removed when off screen"</code></pre>
-
-</main>
-<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
-</body>
-</html>

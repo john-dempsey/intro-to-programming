@@ -1,20 +1,10 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Game 03 — Firing a Bullet – Reading the sketch · Programming with p5.js</title>
-<link rel="stylesheet" href="../css/tutorial.css">
-<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
-</head>
-<body>
-<nav class="nav">
-  <a class="nav-prev" href="../game-03-one-bullet/01-programming-concepts.html">&laquo; Previous</a>
-  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
-  <a class="nav-next" href="../game-03-one-bullet/03-how-i-developed-this.html">Next &raquo;</a>
-</nav>
-<main class="page">
-<p class="eyebrow"><a href="index.html">Game 03 — Firing a Bullet</a></p>
+---
+title: "Reading the sketch"
+parent: "Game 03 — Firing a Bullet"
+grand_parent: "Developing a game"
+nav_order: 2
+---
+
 <h1>Reading the sketch</h1>
 <h3>Changes to <code>Ship</code></h3>
 <pre class="highlight"><code class="language-js">constructor(x, y, bodyWidth, bodyHeight, speed, shipColour) {
@@ -85,8 +75,3 @@ already on screen. The second check compares objects: <code>===</code> on two ob
 <p><code>testBulletOffScreen()</code> checks the exact boundary: a 12-pixel bullet at
 <code>y = -6</code> is just touching the top (on screen), and at <code>y = -7</code> it's gone. Bugs
 often hide at boundaries like this.</p>
-
-</main>
-<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
-</body>
-</html>

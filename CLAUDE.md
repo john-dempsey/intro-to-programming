@@ -126,7 +126,7 @@ Phase 0 decisions and findings:
   has both `src/*.md` and `src/**/*.md` (same for `exercises/`).
 - Gems install into `vendor/bundle` (git-ignored, excluded from the site).
 
-### Phase 1 — sample conversion (3 folders) (built 2026-11-02, awaiting push)
+### Phase 1 — sample conversion (3 folders) (done 2026-11-02, pushed)
 - [x] Convert `index.html` (home), `00-getting-started/`, `13-ball-bounce/` and
       `game-01-ship/` by hand, or with the script from Phase 2 run on just these folders.
 - [x] Add `_includes/prev-next.html`: Previous / Next buttons built from the sidebar
@@ -138,7 +138,7 @@ Phase 0 decisions and findings:
 - [x] Bring over styles from `tutorial.css` that the content needs (`.sketch-list`,
       `.sketch-desc`, `.tagline`, code block look) into `_sass/custom/custom.scss`.
 - [x] Decide: keep or drop the "On this page" lists, and flat or grouped game track.
-- [ ] Push and enable Pages (Settings → Pages → Deploy from branch → `main` / root).
+- [x] Push and enable Pages (Settings → Pages → Deploy from branch → `main` / root).
       **Checkpoint: the lecturer reviews the sample online.**
 
 Phase 1 decisions and findings:
@@ -157,21 +157,32 @@ Phase 1 decisions and findings:
 - The script was run on the sample folders already. Running it again on a converted
   folder stops with an error (no `<main class="page">` left), so in Phase 2 run it on
   the remaining folders only.
-- Content left for the lecturer: the home page still says "Use the **Next** button in
-  the bar at the top of each page"; the buttons are now at the bottom.
+- The home page sentence about the Next button "in the bar at the top" was reworded
+  (separate content commit) to say the button is at the bottom of each page.
 
-### Phase 2 — convert everything
+### Phase 2 — convert everything (done 2026-11-02)
 - [x] Write a small conversion script, kept in `tools/` and excluded from the site,
       that for each page:
       takes the content inside `<main class="page">`, removes the eyebrow line, takes the
       title from `<h1>`, works out `parent` and `nav_order` from the folder and file
       name, and writes front matter + content back to the same path.
       Done in Phase 1: `tools/convert_pages.py`.
-- [ ] Run it, then check the diff on a few pages per track.
-- [ ] Check links: run a link checker (e.g. `htmlproofer` or `lychee`) against the
+- [x] Run it, then check the diff on a few pages per track.
+- [x] Check links: run a link checker (e.g. `htmlproofer` or `lychee`) against the
       built `_site/`, especially the `../../../src/...` links.
-- [ ] Delete `notes/slides/css/tutorial.css` once nothing references it.
+- [x] Delete `notes/slides/css/tutorial.css` once nothing references it.
       **Checkpoint.**
+
+Phase 2 findings:
+- All 26 section folders are converted (153 pages). A script compared every page with
+  the baseline commit: the content is unchanged apart from the eyebrow line, the
+  "On this page" list and the 4 `PLAN.md` links.
+- The Next chain runs through all 155 pages (153 + home + "Developing a game") in the
+  same order as the old hand-written Next links.
+- Links were checked with a short Python script against `_site/` (htmlproofer and
+  lychee aren't installed): 0 broken internal links, all external links return 200.
+  Links inside `<pre>` code examples are skipped, since they aren't real links.
+- `notes/slides/css/` is now empty and gone; `notes/slides/images/` is still used.
 
 ### Phase 3 — polish
 - [ ] Add "Sketch 13 of 27"–style position text, or a progress bar, if the sidebar
