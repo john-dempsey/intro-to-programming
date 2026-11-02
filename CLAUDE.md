@@ -126,7 +126,7 @@ Phase 0 decisions and findings:
   has both `src/*.md` and `src/**/*.md` (same for `exercises/`).
 - Gems install into `vendor/bundle` (git-ignored, excluded from the site).
 
-### Phase 1 — sample conversion (3 folders) (done 2026-11-02, pushed)
+### Phase 1 — sample conversion (3 folders) (done 2026-11-02, pushed; Pages not on yet)
 - [x] Convert `index.html` (home), `00-getting-started/`, `13-ball-bounce/` and
       `game-01-ship/` by hand, or with the script from Phase 2 run on just these folders.
 - [x] Add `_includes/prev-next.html`: Previous / Next buttons built from the sidebar
@@ -138,7 +138,8 @@ Phase 0 decisions and findings:
 - [x] Bring over styles from `tutorial.css` that the content needs (`.sketch-list`,
       `.sketch-desc`, `.tagline`, code block look) into `_sass/custom/custom.scss`.
 - [x] Decide: keep or drop the "On this page" lists, and flat or grouped game track.
-- [x] Push and enable Pages (Settings → Pages → Deploy from branch → `main` / root).
+- [ ] Push and enable Pages (Settings → Pages → Deploy from branch → `main` / root).
+      Pushed 2026-11-02; Pages not yet switched on (live URL returned 404).
       **Checkpoint: the lecturer reviews the sample online.**
 
 Phase 1 decisions and findings:
