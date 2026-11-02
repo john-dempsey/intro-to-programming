@@ -1,20 +1,9 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>00 — Getting Started: How Computer Graphics Work – Drawing modes: CORNER vs CENTER · Programming with p5.js</title>
-<link rel="stylesheet" href="../css/tutorial.css">
-<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
-</head>
-<body>
-<nav class="nav">
-  <a class="nav-prev" href="04-drawing-shapes.html">&laquo; Previous</a>
-  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
-  <a class="nav-next" href="06-colour-models-rgb.html">Next &raquo;</a>
-</nav>
-<main class="page">
-<p class="eyebrow"><a href="index.html">00 — Getting Started: How Computer Graphics Work</a></p>
+---
+title: "Drawing modes: CORNER vs CENTER"
+parent: "00 — Getting Started: How Computer Graphics Work"
+nav_order: 5
+---
+
 <h1>Drawing modes: CORNER vs CENTER</h1>
 <p>That last point matters enough that p5 lets you change it. <code>rectMode()</code> and <code>ellipseMode()</code>
 control how the position arguments to <code>rect()</code> and <code>ellipse()</code>/<code>circle()</code> are interpreted:</p>
@@ -36,8 +25,3 @@ it applies to every matching shape drawn after it, until changed again.</p>
 <p><em>Figure: two identical rectangles side by side, one drawn with <code>rectMode(CORNER)</code> and one with
 <code>rectMode(CENTER)</code> from the same <code>(x, y)</code> coordinates, with the reference point marked on both so
 the difference in placement is visible.</em></p>
-
-</main>
-<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
-</body>
-</html>

@@ -12,6 +12,7 @@ group :jekyll_plugins do
   gem "jekyll-remote-theme"
   gem "jekyll-seo-tag"
   gem "jekyll-include-cache"
+  gem "jekyll-redirect-from"
 end
 
 # Libraries that newer versions of Ruby no longer include by default.

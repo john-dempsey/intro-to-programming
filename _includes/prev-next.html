@@ -1,0 +1,54 @@
+{%- comment -%}
+  Previous / Next buttons at the bottom of each page.
+
+  Just the Docs has no Previous / Next of its own. Rather than work out the
+  page order a second time, this reads the links from the theme's sidebar
+  (the same cached HTML the sidebar uses), so the buttons always follow
+  the sidebar order: Home, 00, 00's pages, 01, ... 13, Developing a game, Game 00, ...
+
+  Each sidebar link looks like:
+    <a href="/intro-to-programming/notes/.../index.html" class="nav-list-link">Title</a>
+{%- endcomment -%}
+
+{%- capture sidebar_html -%}{%- include_cached components/site_nav.html -%}{%- endcapture -%}
+
+{%- assign link_marker = '" class="nav-list-link">' -%}
+{%- assign nav_urls = "" | split: "" -%}
+{%- assign nav_titles = "" | split: "" -%}
+
+{%- assign sidebar_pieces = sidebar_html | split: '<a href="' -%}
+{%- for piece in sidebar_pieces -%}
+  {%- if piece contains link_marker -%}
+    {%- assign link_url = piece | split: link_marker | first -%}
+    {%- assign link_title = piece | split: link_marker | last | split: "</a>" | first | strip -%}
+    {%- assign nav_urls = nav_urls | push: link_url -%}
+    {%- assign nav_titles = nav_titles | push: link_title -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign this_url = page.url | relative_url -%}
+{%- assign this_position = nil -%}
+{%- for link_url in nav_urls -%}
+  {%- if link_url == this_url -%}
+    {%- assign this_position = forloop.index0 -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if this_position != nil -%}
+  {%- assign previous_position = this_position | minus: 1 -%}
+  {%- assign next_position = this_position | plus: 1 -%}
+<nav class="prev-next" aria-label="Previous and next page">
+  {%- if previous_position >= 0 %}
+  <a class="btn prev-next-prev" href="{{ nav_urls[previous_position] }}">
+    <span class="prev-next-label">&laquo; Previous</span>
+    <span class="prev-next-title">{{ nav_titles[previous_position] }}</span>
+  </a>
+  {%- endif -%}
+  {%- if next_position < nav_urls.size %}
+  <a class="btn prev-next-next" href="{{ nav_urls[next_position] }}">
+    <span class="prev-next-label">Next &raquo;</span>
+    <span class="prev-next-title">{{ nav_titles[next_position] }}</span>
+  </a>
+  {%- endif %}
+</nav>
+{%- endif -%}

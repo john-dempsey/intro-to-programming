@@ -59,7 +59,8 @@ _includes/               prev-next.html (Just the Docs has no prev/next of its o
 _layouts/                only if we need to extend the theme's default layout
 _sass/custom/            custom.scss: carry over the useful parts of tutorial.css
 Gemfile                  for local preview only (GitHub ignores it with remote_theme)
-index.md                 site home (contents + intro, from notes/slides/index.html)
+index.html               site home (contents + intro, moved from notes/slides/index.html;
+                         the old address redirects here via jekyll-redirect-from)
 notes/slides/...         same folders and file names as now, so existing URLs keep working
 src/, exercises/         unchanged, served as static files
 ```
@@ -87,8 +88,10 @@ nav_order: 6
 ---
 ```
 
-Group the game folders under one "Game" parent (`grand_parent` on sub-pages), or list
-them flat after sketch 13. Decide in Phase 1.
+The game track is grouped under one parent page, `notes/slides/developing-a-game.html`
+(title "Developing a game", nav_order 15). Game sections use
+`parent: "Developing a game"` and `nav_order` = game number + 1; their sub-pages add
+`grand_parent: "Developing a game"`.
 
 ## Plan
 
@@ -97,10 +100,10 @@ in a browser before continuing.**
 
 ### Phase 0 — set up (done 2026-11-02)
 - [x] `git init`, first commit of the copied files as they are (baseline).
-- [ ] Ask the lecturer for the GitHub repo name/org (the old one was
+- [x] Ask the lecturer for the GitHub repo name/org (the old one was
       `IADT-Y1-Prog/Prog-Template`). This sets `baseurl` in `_config.yml`.
-      **Still open:** the lecturer will create a new repo. `baseurl` is a placeholder
-      (`/intro-to-programming`, marked TODO) until the name is known.
+      Answered in Phase 1: `john-dempsey/intro-to-programming`, so the site is
+      `https://john-dempsey.github.io/intro-to-programming/`.
 - [x] Add `_config.yml` with `remote_theme: just-the-docs/just-the-docs`, the
       `jekyll-remote-theme` plugin, title, `search_enabled: true`, and an `exclude:` list
       (see Gotchas).
@@ -110,8 +113,8 @@ in a browser before continuing.**
 Phase 0 decisions and findings:
 - **Markdown in `src/` and `exercises/` is excluded** from the site. The 4 links in the
   notes to `src/game/*/PLAN.md` must be changed to
-  `https://github.com/<org>/<repo>/blob/main/src/game/…/PLAN.md` once the repo name is
-  known (Phase 2 script, or by hand in Phase 1 for the sample folders).
+  `https://github.com/john-dempsey/intro-to-programming/blob/main/src/game/…/PLAN.md`.
+  `tools/convert_pages.py` does this; none of the Phase 1 sample folders has one.
 - The theme is pinned: `just-the-docs/just-the-docs@v0.10.1`.
 - Local preview uses plain Jekyll 4.4, not the `github-pages` gem, because github-pages
   needs Ruby < 4.0 and this machine has Ruby 4.0.7. GitHub itself still builds with
@@ -123,27 +126,47 @@ Phase 0 decisions and findings:
   has both `src/*.md` and `src/**/*.md` (same for `exercises/`).
 - Gems install into `vendor/bundle` (git-ignored, excluded from the site).
 
-### Phase 1 — sample conversion (3 folders)
-- [ ] Convert `index.html` (home), `00-getting-started/`, `13-ball-bounce/` and
+### Phase 1 — sample conversion (3 folders) (built 2026-11-02, awaiting push)
+- [x] Convert `index.html` (home), `00-getting-started/`, `13-ball-bounce/` and
       `game-01-ship/` by hand, or with the script from Phase 2 run on just these folders.
-- [ ] Add `_includes/prev-next.html`: Previous / Next buttons built from the sidebar
+- [x] Add `_includes/prev-next.html`: Previous / Next buttons built from the sidebar
       order, so they follow the same order as the old hand-written links
       (…`13-ball-bounce/06-projects` → `game-00-plan/index`…).
-- [ ] Load highlight.js the way the pages do now, through the theme's head include
+- [x] Load highlight.js the way the pages do now, through the theme's head include
       (`_includes/head_custom.html`), and switch off Jekyll/Rouge highlighting so the two
       don't conflict over the `highlight` class.
-- [ ] Bring over styles from `tutorial.css` that the content needs (`.sketch-list`,
+- [x] Bring over styles from `tutorial.css` that the content needs (`.sketch-list`,
       `.sketch-desc`, `.tagline`, code block look) into `_sass/custom/custom.scss`.
-- [ ] Decide: keep or drop the "On this page" lists, and flat or grouped game track.
+- [x] Decide: keep or drop the "On this page" lists, and flat or grouped game track.
 - [ ] Push and enable Pages (Settings → Pages → Deploy from branch → `main` / root).
       **Checkpoint: the lecturer reviews the sample online.**
 
+Phase 1 decisions and findings:
+- "On this page" lists are **removed**; the theme's generated "Table of contents" list
+  at the bottom of each section page replaces them.
+- The game track is **grouped** under "Developing a game" (see Target structure). So the
+  order runs `13-ball-bounce/06-projects` → `developing-a-game` → `game-00-plan/index`.
+- The home page is `index.html` at the root, not `index.md`: its content is HTML and
+  stays HTML. Its links gained a `notes/slides/` prefix because the page moved.
+- Previous / Next (`_includes/prev-next.html`, shown via `footer_custom.html`) reads the
+  links out of the theme's cached sidebar HTML, so it can never disagree with the
+  sidebar. The buttons are at the bottom of the page only.
+- `_config.yml` must list `jekyll-include-cache` and `jekyll-seo-tag` (the theme needs
+  them) and `jekyll-redirect-from`. GitHub Pages only runs listed plugins; the local
+  build hides this because the Gemfile loads them anyway.
+- The script was run on the sample folders already. Running it again on a converted
+  folder stops with an error (no `<main class="page">` left), so in Phase 2 run it on
+  the remaining folders only.
+- Content left for the lecturer: the home page still says "Use the **Next** button in
+  the bar at the top of each page"; the buttons are now at the bottom.
+
 ### Phase 2 — convert everything
-- [ ] Write a small conversion script, kept in `tools/` and excluded from the site,
+- [x] Write a small conversion script, kept in `tools/` and excluded from the site,
       that for each page:
       takes the content inside `<main class="page">`, removes the eyebrow line, takes the
       title from `<h1>`, works out `parent` and `nav_order` from the folder and file
       name, and writes front matter + content back to the same path.
+      Done in Phase 1: `tools/convert_pages.py`.
 - [ ] Run it, then check the diff on a few pages per track.
 - [ ] Check links: run a link checker (e.g. `htmlproofer` or `lychee`) against the
       built `_site/`, especially the `../../../src/...` links.

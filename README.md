@@ -10,11 +10,13 @@ The site is built by GitHub Pages with Jekyll and the
 
 | Folder | What it holds |
 | --- | --- |
+| `index.html` | The home page, with the list of sketches |
 | `notes/slides/` | The tutorial pages, one folder per sketch |
 | `src/` | Runnable p5.js sketches that the notes link to |
 | `exercises/` | Starter files and instructions for students |
 | `_config.yml` | Site settings: title, theme, files to leave out |
 | `_includes/`, `_sass/custom/` | Additions to the theme (Previous / Next buttons, styles) |
+| `tools/` | The script that converted the old pages (not part of the site) |
 
 ## Add a page
 
@@ -31,6 +33,7 @@ The site is built by GitHub Pages with Jekyll and the
    ```
 
    - `parent` must match the `title` of the sketch's `index.html` exactly.
+   - For a page inside a game stage, also add `grand_parent: "Developing a game"`.
    - `nav_order` sets its place in the sidebar.
    - Put quotes around any title that contains `—` or `:`.
 3. Write the content below the front matter. That's all: the sidebar,

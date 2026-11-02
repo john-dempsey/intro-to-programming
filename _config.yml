@@ -5,17 +5,42 @@
 title: Intro to Programming
 description: p5.js course notes for first-year programming, IADT
 
-# TODO: set this once the GitHub repo exists.
-# The site will live at https://<org>.github.io/<repo>/, so baseurl is "/<repo>".
+# The site lives at https://john-dempsey.github.io/intro-to-programming/
+url: "https://john-dempsey.github.io"
 baseurl: "/intro-to-programming"
-url: ""
 
 # Just the Docs theme, pinned so a theme update can't change the site unexpectedly.
 remote_theme: just-the-docs/just-the-docs@v0.10.1
+
+# GitHub Pages only runs plugins listed here.
+# include-cache and seo-tag are needed by the theme;
+# redirect-from sends the old home page address to the new one.
 plugins:
   - jekyll-remote-theme
+  - jekyll-include-cache
+  - jekyll-seo-tag
+  - jekyll-redirect-from
 
 search_enabled: true
+
+# Link in the top bar to the repo, where students can read the
+# README and PLAN files that are not part of the site.
+aux_links:
+  "View on GitHub":
+    - "https://github.com/john-dempsey/intro-to-programming"
+
+# Every page uses the theme's layout unless it says otherwise.
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+# Code is highlighted in the browser by highlight.js (see _includes/head_custom.html),
+# so switch off Jekyll's own highlighting to stop the two clashing.
+kramdown:
+  syntax_highlighter_opts:
+    disable: true
 
 # Files that are not part of the published site.
 # Markdown files in src/ and exercises/ are excluded so GitHub Pages doesn't

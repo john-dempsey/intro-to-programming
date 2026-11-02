@@ -1,0 +1,185 @@
+// Styles added to the Just the Docs theme.
+// Carried over from the old notes/slides/css/tutorial.css, so code and the
+// home page contents list look the way students are used to.
+
+// --- Colours -----------------------------------------------------------------
+
+$muted-text: #5b6472;
+$soft-border: #e2e5ea;
+
+$inline-code-background: #f0eefc;
+$inline-code-text: #6d28d9;
+
+$code-block-background: #1e1e2e;
+$code-block-text: #e2e2f0;
+$code-comment: #7f849c;
+$code-keyword: #c792ea;
+$code-string: #a6e3a1;
+$code-number: #f5a97f;
+$code-function: #89b4fa;
+$code-builtin: #74c7ec;
+$code-variable: #f2cdcd;
+$code-attribute: #eed49f;
+
+// --- Inline code: a different colour from the body text ----------------------
+
+.main-content :not(pre, figure) > code {
+  background-color: $inline-code-background;
+  color: $inline-code-text;
+  border: 0;
+  padding: 0.15em 0.4em;
+}
+
+// --- Code blocks: dark background, coloured by highlight.js ------------------
+// .main-content in front makes these win over the theme's light code style.
+
+.main-content pre,
+.main-content pre.highlight {
+  background: $code-block-background;
+  color: $code-block-text;
+  padding: 1rem 1.1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1rem 0 1.25rem;
+}
+
+.main-content pre code {
+  background: none;
+  color: inherit;
+  border: 0;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+.hljs-comment,
+.hljs-quote { color: $code-comment; font-style: italic; }
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal { color: $code-keyword; }
+.hljs-string,
+.hljs-regexp { color: $code-string; }
+.hljs-number { color: $code-number; }
+.hljs-title,
+.hljs-title.function_,
+.hljs-section { color: $code-function; }
+.hljs-built_in,
+.hljs-type { color: $code-builtin; }
+.hljs-variable,
+.hljs-params,
+.hljs-property { color: $code-variable; }
+.hljs-attr,
+.hljs-attribute { color: $code-attribute; }
+
+// --- Home page ---------------------------------------------------------------
+
+.tagline {
+  margin-top: -0.5rem;
+  color: $muted-text;
+  font-size: 1.1rem;
+}
+
+// One entry per sketch: a link with a short description under it.
+ol.sketch-list {
+  list-style: none;
+  padding-left: 0;
+
+  > li {
+    margin: 0 0 1.5rem;
+    padding: 0 0 1.5rem;
+    border-bottom: 1px solid $soft-border;
+
+    // The theme numbers list items with a ::before counter; hide it here.
+    &::before {
+      content: none;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+  }
+
+  .sketch-link {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .sketch-desc {
+    color: $muted-text;
+
+    p {
+      margin: 0;
+    }
+  }
+}
+
+// --- Images ------------------------------------------------------------------
+// Never wider than the page, so screenshots don't cause sideways scrolling.
+
+.main-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.25rem 0;
+  border-radius: 6px;
+  border: 1px solid $soft-border;
+}
+
+// Two images in a row (e.g. before / after) sit side by side,
+// and stack on narrow screens.
+.main-content p:has(img + img) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.25rem 0;
+
+  img {
+    flex: 1 1 240px;
+    max-width: calc(50% - 0.5rem);
+    margin: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-content p:has(img + img) img {
+    max-width: 100%;
+  }
+}
+
+// --- Previous / Next buttons (_includes/prev-next.html) ----------------------
+
+.prev-next {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.prev-next .btn {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 14rem;
+  max-width: 24rem;
+  padding: 0.6rem 1rem;
+  text-align: left;
+  white-space: normal;
+}
+
+// Keep Next on the right, even on the home page where there is no Previous.
+.prev-next .prev-next-next {
+  margin-left: auto;
+  text-align: right;
+}
+
+.prev-next-label {
+  font-size: 0.85rem;
+  color: $muted-text;
+}
+
+.prev-next-title {
+  font-weight: 600;
+}
