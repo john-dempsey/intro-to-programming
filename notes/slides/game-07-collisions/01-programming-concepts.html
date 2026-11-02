@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 07 — Collisions – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-07-collisions/index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-07-collisions/02-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 07 — Collisions</a></p>
+<h1>Programming concepts</h1>
+<h3>A method that returns an object</h3>
+<pre class="highlight"><code class="language-js">getBounds() {
+    return {
+        left: this.x - this.alienWidth / 2,
+        right: this.x + this.alienWidth / 2,
+        top: this.y - this.alienHeight / 2,
+        bottom: this.y + this.alienHeight / 2
+    };
+}</code></pre>
+<p>The object literal from sketch 06, built and returned in one go. The ship, bullets and aliens
+each store their size differently (<code>bodyWidth</code>, <code>bulletWidth</code>,
+<code>alienWidth</code>), but all three have a <code>getBounds()</code> method that answers in the
+<strong>same shape</strong>: <code>left</code>, <code>right</code>, <code>top</code>,
+<code>bottom</code>. Code that only needs a rectangle doesn't have to know which kind of object
+it came from.</p>
+<h3>When do two rectangles overlap?</h3>
+<p>Two rectangles overlap only if they overlap <strong>left-to-right</strong> and
+<strong>top-to-bottom</strong> at the same time. Left-to-right, they overlap if each one's left
+edge is to the left of the other's right edge:</p>
+<pre class="highlight"><code class="language-js">let overlapX = first.left &lt; second.right &amp;&amp; first.right &gt; second.left;
+let overlapY = first.top &lt; second.bottom &amp;&amp; first.bottom &gt; second.top;
+return overlapX &amp;&amp; overlapY;</code></pre>
+<p>Try it on squared paper. Two rectangles in the same column overlap in x but not in y: no hit.
+Two in the same row overlap in y but not in x: no hit. Only when both are true do they actually
+cover some of the same squares. Giving each half a name (<code>overlapX</code>,
+<code>overlapY</code>) makes the final line read like the sentence above.</p>
+<p>The test uses <code>&lt;</code> and <code>&gt;</code>, not <code>&lt;=</code> and
+<code>&gt;=</code>, so rectangles that only touch along an edge don't count. That's a decision,
+and the tests record it.</p>
+<h3>Removing from two arrays: backwards and <code>break</code></h3>
+<p>Every bullet has to be checked against every alien: a nested loop. When there's a hit, one
+item is removed from <em>each</em> array:</p>
+<ul>
+<li>The <strong>outer</strong> loop (bullets) goes backwards, for the same reason as stage 4:
+items are removed from the array it's looping over.</li>
+<li>The <strong>inner</strong> loop (aliens) can go forwards, because as soon as it removes an
+alien, <code>break</code> ends it. It never carries on past a removal, so nothing gets
+skipped.</li>
+</ul>
+<h3><code>break</code></h3>
+<p><code>break</code> ends the loop it's in immediately; the program carries on after the loop.
+Here, once a bullet has hit an alien, the bullet is gone, so there's no point checking it against
+the remaining aliens. Without <code>break</code>, the removed bullet would carry on and destroy
+every other alien it was touching. Compare this with <code>return</code> in stage 6, which ends
+the whole function, not just the loop.</p>
+<h3>Hitboxes</h3>
+<p>A <strong>hitbox</strong> is the shape the program uses for collisions, which isn't
+necessarily the shape that's drawn. Drawing hitboxes in the debug overlay shows exactly what the
+collision code "sees". If a hit looks unfair, the overlay shows you why.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

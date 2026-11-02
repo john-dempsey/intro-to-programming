@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 04 — Many Bullets – How I developed this · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-04-many-bullets/02-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-04-many-bullets/04-exercises.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 04 — Many Bullets</a></p>
+<h1>How I developed this</h1>
+<h3>Changing the plan</h3>
+<p>The original game allows one bullet at a time, and that's what the plan said. After playing
+stage 3 for a few minutes, it felt slow. I decided to allow many bullets instead. Plans are
+meant to change as you learn more. I updated the plan to match, so it stayed accurate: see
+<a href="../../../src/game/04-many-bullets/PLAN.md" target="_blank" rel="noopener"><code>src/game/04-many-bullets/PLAN.md</code></a>,
+which now has a "Changes to the plan" section.</p>
+<h3>Attempt 1: no removal</h3>
+<p>The first version just pushed bullets into the array and moved them. It looked perfect. But
+I knew bullets that left the screen were still in the array, so I added the debug overlay to see
+how many there were:</p>
+<pre class="highlight"><code class="language-plaintext">bullets in array: 143</code></pre>
+<p>The number only ever went up. Every bullet ever fired was still being moved, every frame,
+somewhere far above the screen. In a long game that would slowly use more memory and slow the
+game down. Nothing on screen showed the problem; only the overlay did.</p>
+<h3>Attempt 2: removing while looping forwards</h3>
+<p>I added removal to the existing loop, going forwards as usual:</p>
+<pre class="highlight"><code class="language-js">for (let i = 0; i &lt; bulletList.length; i++) {
+    if (bulletList[i].isOffScreen()) {
+        bulletList.splice(i, 1);
+    }
+}</code></pre>
+<p>I played for a while with the overlay on, and the count went back to 0 every time. It seemed
+to work. Then I wrote the tests, including one with three off-screen bullets:</p>
+<pre class="highlight"><code class="language-plaintext">FAIL: removes every bullet that is off screen (expected 0, got 1)</code></pre>
+<p>I traced the loop on paper (the table on the concepts page) and saw the skipped item. In the
+game, the skipped bullet was just removed one frame later, so I could never have seen it by
+playing. But in a later stage, when a bullet and an alien are removed in the same frame, a
+skipped item could mean an alien that should be destroyed isn't. That would be much harder to
+track down then.</p>
+<p>This is the main reason for automatic tests: they find bugs you can't see.</p>
+<h3>Attempt 3: loop backwards</h3>
+<p>Looping backwards fixed it, and all the tests passed. I also moved the removal into its own
+function, <code>removeOffScreenBullets()</code>, which takes the array as a parameter. That made
+it possible to test with small arrays built just for the tests.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>Press space quickly several times: several bullets in flight at once.</li>
+<li>With the overlay on, the count goes up with each shot and back to 0 when they've all
+gone.</li>
+<li>Hold space: one bullet per press, not a stream.</li>
+<li>Press D twice: the overlay turns on, then off.</li>
+<li>The frame rate stays at about 60 while firing quickly.</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits</h3>
+<pre class="highlight"><code class="language-plaintext">git commit -am "Update plan: allow many bullets"
+git commit -am "Game stage 4: debug overlay showing bullet count"
+git commit -am "Game stage 4: many bullets, removed when off screen"</code></pre>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 — A displayBall() Function – Aside: translate(), push() and pop() · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="03-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="05-explore-modify.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">08 — A displayBall() Function</a></p>
+<h1>Aside: translate(), push() and pop()</h1>
+<p>Not used in this sketch — <code>displayBall()</code> only ever draws one shape, so there's nothing to offset.
+But the House and Cars projects (see Projects, below) both build an object out of <em>several</em>
+shapes, and by this stage every shape's position has been written by hand as <code>h.x + something</code>,
+<code>h.y + something</code> — repeated once per shape, inside the same function. <code>translate(x, y)</code> moves
+p5's drawing origin: call it once, and every coordinate used by shapes drawn <em>after</em> it is measured
+from the new origin instead of <code>(0, 0)</code> — so each shape's position becomes a plain, fixed offset,
+with no arithmetic needed at all.</p>
+<p>Every p5 canvas starts out with the same coordinate system: <code>(0, 0)</code> at the top-left corner, <code>x</code>
+increasing to the right, <code>y</code> increasing downwards. Every coordinate in every drawing call —
+<code>circle(x, y, ...)</code>, <code>rect(x, y, ...)</code>, and so on — is measured from that origin, unless something
+has moved it.</p>
+<p><img alt="The canvas's global coordinate system: x increasing to the right from an origin at the top-left corner, y increasing downwards" src="../images/08-global-coordinate-system.png" loading="lazy"></p>
+<p><code>translate(x, y)</code> is that "something" — it moves the origin. <code>translate(160, 180)</code> shifts it from
+<code>(0, 0)</code> to <code>(160, 180)</code>; the new x and y axes run from there, in the same directions as before,
+just starting from a different point.</p>
+<p><img alt="translate(160, 180) moves the origin from (0, 0) to (160, 180) — the new x and y axes run from there, parallel to the original ones" src="../images/08-translated-coordinate-system.png" loading="lazy"></p>
+<p>Every shape drawn <em>after</em> that call is measured from the new origin, not the old one. Here, a
+traffic light is drawn using the same plain coordinates <code>createTrafficLight()</code> always uses —
+<code>(0, -70)</code>, <code>(0, 0)</code>, <code>(0, 70)</code> for its three balls — but because <code>translate(160, 180)</code> has already
+run, <code>(0, 0)</code> now means the point marked below, where the amber light sits, not the top-left corner
+of the canvas.</p>
+<p><img alt="A traffic light drawn with translate(160, 180) already applied — every shape's position is a plain, fixed offset from the new origin, marked here where the amber light sits" src="../images/08-translated-traffic-light.png" loading="lazy"></p>
+<p><code>pop()</code> undoes the <code>translate()</code> — the origin snaps back to where it was before the matching
+<code>push()</code>, ready for the next thing to be drawn (a second traffic light, say) without carrying the
+first one's offset along with it.</p>
+<p><img alt="The same canvas after pop() restores the original origin at the top-left corner, ready for whatever is drawn next" src="../images/08-restored-coordinate-system.png" loading="lazy"></p>
+<p>A worked example: <a href="../../../src/extras/08-traffic-light/index.html" target="_blank" rel="noopener"><code>src/extras/08-traffic-light/sketch.js</code></a>
+(open <a href="../../../src/extras/08-traffic-light/index.html" target="_blank" rel="noopener"><code>index.html</code></a> alongside it to run it). It reuses <code>createBall()</code> and <code>displayBall()</code>
+completely unchanged — a traffic light is just three balls — and adds two functions that group
+them:</p>
+<pre class="highlight"><code class="language-js">function createTrafficLight(x, y) {
+    let t = { x: x, y: y };
+
+    // Each ball's position is a small, fixed offset from the traffic
+    // light's own (0, 0) — not from its actual on-canvas position. That's
+    // only true because displayTrafficLight() translates to (x, y) before
+    // drawing any of them.
+    t.red = createBall(0, -70, 50, color(255, 0, 0));
+    t.amber = createBall(0, 0, 50, color(255, 180, 0));
+    t.green = createBall(0, 70, 50, color(0, 200, 0));
+
+    return t;
+}
+
+function displayTrafficLight(t) {
+    push();                       // remember the current origin
+    translate(t.x, t.y);          // move the origin to this light's position
+
+    noStroke();
+    fill(40);
+    rect(-40, -110, 80, 220, 10); // the housing, drawn relative to (0, 0)
+
+    displayBall(t.red);           // each ball still just draws itself —
+    displayBall(t.amber);         // it has no idea the origin has moved
+    displayBall(t.green);
+
+    pop();                        // restore the origin for whatever's next
+}</code></pre>
+<p><code>push()</code> saves p5's current drawing state — including the current origin — before the
+translation; <code>pop()</code> restores exactly that saved state afterwards. Without <code>pop()</code>, the
+translation would carry over into whatever gets drawn next — try calling <code>displayTrafficLight()</code>
+twice with <code>pop()</code> commented out, for both lights, and see what happens to the second one. <code>push()</code>
+and <code>pop()</code> are always used as a matched pair, bracketing the part of the code that needs a
+temporary change. The full sketch draws two traffic lights, at different positions, entirely from
+that one pair of functions.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

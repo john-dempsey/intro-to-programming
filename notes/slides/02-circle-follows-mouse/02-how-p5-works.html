@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 — Circle Follows the Mouse – How p5 works · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="03-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">02 — Circle Follows the Mouse</a></p>
+<h1>How p5 works</h1>
+<ul>
+<li><strong><code>draw()</code> runs continuously — the render loop.</strong> p5 calls <code>draw()</code> automatically and
+  repeatedly, about <strong>60 times a second</strong>, for as long as the sketch runs. That's the mechanism
+  behind <em>all</em> animation: nothing inside <code>draw()</code> loops by itself, p5 just keeps calling the
+  whole function again and again, each call is one <strong>frame</strong>.</li>
+<li><strong><code>background()</code> must run every frame to erase the last one.</strong> The canvas is a persistent
+  bitmap (from sketch 01) — nothing clears itself automatically. Because <code>draw()</code> now runs 60
+  times a second, <code>background(230)</code> has to be the first thing it does each time; otherwise every
+  frame's circle would be drawn on top of the last, and circles would pile up across the screen
+  as the mouse moves.</li>
+<li><strong><code>mouseX</code> and <code>mouseY</code> are kept current by p5.</strong> These aren't ordinary variables that the
+  sketch sets — p5 updates them continuously in the background to match the real mouse position,
+  so reading <code>mouseX</code>/<code>mouseY</code> anywhere inside <code>draw()</code> always gives the mouse's position <em>right
+  now</em>, at that frame.</li>
+<li><strong><code>mouseX</code>/<code>mouseY</code> are just two of many system variables.</strong> p5 keeps a whole set of these —
+  ordinary-looking variables that p5 itself updates continuously, rather than values the sketch
+  ever assigns. A few worth knowing exist, even before there's a reason to use them all:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>System variable</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>width</code></td>
+<td>Width (in pixels) of the sketch window</td>
+</tr>
+<tr>
+<td><code>height</code></td>
+<td>Height (in pixels) of the sketch window</td>
+</tr>
+<tr>
+<td><code>frameCount</code></td>
+<td>Number of frames processed since the sketch started</td>
+</tr>
+<tr>
+<td><code>frameRate</code></td>
+<td>Rate frames are currently being processed, per second</td>
+</tr>
+<tr>
+<td><code>displayWidth</code></td>
+<td>Width (in pixels) of the entire screen</td>
+</tr>
+<tr>
+<td><code>displayHeight</code></td>
+<td>Height (in pixels) of the entire screen</td>
+</tr>
+<tr>
+<td><code>key</code></td>
+<td>The most recent key pressed on the keyboard</td>
+</tr>
+<tr>
+<td><code>keyCode</code></td>
+<td>The numeric code for the key pressed on the keyboard</td>
+</tr>
+<tr>
+<td><code>keyIsPressed</code></td>
+<td><code>true</code>/<code>false</code> — is a key currently pressed?</td>
+</tr>
+<tr>
+<td><code>mouseIsPressed</code></td>
+<td><code>true</code>/<code>false</code> — is the mouse currently pressed?</td>
+</tr>
+<tr>
+<td><code>mouseButton</code></td>
+<td>Which mouse button is pressed — <code>LEFT</code>, <code>RIGHT</code>, or <code>CENTER</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>width</code>/<code>height</code> already appeared in sketch 01; <code>frameCount</code> shows up in this sketch's exercises
+  below; the rest aren't used anywhere in these 13 sketches, but they're one line away in the
+  <a href="https://p5js.org/reference/" target="_blank" rel="noopener">p5 reference</a> the moment a sketch needs them.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

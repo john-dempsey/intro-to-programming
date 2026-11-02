@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11 — Ball Velocity – Explore &amp; modify · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="03-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="05-projects.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">11 — Ball Velocity</a></p>
+<h1>Explore &amp; modify</h1>
+<p>Working copy: <code>exercises/11-ball-velocity/</code>.</p>
+<ol>
+<li>Set one ball's <code>vx</code>/<code>vy</code> to <code>(0, 0)</code> in <code>setup()</code> and run the sketch — confirm that ball alone
+   stays still while the others move.</li>
+</ol>
+<p><img alt="Five balls mid-animation, at different positions and moving at different speeds/directions" src="../images/11-moving-balls.png" loading="lazy"></p>
+<ol start="2">
+<li>Split the single loop in <code>draw()</code> into two separate loops — one calling <code>.move()</code> on every
+   ball, then a second calling <code>.display()</code> on every ball. Confirm the animation looks identical,
+   and explain why the order between <em>separate</em> balls' move/display doesn't matter here (contrast
+   with sketch 01/03, where order of statements mattered).</li>
+</ol>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 02 — Moving the Ship – How I developed this · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-02-ship-moves/02-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-02-ship-moves/04-exercises.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 02 — Moving the Ship</a></p>
+<h1>How I developed this</h1>
+<h3>Attempt 1: <code>keyPressed()</code></h3>
+<p>My first version used <code>keyPressed()</code>, as in Frogger. It worked, but the ship moved
+one step per key press, so crossing the screen took dozens of presses. Frogger moves in steps;
+Space Invaders needs smooth movement. I switched to <code>keyIsDown()</code>.</p>
+<p>I tried this on a Git branch so I could throw it away easily. Exercise 6 has you do the
+same.</p>
+<h3>Attempt 2: <code>keyIsDown()</code> inside <code>move()</code></h3>
+<p>Next, I wrote <code>move()</code> to check the keys itself:</p>
+<pre class="highlight"><code class="language-js">move() {
+    if (keyIsDown(LEFT_ARROW)) {
+        this.x -= this.speed;
+    }
+    // ...
+}</code></pre>
+<p>The ship moved nicely, but when I came to write the tests I couldn't: the only way to make
+the ship move was to press a key. So I <strong>refactored</strong> (changed how the code is
+organised without changing what it does): <code>readDirection()</code> reads the keys, and
+<code>move(direction)</code> does the moving. The game behaved exactly the same, but now
+<code>move()</code> could be tested.</p>
+<h3>The bug the tests caught</h3>
+<p>I wrote the edge tests before the clamp, expecting the ship's centre to stop 25 pixels from
+each edge. Then I wrote a quick clamp:</p>
+<pre class="highlight"><code class="language-js">if (this.x &lt; 0) {
+    this.x = 0;
+}</code></pre>
+<p>It looked right when I ran the game, until I noticed half the ship disappeared off the edge.
+The console agreed:</p>
+<pre class="highlight"><code class="language-plaintext">FAIL: stops at the left edge (expected 25, got 22)</code></pre>
+<p>I was clamping the ship's <em>centre</em>, not its <em>edge</em>. Sketch 13 had already solved
+this with the radius; for the ship, it's half its width. After the fix, every test passed.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>Hold left until the ship stops: it's fully visible, touching the edge.</li>
+<li>The same on the right.</li>
+<li>Hold both arrow keys: the ship stays still.</li>
+<li>Press no keys: the ship stays still.</li>
+<li>Tap quickly: the ship moves a small amount each time.</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits</h3>
+<p>This stage took two commits, because the refactor was worth its own save point:</p>
+<pre class="highlight"><code class="language-plaintext">git commit -am "Game stage 2: move ship with arrow keys"
+git commit -am "Game stage 2: split readDirection from move, add movement tests"</code></pre>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

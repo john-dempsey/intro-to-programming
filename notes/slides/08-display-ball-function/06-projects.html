@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 — A displayBall() Function – Projects · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="05-explore-modify.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../09-ball-class/index.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">08 — A displayBall() Function</a></p>
+<h1>Projects</h1>
+<p><strong>Build: House</strong> (<code>exercises/house/</code>) — stage 8 of 10, mirrors this sketch.
+Extract the drawing statements into a <code>displayHouse(h)</code> function that takes a house object and
+draws it; <code>mousePressed()</code> just updates position and calls <code>displayHouse(house)</code>. Now that every
+part of the house is drawn from inside one function, replace the <code>h.x + ...</code>/<code>h.y + ...</code>
+arithmetic on each shape with <code>translate(h.x, h.y)</code> once at the top of <code>displayHouse()</code> (see the
+Aside above), then draw each shape at its plain, fixed offset from <code>(0, 0)</code> instead — wrapped in
+<code>push()</code>/<code>pop()</code> so the translation doesn't affect anything drawn afterwards.</p>
+<p><strong>Build: Cars → Frogger</strong> (<code>exercises/cars-frogger/</code>) — stage 8 of 12, mirrors this sketch.
+Extract the drawing statements into a <code>displayCar(c)</code> function that takes a car object and draws
+it; <code>mousePressed()</code> just updates position and calls <code>displayCar(car)</code>. Now that every part of the
+car is drawn from inside one function, replace the <code>c.x + ...</code>/<code>c.y + ...</code> arithmetic on the body
+and wheels with <code>translate(c.x, c.y)</code> once at the top of <code>displayCar()</code> (see the Aside above),
+then draw each shape at its plain, fixed offset from <code>(0, 0)</code> instead — wrapped in <code>push()</code>/<code>pop()</code>
+so the translation doesn't affect anything drawn afterwards.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

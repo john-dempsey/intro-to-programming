@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 00 — The Plan – The plan · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-00-plan/01-the-development-process.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-00-plan/03-git-and-commits.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 00 — The Plan</a></p>
+<h1>The plan</h1>
+<p>Open <a href="../../../src/game/00-plan/PLAN.md" target="_blank" rel="noopener"><code>PLAN.md</code></a>
+alongside this page. Here's why each part is there.</p>
+<h3>One sentence</h3>
+<p>If you can't describe your project in one sentence, it's probably too big, or you're not yet
+sure what it is.</p>
+<h3>Must, should, could</h3>
+<p>Every feature goes into one of three groups:</p>
+<table>
+<tr><th>Group</th><th>Meaning</th><th>Example</th></tr>
+<tr><td>Must have</td><td>Without it, it isn't the game at all</td><td>Aliens march down the screen</td></tr>
+<tr><td>Should have</td><td>Important, but the game works without it</td><td>Score on screen</td></tr>
+<tr><td>Could have</td><td>Nice extras, only if there's time</td><td>Sound effects</td></tr>
+</table>
+<p>Be strict about "must have". The fewer features in that group, the sooner you have
+something that works.</p>
+<h3>The smallest playable game</h3>
+<p>The "must have" features, together, are the first target. Everything after that improves a
+game that already works. If you run out of time, you still have a game.</p>
+<h3>Stages</h3>
+<p>The features are put in order, one per stage. The early stages are tiny on purpose: stage 1
+only draws the ship. Small early stages build up a working base quickly.</p>
+<h3>Done means done</h3>
+<p>A stage isn't finished when the code is written. It's finished when it runs with no console
+errors, the tests pass, it's been tried by hand, and it's committed. Deciding this in advance
+stops "nearly done" stages piling up.</p>
+<h3>Questions I don't know the answer to yet</h3>
+<p>The plan lists the parts I wasn't sure how to do. That isn't a weakness in the plan. It shows
+where to spend time looking things up, and which stages may take longer.</p>
+<h3>The empty sketch</h3>
+<p>Stage 0's <code>sketch.js</code> is just a blank canvas. It's still worth running: it proves the
+HTML, the p5 library and the sketch file are all connected before any game code exists.</p>
+<pre class="highlight"><code class="language-js">const CANVAS_WIDTH = 640;
+const CANVAS_HEIGHT = 480;
+const BACKGROUND_COLOUR = 20;   // near-black, like the original arcade game
+
+function setup() {
+    createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+}
+
+function draw() {
+    background(BACKGROUND_COLOUR);
+}</code></pre>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

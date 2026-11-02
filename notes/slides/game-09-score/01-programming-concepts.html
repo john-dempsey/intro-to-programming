@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 09 — Score – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-09-score/index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-09-score/02-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 09 — Score</a></p>
+<h1>Programming concepts</h1>
+<h3>Feature branches</h3>
+<p>Until now, every commit went straight onto <code>main</code>. That's fine while building the
+first working version. Once the game works, it's worth protecting: a half-finished feature
+shouldn't break it.</p>
+<p>So each feature gets its own branch:</p>
+<pre class="highlight"><code class="language-plaintext">git switch -c score       # start a branch for the feature
+# ... write code, test, commit (as many commits as needed) ...
+git switch main           # back to the working game
+git merge score           # bring the finished feature in
+git branch -d score       # tidy up</code></pre>
+<p>While you work on the branch, <code>main</code> still has the last working version. If the
+feature goes badly, you can abandon the branch, and <code>main</code> is untouched.</p>
+<h3>Changing what a function returns</h3>
+<p><code>handleCollisions()</code> used to do its work and return nothing. Now it also
+<strong>returns</strong> the points scored:</p>
+<pre class="highlight"><code class="language-js">score += handleCollisions(bullets, aliens);</code></pre>
+<p><code>+=</code> adds the returned value to <code>score</code>. A frame with no hits returns
+<code>0</code>, so the score doesn't change. The function still doesn't touch <code>score</code>
+itself, which keeps it easy to test: the tests check the number it returns.</p>
+<h3>Changing a function's parameters</h3>
+<p><code>createAlienGrid()</code> gained a fourth parameter, <code>pointsList</code>. Every place
+that calls the function must now pass it, and that includes the tests. A missing argument isn't
+an error in JavaScript: the parameter is just <code>undefined</code>, and the program fails
+later, somewhere else (see "How I developed this").</p>
+<h3>Lists that line up with rows</h3>
+<pre class="highlight"><code class="language-js">const ALIEN_ROW_POINTS = [30, 20, 20, 10];   // points for each row, top row first</code></pre>
+<p>The same idea as the row colours in stage 5: a list with one entry per row, read with
+<code>pointsList[row % pointsList.length]</code>. A <code>const</code> array at the top of the
+file makes the scoring easy to find and change.</p>
+<h3>Text alignment</h3>
+<pre class="highlight"><code class="language-js">textAlign(RIGHT, TOP);
+text("SCORE " + score, width - 10, 10);</code></pre>
+<p><code>textAlign(RIGHT, TOP)</code> makes the given position the text's top-right corner. As the
+score grows from 0 to 640, the text grows to the left and never runs off the edge of the
+canvas.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

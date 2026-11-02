@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00 — Getting Started: How Computer Graphics Work – Pixels: pictures made of tiny squares · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-the-canvas-your-drawing-surface.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">00 — Getting Started: How Computer Graphics Work</a></p>
+<h1>Pixels: pictures made of tiny squares</h1>
+<p>A screen is a grid of tiny dots called <strong>pixels</strong> ("picture elements"), packed close enough
+together that from a normal viewing distance they blend into a smooth image. Each pixel can show
+exactly one colour at a time. A digital image — a photo, an icon, a game, a p5 sketch — is nothing
+more than a big grid of pixels, each one set to some colour, updated many times a second.</p>
+<p>Nothing in the picture is a "shape" as far as the screen is concerned — a circle is just a
+roughly circular patch of pixels that all happen to be the same colour. The <em>shape</em> only exists in
+the code that decided which pixels to colour in; the screen itself just displays a grid of
+independent dots.</p>
+<p><img alt="A curved edge on a screen, zoomed in until the individual square pixels are visible" src="../images/00-curve-pixels.png" loading="lazy"></p>
+<p><em>Figure: a close-up crop of a curved edge, zoomed in until the individual square pixels are
+visible — showing that a "smooth" curve is really a staircase of coloured squares.</em></p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

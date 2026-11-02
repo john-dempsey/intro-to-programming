@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 06 — The Alien March – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-06-alien-march/01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-06-alien-march/03-how-i-developed-this.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 06 — The Alien March</a></p>
+<h1>Reading the sketch</h1>
+<h3>Moving an alien</h3>
+<pre class="highlight"><code class="language-js">moveBy(dx, dy) {
+    this.x += dx;
+    this.y += dy;
+}</code></pre>
+<p>The alien doesn't decide where to go; it moves by whatever it's told. <code>dx</code> and
+<code>dy</code> are short for "change in x" and "change in y", a common naming convention.</p>
+<h3>Is the formation at an edge?</h3>
+<pre class="highlight"><code class="language-js">function formationAtEdge(alienList, direction) {
+    for (let i = 0; i &lt; alienList.length; i++) {
+        let nextX = alienList[i].x + direction * ALIEN_SPEED;
+        let halfWidth = alienList[i].alienWidth / 2;
+
+        if (nextX - halfWidth &lt; 0 || nextX + halfWidth &gt; width) {
+            return true;
+        }
+    }
+    return false;
+}</code></pre>
+<p>For each alien, work out where it will be after one more step, and check that position's edges
+against the canvas, as the ship's clamp did in stage 2.</p>
+<h3>Marching</h3>
+<pre class="highlight"><code class="language-js">function marchAliens(alienList, direction) {
+    if (formationAtEdge(alienList, direction)) {
+        for (let i = 0; i &lt; alienList.length; i++) {
+            alienList[i].moveBy(0, ALIEN_DROP);
+        }
+        return -direction;
+    }
+
+    for (let i = 0; i &lt; alienList.length; i++) {
+        alienList[i].moveBy(direction * ALIEN_SPEED, 0);
+    }
+    return direction;
+}</code></pre>
+<p>Two possibilities each frame. At an edge: every alien drops, and the direction is reversed
+(<code>-direction</code> turns 1 into -1 and -1 into 1). Otherwise: every alien moves one step
+sideways, and the direction stays the same. Each path ends with its own <code>return</code>, so
+only one of them ever runs.</p>
+<h3>In <code>draw()</code></h3>
+<pre class="highlight"><code class="language-js">alienDirection = marchAliens(aliens, alienDirection);
+displayAliens();</code></pre>
+<p>March first, then draw, so what's on screen is always the aliens' latest position.</p>
+<h3>The new tests</h3>
+<pre class="highlight"><code class="language-js">// The next step, in the new direction, should move left and NOT drop
+// again. (If it drops again, the aliens slide down the edge.)
+newDirection = marchAliens(formation, newDirection);
+check("next step keeps the new direction", newDirection, -1);
+check("next step moves left", formation[0].x, width - 15 - ALIEN_SPEED);
+check("next step doesn't drop again", formation[0].y, 100 + ALIEN_DROP);</code></pre>
+<p>This test checks two frames in a row: the turn at the edge, and the frame after. Each of the
+bugs on the next page was added to the tests once it was found, so it can't come back without a
+FAIL. A test written for a bug you've already fixed is called a <strong>regression
+test</strong>.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

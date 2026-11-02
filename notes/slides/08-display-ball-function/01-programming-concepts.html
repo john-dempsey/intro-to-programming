@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 — A displayBall() Function – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">08 — A displayBall() Function</a></p>
+<h1>Programming concepts</h1>
+<h3>Passing an object into a function as a parameter</h3>
+<pre class="highlight"><code class="language-js">function displayBall(b) {
+    noStroke();
+    fill(b.col);
+    circle(b.x, b.y, b.diameter);
+}</code></pre>
+<p><code>displayBall()</code> takes a single parameter, <code>b</code>, and expects it to be a ball-shaped object — one
+with <code>x</code>, <code>y</code>, <code>diameter</code> and <code>col</code> properties. Calling <code>displayBall(ball)</code> passes the whole
+object in one argument; inside the function, <code>b</code> refers to that same object, and its properties
+are read via dot notation exactly as <code>ball.x</code> etc. were read directly in <code>mousePressed()</code> before.</p>
+<h3>Functions that operate on a passed-in object</h3>
+<p>Sketch 07's <code>createBall()</code> <em>built</em> an object and handed it back. <code>displayBall()</code> does the
+opposite kind of job: given an object that already exists, it <em>does something with it</em> — here,
+draws it — without needing to know where that object came from or what it's called outside the
+function. This is a common and useful shape: a function that operates on whatever object it's
+given, rather than reaching for a specific global variable by name. It's what makes
+<code>displayBall()</code> reusable for <em>any</em> ball-shaped object, not just the one currently stored in
+<code>ball</code>.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

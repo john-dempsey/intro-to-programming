@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 05 — A Grid of Aliens – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-05-alien-grid/index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-05-alien-grid/02-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 05 — A Grid of Aliens</a></p>
+<h1>Programming concepts</h1>
+<h3>Nested loops</h3>
+<pre class="highlight"><code class="language-js">for (let row = 0; row &lt; rowCount; row++) {
+    for (let column = 0; column &lt; columnCount; column++) {
+        // runs once for every (row, column) pair
+    }
+}</code></pre>
+<p>The inner loop runs all the way through <em>every time</em> the outer loop goes round once.
+With 4 rows and 8 columns, the inside runs 4 &times; 8 = 32 times: row 0 with columns 0 to 7,
+then row 1 with columns 0 to 7, and so on.</p>
+<p>Naming the loop variables <code>row</code> and <code>column</code> rather than <code>i</code>
+and <code>j</code> makes it much harder to mix them up.</p>
+<h3>A grid in a single array</h3>
+<p>The 32 aliens are stored in one ordinary array, row by row:</p>
+<table>
+<tr><th></th><th>Column 0</th><th>Column 1</th><th>&hellip;</th><th>Column 7</th></tr>
+<tr><td>Row 0</td><td>index 0</td><td>index 1</td><td>&hellip;</td><td>index 7</td></tr>
+<tr><td>Row 1</td><td>index 8</td><td>index 9</td><td>&hellip;</td><td>index 15</td></tr>
+<tr><td>Row 2</td><td>index 16</td><td>index 17</td><td>&hellip;</td><td>index 23</td></tr>
+<tr><td>Row 3</td><td>index 24</td><td>index 25</td><td>&hellip;</td><td>index 31</td></tr>
+</table>
+<p>JavaScript can also store a grid as an array of arrays (a <strong>2D array</strong>). That's
+useful when you often need "the alien at row 2, column 5". This game mostly needs "every alien",
+to move, draw and check them all, so a single array keeps every loop simple.</p>
+<h3>Position from row and column</h3>
+<pre class="highlight"><code class="language-js">let x = ALIEN_GRID_LEFT + column * ALIEN_SPACING_X;
+let y = ALIEN_GRID_TOP + row * ALIEN_SPACING_Y;</code></pre>
+<p>Each column is one spacing further right; each row is one spacing further down. Column 0 is
+at <code>ALIEN_GRID_LEFT</code> exactly. The <strong>column</strong> decides <code>x</code> and the
+<strong>row</strong> decides <code>y</code>, which is easy to get backwards.</p>
+<h3>A function that builds and returns an array</h3>
+<pre class="highlight"><code class="language-js">aliens = createAlienGrid(ALIEN_ROWS, ALIEN_COLUMNS, rowColours);</code></pre>
+<p>Like <code>createBall()</code> in sketch 07, <code>createAlienGrid()</code> builds something and
+hands it back with <code>return</code>. Because it takes the sizes as parameters, the tests can
+ask for a small 2 &times; 3 grid whose positions are easy to work out by hand.</p>
+<h3>Repeating a list with <code>%</code></h3>
+<pre class="highlight"><code class="language-js">let alienColour = colourList[row % colourList.length];</code></pre>
+<p><code>%</code> gives the remainder after dividing (sketch 12). With 4 colours, rows 0&ndash;3 get
+colours 0&ndash;3, then row 4 gets <code>4 % 4 = 0</code>, the first colour again. This handles an
+edge case: more rows than colours.</p>
+<h3>Checking every item in a test</h3>
+<p><code>testAliensFitOnCanvas()</code> loops over all 32 aliens and <strong>counts</strong> how
+many are outside the canvas, then makes one check that the count is 0. One PASS line instead of
+32 keeps the console readable, and when it fails it prints which aliens are wrong.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

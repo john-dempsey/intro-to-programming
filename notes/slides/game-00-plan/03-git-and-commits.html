@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 00 — The Plan – Git and commits · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-00-plan/02-the-plan.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-00-plan/04-exercises.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 00 — The Plan</a></p>
+<h1>Git and commits</h1>
+<h3>A commit is a save point</h3>
+<p>Each commit records exactly what every file looked like at that moment. If a later change
+breaks everything, you can see what changed since the last working commit, or go back to it.</p>
+<p>That's why every stage ends with a commit. The commit history becomes a list of working
+versions of the game, one per stage.</p>
+<h3>The commands you'll use most</h3>
+<table>
+<tr><th>Command</th><th>What it does</th></tr>
+<tr><td><code>git status</code></td><td>Lists the files that have changed since the last commit</td></tr>
+<tr><td><code>git diff</code></td><td>Shows the exact lines that changed</td></tr>
+<tr><td><code>git add .</code></td><td>Includes every changed file in the next commit</td></tr>
+<tr><td><code>git commit -m "message"</code></td><td>Makes the commit, with a message</td></tr>
+<tr><td><code>git log --oneline</code></td><td>Lists past commits, one per line</td></tr>
+</table>
+<h3>Good commit messages</h3>
+<p>A message should say what changed, briefly, so that someone reading <code>git log</code> in six
+months can follow the history:</p>
+<table>
+<tr><th>Unhelpful</th><th>Better</th></tr>
+<tr><td><code>stuff</code></td><td><code>Game stage 1: draw the ship</code></td></tr>
+<tr><td><code>fixed it</code></td><td><code>Stop ship going past right edge</code></td></tr>
+<tr><td><code>changes</code></td><td><code>Add tests for ship movement</code></td></tr>
+</table>
+<p>The commit for this stage was:</p>
+<pre class="highlight"><code class="language-plaintext">git add .
+git commit -m "Game stage 0: plan and empty canvas"</code></pre>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 11 — Title Screen and High Score – Exercises · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-11-title-screen/03-how-i-developed-this.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <span class="nav-next nav-disabled">Next &raquo;</span>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 11 — Title Screen and High Score</a></p>
+<h1>Exercises</h1>
+<p>Working copy: <code>exercises/game-11-title-screen/</code>. Full instructions are in that
+folder's <code>README.md</code>.</p>
+<ol>
+<li><strong>Predict, change, observe.</strong> Does the high score survive a reload, a browser
+restart, a private window?</li>
+<li><strong>DevTools.</strong> Look inside <code>localStorage</code>; edit and delete the saved
+value.</li>
+<li><strong>Break it.</strong> Make saving fail on purpose, with and without
+<code>try</code>/<code>catch</code>.</li>
+<li><strong>Debugger.</strong> Follow the state changes with a logpoint; check
+<code>endGame()</code> runs once.</li>
+<li><strong>Write a test.</strong> The end-of-game message; a negative saved score; how to make
+<code>endGame()</code> testable.</li>
+<li><strong>Bug hunt.</strong> The title screen gets skipped: two <code>if</code>s or
+<code>else if</code>?</li>
+<li><strong>Git.</strong> See the history as a graph; go back and play an old version.</li>
+<li><strong>Challenge.</strong> Find a hidden bug with <code>git bisect</code>, in pairs.</li>
+<li><strong>Your project.</strong> A state diagram, saving with <code>try</code>/<code>catch</code>,
+and a progress update to your plan.</li>
+</ol>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

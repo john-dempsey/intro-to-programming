@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12 — Wrapping Around the Edges – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">12 — Wrapping Around the Edges</a></p>
+<h1>Programming concepts</h1>
+<h3>Screen-wrap ("Pac-Man" edge) behaviour</h3>
+<p>Instead of drifting off the canvas forever, a ball that reaches one edge should reappear at the
+opposite edge — the way movement wraps around in games like <em>Pac-Man</em>. This is a small, specific
+kind of boundary behaviour: nothing about the ball's velocity changes, only its position gets
+folded back into the visible canvas whenever it would otherwise leave it.</p>
+<h3>The modulo operator <code>%</code></h3>
+<pre class="highlight"><code class="language-js">this.x = (this.x + this.vx + width) % width;</code></pre>
+<p><code>%</code> (modulo) gives the <strong>remainder</strong> after dividing the left value by the right one — <code>7 % 3</code> is
+<code>1</code>, since 3 goes into 7 twice with 1 left over. Applied to a position and a boundary,
+<code>value % limit</code> always produces a result between <code>0</code> and <code>limit - 1</code> (or <code>-1</code>, in most other
+languages that allow negative results — this pattern's extra <code>+ width</code> exists specifically to
+keep the result positive), regardless of how far past the boundary <code>value</code> was. That's exactly
+screen-wrap: whatever <code>this.x + this.vx</code> comes out to, taking it <code>% width</code> folds it back into the
+range <code>0</code> to <code>width - 1</code>.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

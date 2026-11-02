@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 02 — Moving the Ship – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-02-ship-moves/index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-02-ship-moves/02-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 02 — Moving the Ship</a></p>
+<h1>Programming concepts</h1>
+<h3><code>keyIsDown()</code> versus <code>keyPressed()</code></h3>
+<p>p5 gives two ways to react to the keyboard:</p>
+<table>
+<tr><th></th><th><code>keyPressed()</code></th><th><code>keyIsDown(key)</code></th></tr>
+<tr><td>What it is</td><td>A function you write; p5 calls it</td><td>A function p5 provides; you call it</td></tr>
+<tr><td>When it runs</td><td>Once, at the moment a key goes down</td><td>Whenever you call it; returns <code>true</code> while the key is held</td></tr>
+<tr><td>Good for</td><td>One action per press: firing, pausing</td><td>Smooth, continuous movement</td></tr>
+</table>
+<p>Calling <code>keyIsDown()</code> inside <code>draw()</code> checks the key 60 times a second, so
+the ship keeps moving for as long as the key is held.</p>
+<h3>A direction as a number</h3>
+<pre class="highlight"><code class="language-js">this.x += direction * this.speed;</code></pre>
+<p><code>direction</code> is <code>-1</code> (left), <code>0</code> (still) or <code>1</code> (right).
+Multiplying by it gives <code>-speed</code>, <code>0</code> or <code>+speed</code>, so one line handles
+all three cases without an <code>if</code>. This is the same idea as the sign of
+<code>vx</code> in sketch 11.</p>
+<h3>Separating input from logic</h3>
+<p>If <code>move()</code> called <code>keyIsDown()</code> itself, the only way to test it would be
+to press keys. Instead, the work is split in two:</p>
+<ul>
+<li><code>readDirection()</code> reads the keyboard and returns a direction. It's short and simple
+enough to check by hand.</li>
+<li><code>move(direction)</code> does the actual work. A test can call
+<code>move(1)</code> directly, with no keyboard involved.</li>
+</ul>
+<p>Keeping code that talks to the outside world (keyboard, mouse, screen) separate from code
+that does calculations is one of the most useful habits in programming. It makes the
+calculations easy to test and easy to reuse.</p>
+<h3>Independent tests</h3>
+<pre class="highlight"><code class="language-js">function makeTestShip(startX) {
+    return new Ship(startX, 200, 50, 20, 5, color(255));
+}</code></pre>
+<p>Each check gets a brand-new ship from <code>makeTestShip()</code>. If the tests shared one ship,
+a move in one test would change the starting point of the next, and a failure in one could cause
+false failures in the others. Tests should not depend on each other.</p>
+<h3>Testing edge cases</h3>
+<p>An <strong>edge case</strong> is an unusual input that might break the code, like the ball
+wider than the canvas in sketch 13. Here, the edge cases are the canvas edges themselves: a ship
+2 pixels from the edge, and a ship moved 1000 times in a row. Normal cases (moving in the middle
+of the screen) rarely find bugs; edge cases often do.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

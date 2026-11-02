@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 — A createBall() Function – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="02-how-p5-works.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="04-explore-modify.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">07 — A createBall() Function</a></p>
+<h1>Reading the sketch</h1>
+<pre class="highlight"><code class="language-js">function createBall(x, y, d, c) {
+    let b = {
+        x: x,
+        y: y,
+        diameter: d,
+        col: c
+    };
+    return b;               // hand the built object back to the caller
+}
+
+let ball;
+const bg = 230;
+
+function setup() {
+    createCanvas(640, 360);
+    background(bg);
+
+    let col = color(255, 0, 100, 150);
+    ball = createBall(320, 180, 150, col);   // was: ball = { x: 320, y: 180, ... }
+}
+
+function draw() {
+}
+
+function mousePressed() {
+    ball.x = mouseX;
+    ball.y = mouseY;
+
+    noStroke();
+    fill(ball.col);
+    circle(ball.x, ball.y, ball.diameter);
+}
+
+function keyPressed() {
+    background(bg);
+}</code></pre>
+<p>The object-literal construction that was written inline in <code>setup()</code> (sketch 06) has moved into
+<code>createBall()</code>; <code>setup()</code> now calls it with the same four values as arguments, instead of writing
+the literal directly. Everything else — <code>mousePressed()</code>, <code>keyPressed()</code> — is unchanged.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

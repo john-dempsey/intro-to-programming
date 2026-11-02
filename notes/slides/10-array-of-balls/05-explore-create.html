@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 — An Array of Balls – Explore &amp; create · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="04-explore-modify.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="06-projects.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">10 — An Array of Balls</a></p>
+<h1>Explore &amp; create</h1>
+<p>These don't modify the sketch above — each is a brand-new sketch, built from a blank starter,
+purely for more practice writing <code>for</code> loops: one that doesn't count an array's indices at all,
+and one nested inside another.</p>
+<ol>
+<li><strong>A line grid.</strong> Working copy: <code>exercises/create/10-line-grid/</code>. Draw a series of horizontal
+   lines, 10 pixels apart, down the whole canvas, and a series of vertical lines, 10 pixels apart,
+   across the whole canvas — like a sheet of graph paper. Use one <code>for</code> loop for the horizontal
+   lines and a second for the vertical lines.</li>
+</ol>
+<p><img alt="A grid of horizontal and vertical lines, 10 pixels apart, filling the whole canvas" src="../images/10-line-grid.png" loading="lazy"></p>
+<ol start="2">
+<li><strong>Concentric circles.</strong> Working copy: <code>exercises/create/10-concentric-circles/</code>. Draw a series
+   of circles, all centred on the middle of the canvas, each a random colour at 75% transparency
+   (an alpha of about 64), with a diminishing radius: start at <code>height / 2</code> and decrease by 25
+   each time round the loop, stopping once the radius would drop below 25. Use a <code>while</code> loop for
+   this one, not a <code>for</code> loop — declare a variable holding the radius before the loop starts,
+   check it against 25 as the loop's condition, and decrease it by 25 as the last line inside the
+   loop's block (the same <code>for</code>/<code>while</code> correspondence from earlier in this sketch). Here the
+   loop's counter <em>is</em> the radius itself, not an index counting <code>0, 1, 2, ...</code>.</li>
+</ol>
+<p><img alt="Several overlapping, semi-transparent circles of decreasing radius, all centred on the same point" src="../images/10-concentric-circles.png" loading="lazy"></p>
+<ol start="3">
+<li><strong>A square grid.</strong> Working copy: <code>exercises/create/10-square-grid/</code>. Draw a grid of randomly
+   coloured squares that tiles the whole canvas, using a <code>for</code> loop nested inside another <code>for</code>
+   loop — the outer loop for rows, the inner loop for columns.</li>
+</ol>
+<p><img alt="A grid of randomly coloured squares, tiling the whole canvas" src="../images/10-square-grid.png" loading="lazy"></p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

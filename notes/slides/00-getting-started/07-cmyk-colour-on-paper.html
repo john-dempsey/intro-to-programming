@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00 — Getting Started: How Computer Graphics Work – CMYK: colour on paper · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="06-colour-models-rgb.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="08-hsb-and-hsl-colour-by-hue-saturation-and-brightness.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">00 — Getting Started: How Computer Graphics Work</a></p>
+<h1>CMYK: colour on paper</h1>
+<p>Print works the opposite way round, which is why designers also talk about <strong>CMYK</strong> (Cyan,
+Magenta, Yellow, and Key/black). A printed page doesn't emit light — it reflects whatever light
+falls on it, and ink works by <em>absorbing</em> some of that light and letting the rest bounce back to
+your eye. Mixing ink together absorbs more and more light, so combining colours makes the result
+<em>darker</em>, not lighter — this is called a <strong>subtractive</strong> model, the opposite of RGB's additive
+mixing. Cyan, magenta and yellow ink together should absorb all light and produce black, but
+real ink is imperfect, so a fourth, true black ("Key") is added to get a proper black and to save
+on coloured ink for anything that's just grey or black text.</p>
+<p>p5 sketches draw to a screen, not a printer, so p5 doesn't offer a CMYK mode — this is included
+here purely so the term means something when you meet it, e.g. designing something intended for
+print. Screen work stays in RGB (or the HSB/HSL models below); print work has to be converted to
+CMYK at some stage before it goes to a printer.</p>
+<p><img alt="Three overlapping circles of cyan, magenta and yellow ink, mixing subtractively to near-black where all three overlap" src="../images/00-cmyk.png" loading="lazy"></p>
+<p><em>Figure: the CMYK subtractive equivalent of the RGB diagram above — three overlapping circles of
+cyan, magenta and yellow ink, with pairwise overlaps showing red, green and blue, and the centre
+where all three overlap showing a muddy near-black.</em></p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 01 — Drawing the Ship – How I developed this · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-01-ship/02-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-01-ship/04-exercises.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 01 — Drawing the Ship</a></p>
+<h1>How I developed this</h1>
+<h3>Why only draw the ship?</h3>
+<p>The plan says stage 1 is "draw the ship". I was tempted to make it move as well, but drawing
+it first meant I could get its size and shape right without anything moving. It's a small step,
+and it's easy to see whether it worked.</p>
+<h3>Decision: x and y are the centre</h3>
+<p>I could have made <code>(x, y)</code> the top-left corner, as <code>rect()</code> does by default.
+I chose the centre because:</p>
+<ul>
+<li>starting in the middle of the screen is just <code>width / 2</code>;</li>
+<li>bullets will fire from the centre of the ship, so its centre will be needed anyway;</li>
+<li>it matches the balls in sketches 06–13, which were positioned by their centre.</li>
+</ul>
+<p>This is a small decision, but every later stage depends on it, so I wrote it as a comment at
+the top of the class.</p>
+<h3>Decision: the cannon's size comes from the body's size</h3>
+<p>My first version had the cannon's size as fixed numbers. When I changed
+<code>SHIP_WIDTH</code> to try a bigger ship, the cannon stayed tiny. Working the cannon's size out
+from <code>bodyWidth</code> and <code>bodyHeight</code> means the whole ship scales together.</p>
+<h3>Why tests already?</h3>
+<p>There's hardly anything to test yet, so why write <code>tests.js</code> now? Because adding the
+testing setup is easiest while the program is small. From now on, each stage just adds one or two
+test functions to a file that already works.</p>
+<p>I made each test fail once on purpose before trusting it. For example, I changed the expected
+<code>x</code> from <code>100</code> to <code>101</code>, saw the red FAIL, then changed it back.</p>
+<h3>Manual checks</h3>
+<p>Some things are easier to check by eye than with a test. Before committing, I checked:</p>
+<ul>
+<li>The ship is near the bottom, centred left to right.</li>
+<li>The cannon sits on top of the body, centred, with no gap.</li>
+<li>The console shows only PASS lines, and no errors.</li>
+</ul>
+<h3>The commit</h3>
+<pre class="highlight"><code class="language-plaintext">git add .
+git commit -m "Game stage 1: draw the ship, add tests.js"</code></pre>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 07 — Collisions – How I developed this · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-07-collisions/02-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-07-collisions/04-exercises.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 07 — Collisions</a></p>
+<h1>How I developed this</h1>
+<h3>Attempt 1: <code>dist()</code></h3>
+<p>The ball-against-ball exercise in sketch 13 used <code>dist()</code>, so I started with
+that: a hit if the bullet's centre was within 15 pixels of the alien's centre.</p>
+<p>It mostly worked, but some shots felt wrong. Shots that clipped the corner of an alien went
+straight through it, and bullets coming up from below seemed to vanish just before they
+reached the alien. To see
+what was going on, I added the hitbox drawing to the debug overlay, drawing a circle of radius 15
+around each alien.</p>
+<p>The picture explained everything. The aliens are 30 &times; 20 rectangles: the circle cut off
+their corners and stuck out above and below them. A circle is the wrong shape for a rectangle.
+I switched to a rectangle overlap test, and the hitboxes now match exactly what's drawn.</p>
+<h3>Decision: <code>getBounds()</code></h3>
+<p>The overlap test needs four numbers for each rectangle. My first version of
+<code>boundsOverlap()</code> took eight parameters, and I got them in the wrong order twice in the
+first ten minutes. Giving every class a <code>getBounds()</code> method that returns a
+<code>{ left, right, top, bottom }</code> object meant the function only needs two parameters, and
+it can't mix them up. It also made the tests much easier to write, with hand-made rectangles.</p>
+<h3>Thinking about <code>break</code> before writing the loop</h3>
+<p>I'd been caught by removing items inside a loop at stage 4, so this time I traced it on paper
+<em>before</em> running anything: one bullet, and a column of aliens it's touching. Without
+<code>break</code>, after removing the bullet, the inner loop would keep checking it against more
+aliens. In the game, aliens never overlap, so a bullet can't touch two at once and I'd never see
+the bug. I added <code>break</code> anyway, and a test with three aliens stacked on top of each
+other to prove it works. That's a case that can't happen in the game today, but could if aliens
+ever got closer together.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>A bullet that hits an alien removes both, straight away.</li>
+<li>A bullet that passes between two aliens hits neither.</li>
+<li>Clipping the very corner of an alien counts as a hit.</li>
+<li>With hitboxes on (D), the boxes fit the shapes exactly.</li>
+<li>Destroying the right-hand column lets the formation travel further right.</li>
+<li>Shooting every alien leaves an empty screen (nothing happens yet: that's stage 8).</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits</h3>
+<pre class="highlight"><code class="language-plaintext">git commit -am "Game stage 7: getBounds() and hitboxes in debug overlay"
+git commit -am "Game stage 7: bullets destroy aliens"</code></pre>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

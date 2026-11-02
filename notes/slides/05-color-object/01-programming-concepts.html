@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05 — A Colour Object – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">05 — A Colour Object</a></p>
+<h1>Programming concepts</h1>
+<h3>Objects: bundling related data under one name</h3>
+<p><code>r</code>, <code>g</code>, <code>b</code> and <code>opacity</code> in sketch 04 were four separate variables that only ever made sense
+<em>together</em> — a colour isn't really "red" on its own, it's the combination of all four. An
+<strong>object</strong> is a way of grouping several related values under a single name, so they can be
+created, passed around and read as one thing instead of four. This sketch's <code>col</code> is the first
+object to appear in the series — built for us by a p5 function rather than written out by hand
+(that comes in sketch 06), but the underlying idea is the same: one name, several pieces of data
+bundled inside it.</p>
+<p><strong>Why objects exist at all:</strong> without them, <code>r</code>, <code>g</code>, <code>b</code> and <code>opacity</code> are four separate
+variables that happen to be related only by convention — nothing in the code says they belong
+together, and nothing stops one getting passed to a function without the others by mistake. An
+object makes that grouping <em>real</em>: <code>col</code> can be passed to <code>fill()</code> in one piece, stored, or handed
+to another function, and it's simply impossible to accidentally leave a piece behind. Rule of
+thumb: reach for an object when several values only ever make sense together and are usually read,
+changed or passed around as a set — if you find yourself always touching the same handful of
+variables side by side, that's the signal.</p>
+<h3><code>let</code>, and why it's needed here</h3>
+<pre class="highlight"><code class="language-js">let col;
+...
+function setup() {
+    ...
+    col = color(255, 0, 100, 150);
+}</code></pre>
+<p><code>col</code> needs to be declared globally — both <code>setup()</code> (where it's built) and <code>mousePressed()</code>
+(where it's used in <code>fill(col)</code>) need to read it. But unlike sketch 04's <code>const</code>s, <code>col</code> can't be
+given its value at the point it's declared: its value comes from calling <code>color()</code>, and (see "How
+p5 works" below) <code>color()</code> can't actually be called yet at the top level, above <code>setup()</code>. So
+<code>col</code> is declared globally with no value at all — <code>let col;</code> — and only assigned once <code>setup()</code>
+starts running, where <code>color()</code> is safe to call.</p>
+<p>This is exactly the situation <code>let</code> exists for: <code>const</code> requires a value at the moment it's
+declared, and here that's simply not possible yet. <code>let</code> allows a variable to be declared now and
+assigned later — and, unlike <code>const</code>, reassigned again afterwards if needed, though this sketch
+only ever assigns <code>col</code> once.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

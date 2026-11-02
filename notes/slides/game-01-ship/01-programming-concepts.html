@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 01 — Drawing the Ship – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-01-ship/index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-01-ship/02-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 01 — Drawing the Ship</a></p>
+<h1>Programming concepts</h1>
+<h3>Automatic tests</h3>
+<p>So far, you've checked sketches by running them and looking. That works, but you have to
+remember to look at everything, every time. An <strong>automatic test</strong> is code that checks
+other code: it runs a piece of the program and compares what happened with what should have
+happened.</p>
+<p>This stage's tests use one small function, <code>check()</code>:</p>
+<pre class="highlight"><code class="language-js">function check(description, actual, expected) {
+    if (actual === expected) {
+        console.log("PASS: " + description);
+    } else {
+        console.error("FAIL: " + description + " (expected " + expected + ", got " + actual + ")");
+    }
+}</code></pre>
+<ul>
+<li><code>description</code> says what's being checked, in plain words.</li>
+<li><code>actual</code> is the value the code really produced.</li>
+<li><code>expected</code> is the value it should have produced.</li>
+</ul>
+<p><code>console.error()</code> works like <code>console.log()</code>, but the message appears in red,
+so failures stand out.</p>
+<p>Professional developers use <strong>testing frameworks</strong> (such as Jest or Mocha) that do
+the same job with more features. The idea is exactly the same: actual versus expected.</p>
+<h3>A test must be able to fail</h3>
+<p>A test that always passes, whatever the code does, is useless. When you write a new check,
+make it fail once on purpose (change the expected value) to prove it's really checking
+something.</p>
+<h3>Catching errors: <code>try</code> / <code>catch</code></h3>
+<pre class="highlight"><code class="language-js">try {
+    testShipConstructor();
+    testShipStartPosition();
+} catch (error) {
+    console.error("A test crashed: " + error.message);
+}</code></pre>
+<p>Normally, if a line of code causes an error (calling a method that doesn't exist, for example),
+the program stops. <code>try</code> runs a block of code; if anything inside it causes an error,
+the program jumps to the <code>catch</code> block instead of stopping. <code>error.message</code>
+describes what went wrong. Here it means a broken test is reported, but the game still runs.</p>
+<h3>Two script files</h3>
+<p><code>index.html</code> now loads two files:</p>
+<pre class="highlight"><code class="language-html">&lt;script src="sketch.js"&gt;&lt;/script&gt;
+&lt;script src="tests.js"&gt;&lt;/script&gt;</code></pre>
+<p>Both files share the same global variables and functions, so <code>setup()</code> in
+<code>sketch.js</code> can call <code>runTests()</code> from <code>tests.js</code>. That works because
+p5 waits until every file has loaded before it calls <code>setup()</code>. Keeping the tests in
+their own file keeps <code>sketch.js</code> about the game.</p>
+<h3>The debugger</h3>
+<p>Every modern browser has a <strong>debugger</strong> in its developer tools (F12). It lets you:</p>
+<ul>
+<li>set a <strong>breakpoint</strong> on a line, so the program pauses when it gets there;</li>
+<li>look at the value of every variable at that moment (the <strong>Scope</strong> panel);</li>
+<li><strong>step over</strong> one line at a time (F10), watching values change;</li>
+<li><strong>resume</strong> (F8) to carry on until the next breakpoint.</li>
+</ul>
+<p>It answers the question "what is the program actually doing?" without adding
+<code>console.log()</code> lines everywhere. In a p5 sketch, remember that <code>draw()</code> runs
+about 60 times a second, so a breakpoint inside it pauses straight away, every frame.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

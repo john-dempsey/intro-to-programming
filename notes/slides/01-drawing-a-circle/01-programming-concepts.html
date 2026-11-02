@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 — Drawing a Circle – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">01 — Drawing a Circle</a></p>
+<h1>Programming concepts</h1>
+<h3>A program is a list of instructions</h3>
+<p>A computer program is a sequence of <strong>statements</strong> — small instructions, carried out one after
+another, top to bottom. In JavaScript most statements end with a semicolon <code>;</code>, the same way a
+sentence ends with a full stop:</p>
+<pre class="highlight"><code class="language-js">createCanvas(640, 360);
+background(230);</code></pre>
+<p>These are two separate instructions: "create a canvas", then "paint the background".</p>
+<h3>Calling a function</h3>
+<p><code>createCanvas(640, 360)</code> is a <strong>function call</strong>. A function is a named, ready-made piece of
+behaviour — someone else already wrote the instructions for "create a canvas" and gave that
+block of instructions the name <code>createCanvas</code>. To use it, write its name followed by
+parentheses: <code>createCanvas(...)</code>. This is called <em>calling</em> (or <em>invoking</em>) the function.</p>
+<p>Everything used in this sketch — <code>createCanvas</code>, <code>background</code>, <code>noStroke</code>, <code>fill</code>, <code>circle</code> — is
+a function call. None of these functions are defined anywhere in this file; they're built into
+the p5 library, which the sketch loads automatically (see <code>index.html</code>). Students will start
+writing their own functions in sketch 07 — for now, just recognise the shape <code>name(...)</code> as "run
+this ready-made behaviour".</p>
+<h3>Arguments</h3>
+<p>The values inside the parentheses are <strong>arguments</strong> — the information a function needs to do its
+job. <code>circle(320, 180, 150)</code> passes three arguments: an x position, a y position, and a diameter.
+Two things matter about arguments:</p>
+<ul>
+<li><strong>Order matters.</strong> Swapping the first two arguments to <code>circle()</code> would move the circle, not
+  resize it — each position in the list means something specific, fixed by however the function
+  was written.</li>
+<li><strong>Different functions expect different arguments.</strong> <code>fill(255, 0, 100, 150)</code> takes four numbers
+  (red, green, blue, opacity), <code>background(230)</code> takes one (a single grey value), <code>circle(320,
+  180, 150)</code> takes three (x, y, diameter). There's no way to guess what a function's arguments
+  mean just from looking at a call — that's what documentation (the <a href="https://p5js.org/reference/" target="_blank" rel="noopener">p5 reference</a>)
+  is for.</li>
+</ul>
+<h3>JavaScript is case-sensitive</h3>
+<p>Every name in this sketch — <code>createCanvas</code>, <code>background</code>, <code>noStroke</code>, <code>fill</code>, <code>circle</code>, <code>setup</code>,
+<code>draw</code> — has to be typed with <em>exactly</em> the right mix of upper- and lower-case letters.
+<code>createCanvas</code> is not the same name as <code>createcanvas</code> or <code>CreateCanvas</code>; JavaScript (and p5's own
+functions, which are just JavaScript) treats those as three completely different, unrelated names,
+and only one of them actually exists. Get the case wrong and the result isn't a slightly-wrong
+circle — it's an error, because as far as JavaScript is concerned the function you typed was never
+defined at all. Worth knowing now, before sketch 04 has students typing their own names for the
+first time: a typo in <em>case</em> is exactly as broken as a typo in spelling, even though it can look
+right at a glance.</p>
+<h3>Code blocks and function declarations</h3>
+<pre class="highlight"><code class="language-js">function setup() {
+    ...
+}</code></pre>
+<p>This is different from the function calls above — it's a <strong>function declaration</strong>, not a call.
+The keyword <code>function</code>, a name (<code>setup</code>), parentheses, and then a pair of curly braces <code>{ }</code>
+containing statements. The braces mark a <strong>block</strong> — a group of statements that belong together
+and run as a unit. Everything between <code>setup()</code>'s <code>{</code> and <code>}</code> is what happens when <code>setup</code> runs.
+<code>setup</code> and <code>draw</code> are declared for us in this sketch's skeleton; students aren't writing their
+own function declarations yet — that starts in sketch 07 — but recognising the shape now (a name,
+then a block of statements it owns) makes every later sketch easier to scan.</p>
+<h3>Hard-coded ("magic") numbers</h3>
+<p>Every argument in this sketch is a literal number typed directly into the call: <code>640</code>, <code>360</code>,
+<code>230</code>, <code>320</code>, <code>180</code>, <code>150</code>. These are sometimes called <strong>magic numbers</strong> — values with no name
+attached to explain what they mean or why they were chosen. <code>150</code> appears twice in this sketch,
+meaning two completely different things (a diameter, and an alpha/opacity value) purely by
+coincidence. Nothing is wrong with this yet — it's the natural starting point — but it's worth
+noting as something to watch for: sketch 04 replaces these literals with named variables, which
+makes the code easier to read and to change.</p>
+<h3>Comments</h3>
+<pre class="highlight"><code class="language-js">// What changed: draws a single circle once, using hard-coded numbers.</code></pre>
+<p>Text after <code>//</code> is a <strong>comment</strong> — a note for human readers that JavaScript ignores completely.
+Comments don't affect what the program does; they exist purely to explain <em>why</em>, not <em>what</em> (the
+code itself already says what).</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

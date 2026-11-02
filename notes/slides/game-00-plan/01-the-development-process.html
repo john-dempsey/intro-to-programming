@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 00 — The Plan – The development process · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-00-plan/index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-00-plan/02-the-plan.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 00 — The Plan</a></p>
+<h1>The development process</h1>
+<h3>Small steps, always working</h3>
+<p>It's tempting to write the whole game in one go, then run it. When it doesn't work (and it
+won't), you have hundreds of new lines and no idea which one is wrong.</p>
+<p>Instead, the game is built in <strong>stages</strong>. Each stage adds one small feature, and
+the game must run at the end of every stage. If something breaks, the problem is almost certainly
+in the few lines you just added.</p>
+<h3>The loop for each stage</h3>
+<ol>
+<li><strong>Decide</strong> the one feature this stage adds. Check it's small enough to finish in
+one sitting.</li>
+<li><strong>Write</strong> the code for it.</li>
+<li><strong>Run and test</strong> it: run the automatic tests, then try it by hand.</li>
+<li><strong>Fix</strong> anything that's wrong, using the console and the debugger.</li>
+<li><strong>Commit</strong> it to Git, so you can always get back to this working version.</li>
+</ol>
+<p>Then start the loop again with the next feature. Professional developers work this way too,
+usually with even smaller steps.</p>
+<h3>Why plan first?</h3>
+<p>A plan doesn't need to be long, and it will change as you go. Its job is to answer three
+questions before you write any code:</p>
+<ul>
+<li>What's the <strong>smallest version</strong> that's worth having? Build that first.</li>
+<li>What order should the features be built in? Some depend on others: you can't shoot aliens
+until you have bullets.</li>
+<li>Where are the <strong>hard parts</strong>? Knowing early means they don't surprise you
+later.</li>
+</ul>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

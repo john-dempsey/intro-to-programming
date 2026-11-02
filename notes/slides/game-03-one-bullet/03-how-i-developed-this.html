@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 03 — Firing a Bullet – How I developed this · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-03-one-bullet/02-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-03-one-bullet/04-exercises.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 03 — Firing a Bullet</a></p>
+<h1>How I developed this</h1>
+<h3>Attempt 1: firing with <code>keyIsDown()</code></h3>
+<p>I already had <code>keyIsDown()</code> working for the arrow keys, so I used it for space as
+well, in <code>draw()</code>:</p>
+<pre class="highlight"><code class="language-js">if (keyIsDown(32)) {   // 32 is the key code for space
+    fireBullet();
+}</code></pre>
+<p>At that point <code>fireBullet()</code> didn't check for an existing bullet. Holding space, the
+bullet seemed stuck just above the ship. To see what was happening, I added one line to
+<code>fireBullet()</code>:</p>
+<pre class="highlight"><code class="language-js">console.log("fire at frame " + frameCount);</code></pre>
+<p>The console filled up with a new line every frame. A brand-new bullet was replacing the old
+one 60 times a second, each starting at the cannon. Firing is a once-per-press action, so I
+moved it into <code>keyPressed()</code> and deleted the <code>console.log()</code> line.</p>
+<p>A <code>console.log()</code> added to find a bug should always be removed once the bug is
+fixed. Left in, they clutter the console and hide the messages that matter.</p>
+<h3>Refactoring the cannon</h3>
+<p>To start the bullet at the cannon, I needed the cannon's height outside <code>display()</code>.
+I could have copied the calculation, but then changing the cannon's shape would mean changing it
+in two places, and sooner or later I'd forget one. So I moved it to the constructor and added
+<code>cannonTopY()</code>. I ran the tests and checked the ship still looked the same before
+going on: a refactor shouldn't change what the program does.</p>
+<h3>The bug: one shot only</h3>
+<p>My next version fired perfectly, once. After that, space did nothing. No errors, no failing
+tests. I typed <code>bullet</code> into the console:</p>
+<pre class="highlight"><code class="language-plaintext">Bullet {x: 320, y: -2417, ...}</code></pre>
+<p>Typing it again gave an even bigger negative number. The bullet had left the screen long ago
+but still existed, moving upwards forever, so <code>fireBullet()</code> thought there was still a
+bullet on screen. I'd written <code>isOffScreen()</code> but never used it. Adding the check in
+<code>updateBullet()</code> fixed it, and I added <code>testOnlyOneBullet()</code> to make sure
+the "one at a time" rule stays correct.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>Press space: one bullet leaves the top of the cannon and travels straight up.</li>
+<li>Move while the bullet is in flight: the bullet keeps going straight.</li>
+<li>Press space again while a bullet is on screen: nothing happens.</li>
+<li>Once the bullet has gone, space fires again.</li>
+<li>Hold space down: only one bullet is fired.</li>
+<li>Fire from each edge of the screen.</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits</h3>
+<pre class="highlight"><code class="language-plaintext">git commit -am "Game stage 3: move cannon size into Ship constructor"
+git commit -am "Game stage 3: fire one bullet with space"</code></pre>
+<p>The refactor got its own commit, before the new feature. If the feature had gone wrong, I
+could have gone back to the refactored version without losing it.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

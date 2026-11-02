@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 05 — A Grid of Aliens – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-05-alien-grid/01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-05-alien-grid/03-how-i-developed-this.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 05 — A Grid of Aliens</a></p>
+<h1>Reading the sketch</h1>
+<h3>The <code>Alien</code> class</h3>
+<pre class="highlight"><code class="language-js">display() {
+    let eyeSize = this.alienHeight / 4;
+    let eyeOffsetX = this.alienWidth / 5;
+    let eyeOffsetY = -this.alienHeight / 8;
+
+    push();
+    translate(this.x, this.y);
+    rectMode(CENTER);
+    noStroke();
+    fill(this.col);
+    rect(0, 0, this.alienWidth, this.alienHeight, 4);   // body, rounded corners
+    fill(BACKGROUND_COLOUR);
+    rect(-eyeOffsetX, eyeOffsetY, eyeSize, eyeSize);     // left eye
+    rect(eyeOffsetX, eyeOffsetY, eyeSize, eyeSize);      // right eye
+    pop();
+}</code></pre>
+<p>The same pattern as <code>Ship</code>: translate to the alien's centre, then draw around
+<code>(0, 0)</code>. The eyes are filled with the background colour, so they look like holes.
+The fifth argument to <code>rect()</code> rounds the corners.</p>
+<h3>Building the grid</h3>
+<pre class="highlight"><code class="language-js">function createAlienGrid(rowCount, columnCount, colourList) {
+    let grid = [];
+
+    for (let row = 0; row &lt; rowCount; row++) {
+        for (let column = 0; column &lt; columnCount; column++) {
+            let x = ALIEN_GRID_LEFT + column * ALIEN_SPACING_X;
+            let y = ALIEN_GRID_TOP + row * ALIEN_SPACING_Y;
+            let alienColour = colourList[row % colourList.length];
+            grid.push(new Alien(x, y, ALIEN_WIDTH, ALIEN_HEIGHT, alienColour));
+        }
+    }
+
+    return grid;
+}</code></pre>
+<p>Start with an empty array, add one alien for every row and column, and return the full
+array.</p>
+<h3>In <code>setup()</code></h3>
+<pre class="highlight"><code class="language-js">let rowColours = [color(255, 80, 80), color(255, 180, 0), color(80, 200, 255), color(200, 120, 255)];
+aliens = createAlienGrid(ALIEN_ROWS, ALIEN_COLUMNS, rowColours);</code></pre>
+<p>The colours are made in <code>setup()</code> because p5's <code>color()</code> only works once
+the sketch has started.</p>
+<h3>The new tests</h3>
+<pre class="highlight"><code class="language-js">// A 2 x 3 grid is stored row by row:
+//   index 0, 1, 2  = top row, left to right
+//   index 3, 4, 5  = second row, left to right
+function testAlienGridPositions() {
+    let grid = createAlienGrid(2, 3, [color(255)]);
+
+    check("first alien x", grid[0].x, ALIEN_GRID_LEFT);
+    check("second alien is one column right", grid[1].x, ALIEN_GRID_LEFT + ALIEN_SPACING_X);
+    check("fourth alien starts the second row (y)", grid[3].y, ALIEN_GRID_TOP + ALIEN_SPACING_Y);
+    // ...
+}</code></pre>
+<p>The tests use a small grid and check the alien at each "interesting" place: the first, the
+next one along, the start of the second row and the last. The expected values are written using
+the constants, so the tests still pass if you change the spacing.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

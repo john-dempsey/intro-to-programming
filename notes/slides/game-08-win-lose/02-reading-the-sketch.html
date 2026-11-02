@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 08 — Winning and Losing – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-08-win-lose/01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-08-win-lose/03-how-i-developed-this.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 08 — Winning and Losing</a></p>
+<h1>Reading the sketch</h1>
+<h3><code>setup()</code> and <code>resetGame()</code></h3>
+<pre class="highlight"><code class="language-js">function setup() {
+    createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    resetGame();
+    runTests();
+}
+
+function resetGame() {
+    ship = new Ship(width / 2, height - SHIP_MARGIN, SHIP_WIDTH, SHIP_HEIGHT, SHIP_SPEED, color(0, 220, 120));
+    bullets = [];
+
+    let rowColours = [color(255, 80, 80), color(255, 180, 0), color(80, 200, 255), color(200, 120, 255)];
+    aliens = createAlienGrid(ALIEN_ROWS, ALIEN_COLUMNS, rowColours);
+    alienDirection = 1;
+
+    gameState = STATE_PLAYING;
+}</code></pre>
+<p>Everything that used to be set up in <code>setup()</code> or at the top of the file now
+happens in <code>resetGame()</code>. The global variables are still declared at the top, but
+without starting values; a comment says where they get them.</p>
+<h3><code>draw()</code></h3>
+<pre class="highlight"><code class="language-js">function draw() {
+    background(BACKGROUND_COLOUR);
+
+    if (gameState === STATE_PLAYING) {
+        updateGame();
+    }
+
+    drawGame();
+
+    if (gameState === STATE_WON) {
+        displayMessage("YOU WIN!", "Press Enter to play again");
+    } else if (gameState === STATE_LOST) {
+        displayMessage("GAME OVER", "Press Enter to play again");
+    }
+
+    if (showDebug) {
+        displayDebugInfo();
+    }
+}</code></pre>
+<p>Read it top to bottom: update (only while playing), draw (always), then a message on top if
+the game is over, then the debug overlay on top of everything.</p>
+<h3>Update and draw</h3>
+<pre class="highlight"><code class="language-js">function updateGame() {
+    ship.move(readDirection());
+    alienDirection = marchAliens(aliens, alienDirection);
+    moveBullets();
+    handleCollisions(bullets, aliens);
+    gameState = checkGameState(aliens, ship.getBounds().top);
+}
+
+function drawGame() {
+    ship.display();
+    displayAliens();
+    displayBullets();
+}</code></pre>
+<p><code>updateBullets()</code> from earlier stages has been split into
+<code>moveBullets()</code> and <code>displayBullets()</code>. The last line of
+<code>updateGame()</code> works out whether this frame ended the game.</p>
+<h3>Won, lost or still playing?</h3>
+<pre class="highlight"><code class="language-js">function checkGameState(alienList, shipTop) {
+    if (alienList.length === 0) {
+        return STATE_WON;
+    }
+
+    for (let i = 0; i &lt; alienList.length; i++) {
+        if (alienList[i].getBounds().bottom &gt;= shipTop) {
+            return STATE_LOST;
+        }
+    }
+
+    return STATE_PLAYING;
+}</code></pre>
+<p>The same "is any alien...?" search as <code>formationAtEdge()</code> in stage 6, with an early
+<code>return</code>. Like <code>marchAliens()</code>, it doesn't change <code>gameState</code>
+itself; it returns the answer and the caller stores it, so the tests can call it with any list of
+aliens.</p>
+<h3>Keys</h3>
+<pre class="highlight"><code class="language-js">if (key === " " &amp;&amp; gameState === STATE_PLAYING) {
+    fireBullet();
+} else if (keyCode === ENTER &amp;&amp; gameState !== STATE_PLAYING) {
+    resetGame();
+} else if (key === "d" || key === "D") {
+    showDebug = !showDebug;
+}</code></pre>
+<p>p5's <code>keyCode</code> and its <code>ENTER</code> constant identify the Enter key. The debug
+overlay works in every state.</p>
+<h3>The new tests</h3>
+<pre class="highlight"><code class="language-js">function testResetGame() {
+    gameState = STATE_LOST;
+    aliens = [];
+    bullets = [makeBulletAt(100, 100)];
+    alienDirection = -1;
+    ship.x = 50;
+
+    resetGame();
+
+    check("reset: state is playing", gameState, STATE_PLAYING);
+    check("reset: full set of aliens", aliens.length, ALIEN_ROWS * ALIEN_COLUMNS);
+    // ...
+}</code></pre>
+<p>To prove <code>resetGame()</code> resets things, the test first puts every part of the game
+into a "wrong" state. If it only checked a fresh game, it couldn't tell whether
+<code>resetGame()</code> changed anything at all.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

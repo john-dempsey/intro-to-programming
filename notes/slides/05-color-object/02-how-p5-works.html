@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05 — A Colour Object – How p5 works · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="03-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">05 — A Colour Object</a></p>
+<h1>How p5 works</h1>
+<ul>
+<li><strong>p5 functions that depend on p5's environment aren't callable until <code>setup()</code> starts
+  running.</strong> Code written at the top level — outside any function, the way <code>let col;</code> is — runs
+  immediately when the sketch loads, <em>before</em> p5 has finished setting itself up. Calling a
+  function like <code>color()</code> from there would fail: it needs p5's environment to already exist, and
+  that only happens once p5 starts calling <code>setup()</code>. This is the deeper reason <code>col</code> can't
+  simply be written as <code>let col = color(255, 0, 100, 150);</code> at the top level — it's not that the
+  value isn't needed yet, it's that calling <code>color()</code> that early would be an outright error. Every
+  value that depends on a p5 function gets built <em>inside</em> <code>setup()</code> from here on, never at the
+  top level. (Plain JavaScript values — like sketch 04's numbers — have no such restriction.)</li>
+<li><strong><code>color()</code> builds a p5 colour object</strong>, which can be handed straight to <code>fill()</code> in place of
+  four separate numbers — the first p5 function seen so far that hands back a richer object
+  rather than a plain number.</li>
+<li><strong>The alpha (opacity) channel controls blending.</strong> Because the canvas is a persistent bitmap
+  (sketch 01), a colour with reduced opacity doesn't replace what's underneath — it blends with
+  it. A semi-transparent circle drawn twice in the same spot looks different from one drawn once,
+  because the second draw blends with the first.</li>
+</ul>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

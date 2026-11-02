@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06 — A Ball Object – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">06 — A Ball Object</a></p>
+<h1>Programming concepts</h1>
+<h3>Object literal syntax</h3>
+<pre class="highlight"><code class="language-js">ball = {
+    x: 320,
+    y: 180,
+    diameter: 150,
+    col: col
+};</code></pre>
+<p>Sketch 05's <code>col</code> was an object p5 built for us. <code>ball</code> is the first object <em>written by hand</em> in
+the series — an <strong>object literal</strong>: curly braces containing <code>key: value</code> pairs, separated by
+commas. Each key names one property; <code>ball</code> bundles <code>x</code>, <code>y</code>, <code>diameter</code> and <code>col</code> — everything
+that used to be four separate global variables — into one object.</p>
+<h3>Dot notation</h3>
+<pre class="highlight"><code class="language-js">ball.x = mouseX;
+ball.y = mouseY;
+...
+fill(ball.col);
+circle(ball.x, ball.y, ball.diameter);</code></pre>
+<p>A property inside an object is read or written using <strong>dot notation</strong>: <code>ball.x</code> reads (or, on the
+left of <code>=</code>, writes) the <code>x</code> property of <code>ball</code>. This replaces what would otherwise be four
+separate variable names with one consistent pattern — <code>ball.</code> followed by whichever property is
+needed.</p>
+<h3>Local variables</h3>
+<pre class="highlight"><code class="language-js">function setup() {
+    ...
+    let col = color(255, 0, 100, 150);
+    ball = { ..., col: col };
+}</code></pre>
+<p><code>col</code> here is declared <em>inside</em> <code>setup()</code>, with <code>let</code> — and it's the first <strong>local</strong> variable in
+the series. A local variable is created fresh each time its function runs, and no other function
+can see it — unlike the global <code>bg</code>/<code>diameter</code> from sketch 04, which any function in the sketch
+can read. <code>setup()</code> only ever runs once here, so the distinction isn't visible yet in this
+sketch's behaviour, but it matters as soon as a function with local variables of its own runs
+repeatedly — as <code>move()</code> will, from sketch 11 onward.</p>
+<h3>Why <code>ball</code> needs <code>let</code>, not <code>const</code></h3>
+<p><code>ball</code> reuses the same pattern <code>col</code> used in sketch 05: declared globally with no value
+(<code>let ball;</code>), then assigned inside <code>setup()</code>. The reason is the same too — its value (the object
+literal, which itself needs <code>col</code>) isn't available until <code>setup()</code> runs, so it can't be a <code>const</code>.
+This is the pattern's <em>second</em> appearance, not its first — it recurs through the rest of the
+sketches wherever a global depends on something only available once <code>setup()</code> starts.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

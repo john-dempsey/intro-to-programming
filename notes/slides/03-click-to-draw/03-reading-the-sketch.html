@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 — Click to Draw – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="02-how-p5-works.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="04-explore-modify.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">03 — Click to Draw</a></p>
+<h1>Reading the sketch</h1>
+<pre class="highlight"><code class="language-js">function setup() {
+    createCanvas(640, 360);
+    background(230);          // paint once at the start
+}
+
+function draw() {
+    // still called ~60/sec by p5, but empty — nothing happens automatically
+}
+
+function mousePressed() {
+    // p5 calls this once, exactly when the mouse button is pressed
+    noStroke();
+    fill(255, 0, 100, 150);
+    circle(mouseX, mouseY, 150);   // stamp a circle at the click position
+}
+
+function keyPressed() {
+    // p5 calls this once, exactly when a key is pressed
+    background(230);               // paint over everything — clears the canvas
+}</code></pre>
+<p>The drawing code has moved out of <code>draw()</code> (now empty) and into <code>mousePressed()</code>, so a circle is
+stamped only on click, at wherever <code>mouseX</code>/<code>mouseY</code> happen to be <em>at that instant</em> — not tracked
+continuously the way sketch 02 did. A new <code>keyPressed()</code> function clears the canvas on any key
+press by drawing over it with <code>background()</code>, exactly the same call <code>setup()</code> used once in
+sketch 01.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

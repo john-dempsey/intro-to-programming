@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09 — A Ball Class – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">09 — A Ball Class</a></p>
+<h1>Programming concepts</h1>
+<h3>Classes: <code>class</code> and <code>constructor</code></h3>
+<pre class="highlight"><code class="language-js">class Ball {
+    constructor(x, y, d, c) {
+        this.x = x;
+        this.y = y;
+        this.diameter = d;
+        this.col = c;
+    }
+    ...
+}</code></pre>
+<p>A <strong>class</strong> is a template for creating objects that all share the same shape (the same
+properties) and the same behaviour (the same functions to act on them). <code>constructor</code> is a
+special function inside the class, called automatically whenever a new ball is created — it takes
+over the job <code>createBall()</code> used to do, assigning each parameter to a property.</p>
+<h3><code>this</code></h3>
+<p>Inside a class, <code>this</code> refers to <em>the particular object currently being built or acted on</em> —
+<code>this.x = x;</code> means "set the <code>x</code> property of <em>this</em> ball to the parameter <code>x</code>". Every ball gets
+its own <code>x</code>, <code>y</code>, <code>diameter</code>, <code>col</code>, even though they're all built from the same <code>constructor</code>
+code — <code>this</code> is what makes each one refer to its own copy rather than some shared one.</p>
+<h3>Methods vs. plain functions</h3>
+<pre class="highlight"><code class="language-js">display() {
+    noStroke();
+    fill(this.col);
+    circle(this.x, this.y, this.diameter);
+}</code></pre>
+<p>A function declared <em>inside</em> a class, like <code>display()</code>, is called a <strong>method</strong>. Calling it looks
+like <code>ball.display()</code> rather than <code>displayBall(ball)</code> — the object comes first, and <code>this</code> inside
+the method automatically refers to whichever ball it was called on. <code>display()</code> takes over the
+job <code>displayBall()</code> did in sketch 08, but reads <code>this.col</code>/<code>this.x</code>/... instead of a parameter,
+since the object it's acting on is always <code>this</code>, never something passed in explicitly.</p>
+<h3><code>new</code> — creating an instance</h3>
+<pre class="highlight"><code class="language-js">ball = new Ball(320, 180, 150, col);</code></pre>
+<p><code>new</code> creates an <strong>instance</strong> of a class — an actual object built from that template, with the
+constructor's parameters supplied as arguments, exactly like calling <code>createBall(...)</code> did
+before. <code>ball</code> now holds one <code>Ball</code> instance instead of a plain object literal.</p>
+<h3>Object-oriented programming</h3>
+<p>Sketches 06–08 kept a ball's <em>data</em> (the object literal) and the <em>behaviour</em> that acts on it
+(<code>createBall()</code>, <code>displayBall()</code>) as separate things, only related by convention — nothing
+enforced that <code>displayBall()</code> was ever used with a ball-shaped object. A class bundles both
+together into one type: <code>Ball</code> <em>is</em> both the data it holds and the methods that act on it. This
+general approach — organising code around types that bundle data with the behaviour that
+operates on it — is called <strong>object-oriented programming</strong>.</p>
+<p><strong>Why classes exist at all — and when they don't:</strong> a class earns its keep when a sketch needs
+<em>several</em> instances of the same kind of thing, each with its own copy of the same data and the
+same behaviour — that's exactly the sketch 10 situation coming next, five separate <code>Ball</code>s all
+built from one template. Rule of thumb: reach for a class when you need multiple objects that all
+share a shape and a set of operations. A single one-off object doesn't need a class at all —
+sketch 06's lone <code>ball</code> object literal is simpler as-is, and turning it into a class there would
+have been machinery with nothing to justify it; the same is true any time there's only ever going
+to be one of something.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 01 — Drawing the Ship – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-01-ship/01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-01-ship/03-how-i-developed-this.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 01 — Drawing the Ship</a></p>
+<h1>Reading the sketch</h1>
+<h3>The <code>Ship</code> class</h3>
+<pre class="highlight"><code class="language-js">class Ship {
+    // x and y are the centre of the ship's body.
+    constructor(x, y, bodyWidth, bodyHeight, shipColour) {
+        this.x = x;
+        this.y = y;
+        this.bodyWidth = bodyWidth;
+        this.bodyHeight = bodyHeight;
+        this.col = shipColour;
+    }
+
+    display() {
+        let cannonWidth = this.bodyWidth / 5;
+        let cannonHeight = this.bodyHeight / 2;
+
+        push();
+        translate(this.x, this.y);    // (0, 0) is now the ship's centre
+        rectMode(CENTER);             // rectangles are positioned by their centre
+        noStroke();
+        fill(this.col);
+        rect(0, 0, this.bodyWidth, this.bodyHeight);                                // body
+        rect(0, -(this.bodyHeight + cannonHeight) / 2, cannonWidth, cannonHeight);  // cannon
+        pop();
+    }
+}</code></pre>
+<p>This has the same shape as the <code>Ball</code> class from sketch 09. <code>display()</code> uses
+<code>translate()</code> so both rectangles can be drawn relative to <code>(0, 0)</code>, as in the
+traffic-light example from sketch 08.</p>
+<p>The cannon sits on top of the body. Its centre is half the body's height plus half the
+cannon's height above the ship's centre. That's
+<code>-(this.bodyHeight + cannonHeight) / 2</code> (negative, because y goes up the screen as it
+gets smaller).</p>
+<h3>Creating the ship</h3>
+<pre class="highlight"><code class="language-js">ship = new Ship(width / 2, height - SHIP_MARGIN, SHIP_WIDTH, SHIP_HEIGHT, color(0, 220, 120));
+
+runTests();</code></pre>
+<p>The ship starts in the middle (<code>width / 2</code>), <code>SHIP_MARGIN</code> pixels up from
+the bottom. The tests run once, at the end of <code>setup()</code>, after the ship exists.</p>
+<h3>The tests</h3>
+<pre class="highlight"><code class="language-js">function testShipConstructor() {
+    let testShip = new Ship(100, 200, 50, 20, color(255));
+
+    check("constructor stores x", testShip.x, 100);
+    check("constructor stores y", testShip.y, 200);
+    check("constructor stores bodyWidth", testShip.bodyWidth, 50);
+    check("constructor stores bodyHeight", testShip.bodyHeight, 20);
+}
+
+function testShipStartPosition() {
+    check("ship starts in the middle", ship.x, width / 2);
+    check("ship starts near the bottom", ship.y, height - SHIP_MARGIN);
+}</code></pre>
+<p>The first test builds its own ship, <code>testShip</code>, with simple numbers, and checks the
+constructor stored them. The second checks the game's real <code>ship</code> started in the right
+place. Each test is its own function, named after what it tests, so a failure points to the
+right area straight away.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

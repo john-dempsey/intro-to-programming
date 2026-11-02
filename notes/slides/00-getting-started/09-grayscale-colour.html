@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00 — Getting Started: How Computer Graphics Work – Grayscale colour · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="08-hsb-and-hsl-colour-by-hue-saturation-and-brightness.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="10-transparency-the-alpha-channel.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">00 — Getting Started: How Computer Graphics Work</a></p>
+<h1>Grayscale colour</h1>
+<p>A <strong>grayscale</strong> colour has no hue at all — it's a shade of pure grey, from black to white, with
+red, green and blue all set equal to each other. Because all three numbers are always the same,
+p5 (like most graphics tools) accepts a single number as shorthand for "that much grey":</p>
+<pre class="highlight"><code class="language-js">fill(0);      // black       — the same as fill(0, 0, 0)
+fill(128);    // mid-grey    — the same as fill(128, 128, 128)
+fill(255);    // white       — the same as fill(255, 255, 255)
+background(230); // a light grey background — you've already seen this shorthand in sketch 01</code></pre>
+<p><img alt="A strip of six grayscale swatches labelled with their single-number values: 0, 50, 87, 162, 209, 255" src="../images/00-grayscale.png" loading="lazy"></p>
+<p><em>Figure: six grayscale shades, each labelled with the single number that produces it — <code>0</code> is
+black, <code>255</code> is white, and everything between is a step along the same red-equals-green-equals-blue
+line.</em></p>
+<p><img alt="A black-and-white photo of a cat, made up entirely of grayscale shades" src="../images/00-grayscale-cat.png" loading="lazy"></p>
+<p><em>Figure: a photo using only grayscale shades — no hue anywhere in the image, just varying
+brightness from black to white. Every pixel here still has red, green and blue values; they're
+just always equal to each other.</em></p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

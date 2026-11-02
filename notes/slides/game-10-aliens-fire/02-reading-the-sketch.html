@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 10 — The Aliens Fire Back – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-10-aliens-fire/01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-10-aliens-fire/03-how-i-developed-this.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 10 — The Aliens Fire Back</a></p>
+<h1>Reading the sketch</h1>
+<h3>Off screen at either end</h3>
+<pre class="highlight"><code class="language-js">isOffScreen() {
+    let pastTop = this.y + this.bulletHeight / 2 &lt; 0;
+    let pastBottom = this.y - this.bulletHeight / 2 &gt; height;
+    return pastTop || pastBottom;
+}</code></pre>
+<p>Stage 3's exercises asked whether a bullet below the canvas should count as off screen. It
+didn't matter then. Now that bullets fall, it does.</p>
+<h3>The aliens fire</h3>
+<pre class="highlight"><code class="language-js">function maybeAlienFires() {
+    if (aliens.length &gt; 0 &amp;&amp; random() &lt; ALIEN_FIRE_CHANCE) {
+        let shooter = random(aliens);
+        alienFires(shooter);
+    }
+}
+
+function alienFires(shooter) {
+    let startY = shooter.y + shooter.alienHeight / 2 + BULLET_HEIGHT / 2;
+    let newBullet = new Bullet(shooter.x, startY, BULLET_WIDTH, BULLET_HEIGHT, ALIEN_BULLET_SPEED, color(255, 80, 80));
+    alienBullets.push(newBullet);
+}</code></pre>
+<p>The bullet starts with its top edge just under the alien's bottom edge, mirroring how the
+player's bullets start at the top of the cannon.</p>
+<h3>Two arrays, one set of functions</h3>
+<pre class="highlight"><code class="language-js">moveBullets(bullets);
+moveBullets(alienBullets);</code></pre>
+<p><code>moveBullets()</code> and <code>displayBullets()</code> now take the array as a parameter,
+so the same code handles both. Before, they always used the global <code>bullets</code>.</p>
+<h3>Hit and lives</h3>
+<pre class="highlight"><code class="language-js">if (shipIsHit(alienBullets, ship.getBounds())) {
+    lives -= 1;
+    alienBullets = [];   // clear the screen, so the player has a moment to recover
+}
+
+gameState = checkGameState(aliens, ship.getBounds().top, lives);</code></pre>
+<p><code>shipIsHit()</code> is the "is any...?" search again, with <code>boundsOverlap()</code>
+from stage 7. <code>checkGameState()</code> has a new parameter, <code>livesLeft</code>, and a new
+way to lose.</p>
+<h3>The new tests</h3>
+<pre class="highlight"><code class="language-js">function testAlienFires() {
+    alienBullets = [];
+    alienFires(makeTestAlien(100, 100));
+
+    check("an alien firing adds one alien bullet", alienBullets.length, 1);
+    check("the bullet starts just below the alien", alienBullets[0].y, 116);
+    // ...
+    alienBullets = [];
+}</code></pre>
+<p>This tests the non-random half of firing. The test alien is 20 high, so its bottom is at 110;
+the bullet is 12 high, so its centre starts 6 lower, at 116.</p>
+<p><code>testLoseWhenNoLives()</code> also records a decision as a test: destroying the last alien
+in the same frame as losing the last life counts as a win.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

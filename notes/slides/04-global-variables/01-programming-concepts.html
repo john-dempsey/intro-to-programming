@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04 — Global Variables – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">04 — Global Variables</a></p>
+<h1>Programming concepts</h1>
+<h3>The assignment statement</h3>
+<pre class="highlight"><code class="language-js">diameter = 150;</code></pre>
+<p>The <code>=</code> sign is the <strong>assignment statement</strong> — it doesn't mean "equals" the way it does in maths;
+it means "store the value on the right into the name on the left". After this line runs, the
+name <code>diameter</code> refers to the value <code>150</code>, until something assigns it a different value. Every
+sketch from here on relies on this — it's the mechanism behind every named value the rest of the
+series uses.</p>
+<h3>Declaring a variable with <code>const</code></h3>
+<pre class="highlight"><code class="language-js">const diameter = 150;</code></pre>
+<p><code>const</code> <strong>declares</strong> a name (creates it, so the rest of the code can use it) and, on the same
+line, <strong>assigns</strong> it a starting value — declaration and assignment combined into one statement.
+<code>diameter</code> is now a <strong>variable</strong>: a name that stands in for a value, usable anywhere later in the
+code instead of writing the value itself.</p>
+<h3><code>const</code> as the default</h3>
+<p><code>const</code> means the value can never be reassigned after this line — attempting <code>diameter = 200;</code>
+anywhere later would be an error (worth actually triggering, once, to see: the exercises below
+do exactly this). Every variable this sketch declares is <code>const</code>, because none of them ever need
+a new value after <code>setup()</code> finishes reading them. <code>const</code> is the sensible default for exactly
+that reason: a name that's guaranteed to always mean the same thing is easier to reason about
+than one that might change. (The alternative, <code>let</code>, is for a value that genuinely needs to
+change later — sketch 05 is the first place that's actually needed.)</p>
+<h3>Global scope</h3>
+<pre class="highlight"><code class="language-js">const diameter = 150;
+...
+function setup() { ... }
+function mousePressed() { ... }
+function keyPressed() { ... }</code></pre>
+<p><code>diameter</code> is declared <em>outside</em> any function, at the top level of the file. A variable declared
+this way has <strong>global scope</strong> — it's visible to every function in the sketch, not just one. That's
+why <code>mousePressed()</code> and <code>keyPressed()</code> can both read <code>diameter</code>, <code>bg</code>, and the rest, despite none
+of them being declared inside either function.</p>
+<h3>Naming values instead of repeating literals</h3>
+<p>Sketch 01 called these <strong>magic numbers</strong> — literal values with no name to explain what they mean.
+Pulling each one out into a named <code>const</code> fixes both problems that come with magic numbers:
+the name (<code>diameter</code>, not <code>150</code>) documents what the value <em>is</em>, and changing a value that's used
+in several places now means editing it in exactly one place, instead of hunting down every
+literal that happens to share the same number.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

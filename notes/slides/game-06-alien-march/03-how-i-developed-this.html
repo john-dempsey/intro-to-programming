@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 06 — The Alien March – How I developed this · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-06-alien-march/02-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-06-alien-march/04-exercises.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 06 — The Alien March</a></p>
+<h1>How I developed this</h1>
+<h3>Attempt 1: reuse the bounce from sketch 13</h3>
+<p>The aliens bounce off the edges, so I copied the idea from sketch 13: each alien got its own
+<code>vx</code>, and its own <code>move()</code> reversed <code>vx</code> when <em>it</em> hit an
+edge.</p>
+<p>It looked fine for about three seconds. Then the rightmost column hit the edge and turned
+round, while the other seven columns carried on. The rightmost aliens marched straight back
+through their neighbours, and soon the formation was a mess of aliens overlapping and crossing
+each other.</p>
+<p>The code did exactly what I'd written: each alien bounced on its own. The problem was the
+design, not a typing mistake. The formation needs to make one decision for all of its aliens. I
+moved the direction out of the aliens into a single <code>alienDirection</code>, and wrote
+<code>formationAtEdge()</code> to check the whole group.</p>
+<h3>Attempt 2: the aliens slide down the edge</h3>
+<p>My first <code>formationAtEdge()</code> checked where each alien <em>was</em>:</p>
+<pre class="highlight"><code class="language-js">let nextX = alienList[i].x;   // where the alien is now</code></pre>
+<p>When the formation reached the right edge, it didn't turn round. It slid straight down the
+edge and off the bottom of the screen in a couple of seconds.</p>
+<p>To find out why, I set a breakpoint on the <code>return -direction;</code> line and watched
+<code>direction</code>. It paused every single frame, with <code>direction</code> alternating
+between 1 and -1. Stepping through showed the sequence:</p>
+<ol>
+<li>An alien moves one pixel past the edge.</li>
+<li>Next frame: it's past the edge, so everyone drops and the direction flips to -1.</li>
+<li>Next frame: dropping didn't move anyone sideways, so the alien is <em>still</em> past the
+edge. Drop again, and flip back to 1.</li>
+<li>And so on, every frame, all the way down.</li>
+</ol>
+<p>Checking where each alien is <em>about to be</em> fixed it. The formation now turns round
+before any alien crosses the edge, so after a drop no alien is ever past it.</p>
+<h3>Writing the tests for the bugs</h3>
+<p>After each fix, I wrote a test that would have caught the bug:
+<code>testWholeFormationTurns()</code> for attempt 1, and the "next step doesn't drop again"
+checks in <code>testMarchAtEdge()</code> for attempt 2. If a later change brings either bug
+back, a test will fail straight away.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>The formation moves right, and turns round when the rightmost column reaches the
+edge, without crossing it.</li>
+<li>It drops by the same amount at every turn, once per turn.</li>
+<li>The same at the left edge, with the leftmost column.</li>
+<li>The gaps between aliens never change.</li>
+<li>The debug overlay's direction switches between 1 and -1 at each edge.</li>
+<li>The ship and bullets still work while the aliens move.</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits</h3>
+<pre class="highlight"><code class="language-plaintext">git commit -am "Game stage 6: aliens march as a formation"
+git commit -am "Fix aliens sliding down the edge: check next position"
+git commit -am "Add regression tests for alien march"</code></pre>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

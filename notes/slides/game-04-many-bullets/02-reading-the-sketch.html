@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 04 — Many Bullets – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-04-many-bullets/01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-04-many-bullets/03-how-i-developed-this.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 04 — Many Bullets</a></p>
+<h1>Reading the sketch</h1>
+<h3>Firing</h3>
+<pre class="highlight"><code class="language-js">function fireBullet() {
+    let startY = ship.cannonTopY() - BULLET_HEIGHT / 2;
+    let newBullet = new Bullet(ship.x, startY, BULLET_WIDTH, BULLET_HEIGHT, BULLET_SPEED, color(255));
+    bullets.push(newBullet);
+}</code></pre>
+<p>The "one at a time" check from stage 3 is gone; every press adds a bullet. The
+<code>Bullet</code> class hasn't changed at all.</p>
+<h3>Each frame</h3>
+<pre class="highlight"><code class="language-js">function updateBullets() {
+    for (let i = 0; i &lt; bullets.length; i++) {
+        bullets[i].move();
+        bullets[i].display();
+    }
+
+    removeOffScreenBullets(bullets);
+}</code></pre>
+<p>Move and draw every bullet, exactly like the balls in sketch 11. The removal happens
+afterwards, in its own loop and its own function. Moving and drawing loops forwards safely,
+because nothing is removed while it runs.</p>
+<h3>Removing</h3>
+<pre class="highlight"><code class="language-js">function removeOffScreenBullets(bulletList) {
+    for (let i = bulletList.length - 1; i &gt;= 0; i--) {
+        if (bulletList[i].isOffScreen()) {
+            bulletList.splice(i, 1);
+        }
+    }
+}</code></pre>
+<p>The loop starts at the last index (<code>length - 1</code>), keeps going while <code>i</code> is
+0 or more, and counts down with <code>i--</code>.</p>
+<h3>Keys</h3>
+<pre class="highlight"><code class="language-js">function keyPressed() {
+    if (key === " ") {
+        fireBullet();
+    } else if (key === "d" || key === "D") {
+        showDebug = !showDebug;
+    }
+}</code></pre>
+<p><code>||</code> means "or", so D works whether or not Caps Lock is on.</p>
+<h3>The debug overlay</h3>
+<pre class="highlight"><code class="language-js">function displayDebugInfo() {
+    push();
+    fill(255, 255, 0);
+    noStroke();
+    textSize(14);
+    text("bullets in array: " + bullets.length, 10, 20);
+    text("frame rate: " + round(frameRate()), 10, 40);
+    pop();
+}</code></pre>
+<p><code>draw()</code> only calls this when <code>showDebug</code> is <code>true</code>.
+<code>push()</code>/<code>pop()</code> stop the yellow fill and text size leaking into anything
+drawn afterwards.</p>
+<h3>The new tests</h3>
+<pre class="highlight"><code class="language-js">let mixed = [makeTestBullet(100), makeTestBullet(-50), makeTestBullet(-60), makeTestBullet(200)];
+removeOffScreenBullets(mixed);
+check("removes only the off-screen bullets", mixed.length, 2);
+check("first survivor is the right bullet", mixed[0].y, 100);
+check("second survivor is the right bullet", mixed[1].y, 200);</code></pre>
+<p>Checking the length isn't enough on its own: the function might remove the right
+<em>number</em> of bullets but the wrong ones. Checking each survivor's <code>y</code> proves the
+right ones were kept. The test arrays include an all-off-screen array, two off-screen bullets
+side by side, and an empty array: the cases most likely to go wrong.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

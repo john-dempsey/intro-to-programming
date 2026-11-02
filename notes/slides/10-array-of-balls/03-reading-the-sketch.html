@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 — An Array of Balls – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="02-how-p5-works.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="04-explore-modify.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">10 — An Array of Balls</a></p>
+<h1>Reading the sketch</h1>
+<pre class="highlight"><code class="language-js">let balls;                 // will hold an array of Ball objects, once setup() runs
+
+function setup() {
+    createCanvas(640, 360);
+    background(bg);
+
+    balls = [                                          // an array literal…
+        new Ball(100, 100, 60,  color(255, 0, 100, 200)),  // …of five Ball instances,
+        new Ball(300, 150, 100, color(0, 200, 100, 180)),  // each with its own position,
+        new Ball(500, 80,  40,  color(0, 100, 255, 160)),  // size and colour
+        new Ball(200, 280, 80,  color(255, 200, 0, 200)),
+        new Ball(450, 270, 100, color(200, 0, 255, 150))
+    ];
+
+    textAlign(CENTER, CENTER);
+
+    for (let i = 0; i &lt; balls.length; i++) {   // once per ball, i = 0, 1, 2, 3, 4
+        balls[i].display();                     // draw that ball
+        fill(0);
+        text("Ball " + i, balls[i].x, balls[i].y);   // label it with its index
+    }
+}
+
+function draw() {
+}</code></pre>
+<p><code>mousePressed()</code>/<code>keyPressed()</code> are gone — this sketch is driven entirely by <code>setup()</code>, which now
+builds five balls into one array instead of one ball into one variable, and loops over that array
+once to display and label every ball it holds.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

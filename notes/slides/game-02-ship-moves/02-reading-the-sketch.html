@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 02 — Moving the Ship – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-02-ship-moves/01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-02-ship-moves/03-how-i-developed-this.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 02 — Moving the Ship</a></p>
+<h1>Reading the sketch</h1>
+<h3><code>move()</code></h3>
+<pre class="highlight"><code class="language-js">// direction is -1 (left), 0 (stay still) or 1 (right).
+move(direction) {
+    this.x += direction * this.speed;
+
+    let halfWidth = this.bodyWidth / 2;
+    if (this.x - halfWidth &lt; 0) {               // left edge of ship past left of canvas
+        this.x = halfWidth;
+    } else if (this.x + halfWidth &gt; width) {    // right edge of ship past right of canvas
+        this.x = width - halfWidth;
+    }
+}</code></pre>
+<p>Move first, then clamp: the same pattern as sketch 13, but only on the x-axis and with no
+change of direction. Because <code>x</code> is the ship's centre, its left edge is
+<code>x - halfWidth</code> and its right edge is <code>x + halfWidth</code>.</p>
+<h3><code>readDirection()</code></h3>
+<pre class="highlight"><code class="language-js">function readDirection() {
+    let direction = 0;
+    if (keyIsDown(LEFT_ARROW)) {
+        direction -= 1;
+    }
+    if (keyIsDown(RIGHT_ARROW)) {
+        direction += 1;
+    }
+    return direction;
+}</code></pre>
+<p>Two separate <code>if</code>s, not <code>if</code>/<code>else if</code>, so both keys are always
+checked. Holding both gives <code>-1 + 1 = 0</code>, and the ship stays still.</p>
+<h3><code>draw()</code></h3>
+<pre class="highlight"><code class="language-js">function draw() {
+    background(BACKGROUND_COLOUR);
+
+    ship.move(readDirection());
+    ship.display();
+}</code></pre>
+<p>Every frame: clear the screen, move, draw. <code>readDirection()</code> runs first and its
+result is passed straight into <code>move()</code>.</p>
+<h3>The new tests</h3>
+<pre class="highlight"><code class="language-js">function testShipStaysOnCanvas() {
+    let testShip = makeTestShip(27);
+    testShip.move(-1);
+    check("stops at the left edge", testShip.x, 25);
+    // ...
+}</code></pre>
+<p>The test ship is 50 wide, so its centre can't go below 25. Starting at 27 and moving left by
+5 would reach 22 without the clamp; the test expects 25.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

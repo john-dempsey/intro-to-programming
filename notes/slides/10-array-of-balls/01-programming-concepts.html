@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 — An Array of Balls – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">10 — An Array of Balls</a></p>
+<h1>Programming concepts</h1>
+<h3>Arrays — a list of values</h3>
+<pre class="highlight"><code class="language-js">balls = [
+    new Ball(100, 100, 60,  color(255, 0, 100, 200)),
+    new Ball(300, 150, 100, color(0, 200, 100, 180)),
+    ...
+];</code></pre>
+<p>An <strong>array</strong> is an ordered list of values, written between square brackets <code>[ ]</code> with commas
+between entries — an <strong>array literal</strong>, the same idea as the object literal from sketch 06 but
+for a <em>list</em> rather than a set of named properties. Any kind of value can go in an array; here
+each entry is a <code>Ball</code> object. Where every earlier sketch had one <code>ball</code> variable holding one
+object, <code>balls</code> is a single variable holding <em>several</em> — this is the direct answer to the
+awkwardness of needing <code>ball2</code>, <code>ball3</code>, ... that would otherwise creep in as more objects are
+needed.</p>
+<p><strong>Why arrays exist at all:</strong> separate numbered variables don't scale — they can't be looped over
+(there's no way to write "do this to <code>ball1</code> through <code>ball5</code>" without naming each one), and
+changing how many balls exist means adding or removing variable names throughout the code. An
+array sidesteps both problems: any number of elements live under one name, and code that works on
+"the array" automatically works whether it holds 1 element or 100. Rule of thumb: reach for an
+array whenever there's a number of same-shaped things that could grow, shrink, or is simply too
+many to give each its own variable name — the moment you catch yourself about to write <code>thing2</code>,
+<code>thing3</code>, ..., that's an array.</p>
+<h3>Indexing — reading one element by position</h3>
+<pre class="highlight"><code class="language-js">balls[i]</code></pre>
+<p>Each element in an array has a numbered position, called its <strong>index</strong>, starting at <code>0</code> for the
+first element (not <code>1</code>) — <code>balls[0]</code> is the first ball, <code>balls[1]</code> the second, and so on.
+Square-bracket notation after the array's name — <code>balls[i]</code> — reads (or, elsewhere, could
+assign) the element at that position. This is a different bracket use from the array literal
+above: <code>[ ]</code> after a value's name <em>indexes into</em> it, <code>[ ]</code> on its own <em>builds</em> an array.</p>
+<h3><code>array.length</code></h3>
+<pre class="highlight"><code class="language-js">i &lt; balls.length</code></pre>
+<p><code>balls.length</code> is a property (dot notation, from sketch 06) holding how many elements are
+currently in the array — <code>5</code> for this sketch's array. It's read, not written, and it stays in
+sync automatically as the array's contents change, which is what lets a loop work for an array of
+any size without editing the loop itself.</p>
+<h3><code>for</code> loops</h3>
+<pre class="highlight"><code class="language-js">for (let i = 0; i &lt; balls.length; i++) {
+    balls[i].display();
+    ...
+}</code></pre>
+<p>A <code>for</code> loop repeats a block of statements, varying one counter each time round. This one has
+three parts, separated by semicolons, all on the same line:</p>
+<ul>
+<li><code>let i = 0</code> — runs <strong>once</strong>, before the loop starts: create a counter variable <code>i</code>, starting at
+  <code>0</code>.</li>
+<li><code>i &lt; balls.length</code> — checked <strong>before each repetition</strong>: keep looping only while this is true.</li>
+<li><code>i++</code> — runs <strong>after each repetition</strong>: increase <code>i</code> by one (<code>i++</code> is shorthand for
+  <code>i = i + 1</code>).</li>
+</ul>
+<p>So this loop runs its block once for <code>i = 0</code>, once for <code>i = 1</code>, and so on, stopping as soon as
+<code>i</code> reaches <code>balls.length</code> — which visits every valid index in the array exactly once, from the
+first element to the last, however many elements it holds.</p>
+<h3>Strings and concatenation</h3>
+<pre class="highlight"><code class="language-js">text("Ball " + i, balls[i].x, balls[i].y);</code></pre>
+<p><code>"Ball "</code> is a <strong>string</strong> — text data, written between quotes. The <code>+</code> operator, used between a
+string and a number, <strong>concatenates</strong> (joins) them into one string, automatically converting the
+number to text first: with <code>i</code> equal to <code>2</code>, <code>"Ball " + i</code> produces the string <code>"Ball 2"</code>. This is
+how a label built from a loop counter gets its number.</p>
+<h3>Loop forms: <code>for</code>, <code>while</code>, <code>for...of</code></h3>
+<p>A <code>for</code> loop is one way to repeat a block of code, but not the only way — the same repetition
+can be written differently. Take a generic example, unrelated to balls: printing every item in
+an array called <code>items</code>.</p>
+<pre class="highlight"><code class="language-js">// for — the three loop parts are written together, on one line
+for (let i = 0; i &lt; items.length; i++) {
+    console.log(items[i]);
+}</code></pre>
+<pre class="highlight"><code class="language-js">// while — the same three parts, but spread out: before, as the condition, and last inside the block
+let i = 0;
+while (i &lt; items.length) {
+    console.log(items[i]);
+    i++;
+}</code></pre>
+<p>A <code>while</code> loop only checks a condition and repeats while it's true — it has no built-in
+counter, so the loop above has to create <code>i</code> before the loop and increase it manually, as the
+<em>last</em> line inside the block. Read the <code>for</code> loop's three parts against the <code>while</code> version: its
+<code>let i = 0</code> is the line before the loop, its <code>i &lt; items.length</code> is the <code>while</code>'s condition, and
+its <code>i++</code> is the last line inside the block. A <code>for</code> loop is really a <code>while</code> loop with those
+three parts collected into one place.</p>
+<pre class="highlight"><code class="language-js">// for...of — no index at all: hands you each element directly
+for (const item of items) {
+    console.log(item);
+}</code></pre>
+<p><code>for...of</code> is a third form, for when the <em>index itself</em> isn't needed — it hands each element of
+the array to <code>item</code> directly, one at a time, with no counter to create or update. It's shorter
+whenever the code only needs the elements.</p>
+<p>It becomes awkward the moment the code <em>does</em> need the index for something else (a position in a
+label, say) — <code>for...of</code> doesn't give you one automatically. Nothing stops you tracking one
+yourself, though: declare a counter before the loop and increase it by hand, the same way the
+<code>while</code> version above did.</p>
+<pre class="highlight"><code class="language-js">// for...of, with a manually tracked index
+let i = 0;
+for (const item of items) {
+    console.log(i, item);
+    i++;
+}</code></pre>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

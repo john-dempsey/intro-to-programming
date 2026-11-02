@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12 — Wrapping Around the Edges – Explore &amp; modify · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="03-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="05-projects.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">12 — Wrapping Around the Edges</a></p>
+<h1>Explore &amp; modify</h1>
+<p>Working copy: <code>exercises/12-ball-wrap/</code>.</p>
+<ol>
+<li>A ball whose <code>diameter</code> is larger than <code>width</code> wraps in a way that looks wrong (part of it
+   seems to "teleport"). Predict what happens, then try it, to see the edge case sketch 13
+   handles differently.</li>
+</ol>
+<p><img alt="A ball wider than the canvas, mid-wrap — part of it appears to teleport at the edge instead of sliding smoothly across" src="../images/12-wrapping-balls.png" loading="lazy"></p>
+<ol start="2">
+<li>Apply the wrap formula to <code>x</code> only, leaving <code>y</code> as plain <code>+=</code>. Run it with balls that have
+   non-zero <code>vy</code> and explain what you see.</li>
+</ol>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

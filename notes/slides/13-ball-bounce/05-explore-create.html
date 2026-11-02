@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13 — Ball Bounce – Explore &amp; create · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="04-explore-modify.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="06-projects.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">13 — Ball Bounce</a></p>
+<h1>Explore &amp; create</h1>
+<p>Three more brand-new sketches, each built from a blank starter rather than editing the sketch
+above — one applies this sketch's boolean/branching ideas to mouse position instead of ball
+edges, one pairs a hover check with a class of its own, and one contrasts a <em>recomputed</em> boolean
+with one that's simply held.</p>
+<ol>
+<li><strong>Quadrant hover.</strong> Working copy: <code>exercises/create/13-quadrant-hover/</code>. Create a 400×400
+   canvas, and draw a horizontal line and a vertical line dividing it into four equally sized
+   quadrants. Each frame, check which quadrant (if any) the mouse is over, and draw a black
+   rectangle filling exactly that quadrant; every quadrant the mouse isn't over should stay
+   clear. The four checks are boolean comparisons against <code>mouseX</code>/<code>mouseY</code>, combined with <code>&amp;&amp;</code>
+   exactly as exercise 4 above combines two edge checks into a corner check.</li>
+</ol>
+<p><img alt="Mouse over the top-right quadrant, which is filled black" src="../images/13-quadrant-hover-01.png" loading="lazy"> <img alt="Mouse over the bottom-left quadrant, which is filled black instead" src="../images/13-quadrant-hover-02.png" loading="lazy"></p>
+<ol start="2">
+<li><strong>Hoverable buttons.</strong> Working copy: <code>exercises/create/13-button-hover/</code>. Create a <code>Button</code>
+   class with <code>x</code>, <code>y</code>, <code>width</code>, <code>height</code>, <code>color</code> and <code>label</code> properties and a <code>display()</code>
+   method. Use it to build three non-overlapping buttons with different labels, all starting out
+   coloured <code>rgb(31, 144, 187)</code>. Each frame, check whether the mouse is over a given button —
+   comparing <code>mouseX</code>/<code>mouseY</code> against its <code>x</code>/<code>y</code>/<code>width</code>/<code>height</code>, the same rectangle test the
+   Frogger capstone below needs for player/car collision — and while it is, display that button
+   in <code>rgb(35, 161, 209)</code> instead of its usual colour.</li>
+</ol>
+<p><img alt="Three buttons, none hovered, all the same blue" src="../images/13-button-hover-01.png" loading="lazy"> <img alt="The middle button hovered, now a lighter blue" src="../images/13-button-hover-02.png" loading="lazy"></p>
+<ol start="3">
+<li><strong>Light switch.</strong> Working copy: <code>exercises/create/13-toggle-switch/</code>. Declare a global boolean
+   variable <code>isOn</code>, starting <code>false</code>. Each time the mouse is pressed, flip it (<code>isOn = !isOn</code>). In
+   <code>draw()</code>, display one image when <code>isOn</code> is <code>true</code> and the other when it's <code>false</code> (both are
+   already in the working copy folder). Unlike exercise 5 above, where <code>isHovered</code> is recomputed
+   from a <code>dist()</code> comparison every single frame, <code>isOn</code> here is set once by the click and simply
+   held, unchanged, until the next click flips it again — the other common shape boolean state
+   takes.</li>
+</ol>
+<p><strong>Hint:</strong> look up <code>image()</code> in the p5 reference, along with <code>loadImage()</code> and <code>preload()</code>,
+   which go together with it — an image has to be loaded once, in <code>preload()</code> (which p5 calls
+   <em>before</em> <code>setup()</code>), before <code>image()</code> can draw it every frame in <code>draw()</code>.</p>
+<p><img alt="Light off" src="../images/13-light-off.png" loading="lazy"> <img alt="Light on" src="../images/13-light-on.png" loading="lazy"></p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

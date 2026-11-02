@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 08 — Winning and Losing – How I developed this · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-08-win-lose/02-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-08-win-lose/04-exercises.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 08 — Winning and Losing</a></p>
+<h1>How I developed this</h1>
+<h3>Attempt 1: wrap <code>draw()</code> in an <code>if</code></h3>
+<p>My first idea was to put everything in <code>draw()</code> inside
+<code>if (gameState === STATE_PLAYING)</code>. When I lost, the game stopped, but the screen went
+blank behind the message: the drawing code was inside the <code>if</code> too, so nothing was
+drawn. The player couldn't see how they'd lost.</p>
+<p>The problem was that moving and drawing were mixed together in the same functions. So before
+going any further, I <strong>refactored</strong>: split <code>updateBullets()</code> into moving
+and displaying, and split <code>draw()</code> into <code>updateGame()</code> and
+<code>drawGame()</code>. I committed the refactor on its own, after checking the game still
+played exactly the same and all the tests passed. Then the freeze was a one-line
+<code>if</code>.</p>
+<h3>Testing it without playing for 40 seconds</h3>
+<p>Losing takes about 40 seconds of not firing, and winning means shooting 32 aliens. Testing
+every change that way would have taken all day. Instead, I used the console to set up the
+situation I wanted:</p>
+<pre class="highlight"><code class="language-js">aliens.splice(1)            // leave one alien, then shoot it to test winning
+aliens[0].moveBy(0, 400)    // send an alien past the ship to test losing</code></pre>
+<p>It's the same idea as the automatic tests: put the program into a known state, then check what
+it does.</p>
+<h3>The bullets that wouldn't move</h3>
+<p>After winning, I pressed space out of habit. A bullet appeared at the cannon and stayed there,
+frozen. <code>keyPressed()</code> still fired, but <code>updateGame()</code> wasn't running to move
+anything. Firing should only happen while playing, so I added
+<code>&amp;&amp; gameState === STATE_PLAYING</code>. It's easy to miss this kind of bug: every new
+state is a new situation for every part of the program, and each part needs checking.</p>
+<h3>A silent typo</h3>
+<p>At first I typed the state names as strings. In one place I wrote <code>"Won"</code> instead
+of <code>"won"</code>. When I won, the game froze with no message. No error, no failing test.
+It took a breakpoint in <code>draw()</code> and a close look at the <code>gameState</code> value
+to spot the capital letter. I replaced every string with a constant, so a typo now causes an
+error that names the problem.</p>
+<h3>Decision: where is "too low"?</h3>
+<p>The game is lost when an alien reaches the <strong>top of the ship</strong>, not the bottom of
+the screen. If the aliens could reach the bottom, they'd have to pass through the ship first,
+which would look wrong. Using <code>ship.getBounds()</code> means this still works if the ship's
+size or position changes.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>Shoot every alien: "YOU WIN!" appears, and the game freezes behind it.</li>
+<li>Let the aliens reach the ship: "GAME OVER" appears at the moment an alien touches the ship.</li>
+<li>After either, arrow keys and space do nothing.</li>
+<li>Enter during a game does nothing; Enter after a game starts a fresh one, with 32 aliens
+moving right and no bullets.</li>
+<li>D works in every state, and shows the current state.</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits</h3>
+<pre class="highlight"><code class="language-plaintext">git commit -am "Refactor: separate updating the game from drawing it"
+git commit -am "Game stage 8: win, lose and restart"
+git commit -am "Use constants for game states"
+git tag smallest-playable-game</code></pre>
+<p>The tag marks this commit permanently. Whatever happens to the game from now on, this
+version, the first one that's complete, can always be found again.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

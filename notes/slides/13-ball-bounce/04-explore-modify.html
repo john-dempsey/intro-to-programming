@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13 — Ball Bounce – Explore &amp; modify · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="03-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="05-explore-create.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">13 — Ball Bounce</a></p>
+<h1>Explore &amp; modify</h1>
+<p>Working copy: <code>exercises/13-ball-bounce/</code>.</p>
+<ol>
+<li>Comment out the <code>diameter &gt; width</code> special-case branch, then run the sketch with a ball whose
+   <code>diameter</code> is larger than the canvas. Explain the bug this branch exists to prevent.</li>
+<li>Add a <code>bounces</code> property to <code>Ball</code>, initialised to <code>0</code> in the constructor, and increment it
+   inside each collision branch. Display each ball's bounce count next to it with <code>text()</code>.</li>
+</ol>
+<p><img alt="Five bouncing balls, each labelled with its own bounce count so far" src="../images/13-bouncing-balls.png" loading="lazy"></p>
+<ol start="3">
+<li><strong>Click-to-add.</strong> Bring back <code>mousePressed()</code> from 03-click-to-draw: add a <code>mousePressed()</code>
+   function so that clicking adds one new ball (with random position/velocity/colour, as in the
+   <code>random()</code> exercise from exercise 10) to the <code>balls</code> array. The existing balls should keep
+   moving and bouncing exactly as before; the new ball should join them and start moving too.</li>
+<li><strong>Boolean combination — corner detection.</strong> Detect when a ball is touching a vertical edge
+   <em>and</em> a horizontal edge in the same frame (i.e. it's hit a corner), and give it a brief,
+   visibly different effect when that happens (a colour change is enough). This introduces <code>&amp;&amp;</code>,
+   for combining two boolean conditions into one.</li>
+<li><strong>Boolean state on an object — hover highlight.</strong> Add an <code>isHovered</code> property to the <code>Ball</code>
+   class. Each frame, set it to <code>true</code> or <code>false</code> by comparing the distance from the mouse to the
+   ball's centre (<code>dist()</code>) against the ball's radius. When <code>isHovered</code> is <code>true</code>, display the
+   ball with a different fill colour. (Can start from 09-ball-class instead, with a single ball,
+   if you'd rather work without the animation running.)</li>
+<li><strong>Object-to-object interaction — ball vs. ball (capstone).</strong> For every <em>pair</em> of balls in the
+   array, use <code>dist()</code> between their centres compared to the sum of their radii to detect whether
+   they're overlapping. When two balls collide, respond somehow — reversing both their
+   velocities, or changing their colour, are both reasonable. This is the first interaction that's
+   between two objects, rather than one object and the canvas edge.</li>
+</ol>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

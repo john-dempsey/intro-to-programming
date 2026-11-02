@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06 — A Ball Object – Explore &amp; modify · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="03-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="05-projects.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">06 — A Ball Object</a></p>
+<h1>Explore &amp; modify</h1>
+<p>Working copy: <code>exercises/06-ball-object-literal/</code>.</p>
+<ol>
+<li>Add a new property to the <code>ball</code> object literal (e.g. <code>label: "A"</code>) and display it near the
+   ball with <code>text()</code>.</li>
+</ol>
+<p><img alt="Several balls, each labelled &quot;A&quot;, stamped at different positions by repeated clicks" src="../images/06-labelled-balls.png" loading="lazy"></p>
+<ol start="2">
+<li>Try declaring <code>ball</code> with <code>const</code> instead of <code>let</code> (keeping the assignment inside <code>setup()</code>),
+   then run the sketch and click. Read the error, and explain in a comment why <code>let</code> is required
+   here even though <code>ball</code> itself is never reassigned to a <em>different</em> object — only its
+   properties change.</li>
+</ol>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

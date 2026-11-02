@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 — Drawing a Circle – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="02-how-p5-works.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="04-explore-modify.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">01 — Drawing a Circle</a></p>
+<h1>Reading the sketch</h1>
+<pre class="highlight"><code class="language-js">function setup() {
+    createCanvas(640, 360);   // make a 640×360 canvas
+    background(230);          // paint it a light grey
+    noStroke();                // shapes drawn from here on have no outline
+    fill(255, 0, 100, 150);   // shapes drawn from here on are filled pink, semi-transparent
+    circle(320, 180, 150);    // draw a circle: centred (320, 180), 150px diameter
+}
+
+function draw() {
+    // p5 calls this ~60 times a second, but there's nothing here — so nothing happens
+}</code></pre>
+<p>Everything happens once, inside <code>setup()</code>, when the sketch loads: a canvas is created, painted
+grey, and one circle is stamped in the middle. <code>draw()</code> exists (p5 expects it to) but is empty,
+so the picture never changes after that.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

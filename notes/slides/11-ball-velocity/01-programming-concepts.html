@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11 — Ball Velocity – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">11 — Ball Velocity</a></p>
+<h1>Programming concepts</h1>
+<h3>Extra state: velocity</h3>
+<pre class="highlight"><code class="language-js">constructor(x, y, vx, vy, d, c) {
+    this.x = x;
+    this.y = y;
+    this.vx = vx;
+    this.vy = vy;
+    ...
+}</code></pre>
+<p>Two new properties, <code>vx</code> and <code>vy</code>, are added alongside the position and size properties <code>Ball</code>
+already had. They represent <strong>velocity</strong> — how far the ball moves on the x-axis and y-axis every
+time it updates, not its current position. Each ball is constructed with its own <code>vx</code>/<code>vy</code>
+arguments, so every ball in the array can move at a different speed and in a different direction,
+exactly the same way each already has its own position, size and colour.</p>
+<h3>A method that changes its own object's state</h3>
+<pre class="highlight"><code class="language-js">move() {
+    this.x += this.vx;
+    this.y += this.vy;
+}</code></pre>
+<p><code>move()</code> is a new method (from sketch 09: a function that lives inside a class and uses <code>this</code>)
+whose whole job is to update the object's <em>own</em> properties. Calling <code>ball.move()</code> changes that
+particular ball's <code>x</code>/<code>y</code> — it doesn't return anything or draw anything, unlike <code>display()</code>.
+This is a common shape for methods: some describe an object (<code>display()</code>), others change it
+(<code>move()</code>).</p>
+<h3>Compound assignment: <code>+=</code></h3>
+<p><code>this.x += this.vx;</code> is shorthand for <code>this.x = this.x + this.vx;</code> — take the current value,
+add something to it, and store the result back in the same place. <code>+=</code> is one of several
+<strong>compound assignment</strong> operators (others include <code>-=</code>, <code>*=</code>, <code>/=</code>) that combine "compute a new
+value from the old one" and "store it" into a single step.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

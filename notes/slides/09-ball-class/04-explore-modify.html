@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09 — A Ball Class – Explore &amp; modify · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="03-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="05-projects.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">09 — A Ball Class</a></p>
+<h1>Explore &amp; modify</h1>
+<p>Working copy: <code>exercises/09-ball-class/</code>.</p>
+<ol>
+<li>Add a new method to the <code>Ball</code> class, e.g. <code>grow(amount)</code> that increases <code>this.diameter</code>. Call
+   <code>ball.grow(10)</code> each time the mouse is clicked, alongside <code>ball.display()</code>.</li>
+<li>Create a second <code>new Ball(...)</code> instance, stored in a second variable, and call <code>.display()</code> on
+   both from <code>mousePressed()</code>. (Notice how awkward this still gets with more balls — arrays next.)</li>
+</ol>
+<p><img alt="A cluster of overlapping balls grown by repeated grow(10) calls, plus a separate, ungrown second Ball instance" src="../images/09-growing-ball.png" loading="lazy"></p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

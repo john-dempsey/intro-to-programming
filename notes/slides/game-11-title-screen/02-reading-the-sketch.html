@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 11 — Title Screen and High Score – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-11-title-screen/01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-11-title-screen/03-how-i-developed-this.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 11 — Title Screen and High Score</a></p>
+<h1>Reading the sketch</h1>
+<h3><code>setup()</code></h3>
+<pre class="highlight"><code class="language-js">function setup() {
+    createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    alienColours = [color(255, 80, 80), color(255, 180, 0), color(80, 200, 255), color(200, 120, 255)];
+    highScore = loadHighScore(HIGH_SCORE_KEY);
+    resetGame();
+
+    runTests();
+
+    // Set last, because some tests start a game of their own.
+    gameState = STATE_TITLE;
+}</code></pre>
+<p>The row colours are now a global, because the title screen draws one alien of each colour.
+The high score is loaded once. <code>resetGame()</code> doesn't reset it: it lasts between games.</p>
+<h3><code>draw()</code></h3>
+<pre class="highlight"><code class="language-js">if (gameState === STATE_TITLE) {
+    displayTitleScreen();
+} else {
+    if (gameState === STATE_PLAYING) {
+        updateGame();
+    }
+    drawGame();
+}</code></pre>
+<p>On the title screen, the game isn't drawn at all. In every other state it's drawn, and only
+updated while playing.</p>
+<h3>The end of a game</h3>
+<pre class="highlight"><code class="language-js">function endGame() {
+    newHighScore = score &gt; highScore;
+    if (newHighScore) {
+        highScore = score;
+        saveHighScore(HIGH_SCORE_KEY, highScore);
+    }
+}</code></pre>
+<p><code>score &gt; highScore</code> is a boolean, stored directly in <code>newHighScore</code>, which
+<code>scoreSummary()</code> uses to choose its message.</p>
+<h3>Loading safely</h3>
+<pre class="highlight"><code class="language-js">function loadHighScore(storageKey) {
+    try {
+        let saved = localStorage.getItem(storageKey);
+        if (saved === null) {
+            return 0;
+        }
+
+        let value = Number(saved);
+        if (Number.isNaN(value)) {
+            console.warn("The saved high score wasn't a number: " + saved);
+            return 0;
+        }
+        return value;
+    } catch (error) {
+        console.warn("Couldn't load the high score: " + error.message);
+        return 0;
+    }
+}</code></pre>
+<p>Three things can go wrong (nothing saved, something that isn't a number, storage not allowed)
+and each one gives a sensible answer: 0. The key is a parameter, so the tests can use their own key
+and never touch the player's real high score.</p>
+<h3>The title screen</h3>
+<pre class="highlight"><code class="language-js">for (let row = 0; row &lt; ALIEN_ROWS; row++) {
+    let rowY = 170 + row * 40;
+    let sampleAlien = new Alien(width / 2 - 60, rowY, ALIEN_WIDTH, ALIEN_HEIGHT, alienColours[row], ALIEN_ROW_POINTS[row]);
+    sampleAlien.display();
+    fill(255);
+    text("= " + sampleAlien.points + " POINTS", width / 2 - 30, rowY);
+}</code></pre>
+<p>The title screen reuses the <code>Alien</code> class to draw one alien per row, next to its
+value. If the colours or points change, the title screen changes with them.</p>
+<h3>The new tests</h3>
+<p><code>testEnterChangesState()</code> has one check per row of the state table.
+<code>testHighScoreStorage()</code> saves and loads with a test-only key, including the
+"not a number" case, and removes the key at the end.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

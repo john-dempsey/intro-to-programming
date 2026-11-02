@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 04 — Many Bullets – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-04-many-bullets/index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-04-many-bullets/02-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 04 — Many Bullets</a></p>
+<h1>Programming concepts</h1>
+<h3>Adding to an array: <code>push()</code></h3>
+<pre class="highlight"><code class="language-js">let bullets = [];          // starts empty
+bullets.push(newBullet);   // adds newBullet to the end</code></pre>
+<p><code>push()</code> adds an item to the end of an array, making it one longer.
+<code>bullets.length</code> is always the current number of items.</p>
+<h3>Removing from an array: <code>splice()</code></h3>
+<pre class="highlight"><code class="language-js">bulletList.splice(i, 1);   // remove 1 item, starting at index i</code></pre>
+<p><code>splice(i, 1)</code> removes the item at index <code>i</code>. Every item after it
+<strong>moves down one place</strong> to fill the gap, and the array gets one shorter:</p>
+<table>
+<tr><th></th><th>Index 0</th><th>Index 1</th><th>Index 2</th></tr>
+<tr><td>Before <code>splice(0, 1)</code></td><td>A</td><td>B</td><td>C</td></tr>
+<tr><td>After</td><td>B</td><td>C</td><td></td></tr>
+</table>
+<h3>The trap: removing while looping forwards</h3>
+<p>Suppose all three bullets are off screen, and we loop forwards from <code>i = 0</code>:</p>
+<table>
+<tr><th><code>i</code></th><th>Array before</th><th>Checks</th><th>Array after</th></tr>
+<tr><td>0</td><td>A, B, C</td><td>A: off screen, remove</td><td>B, C</td></tr>
+<tr><td>1</td><td>B, C</td><td>C: off screen, remove</td><td>B</td></tr>
+<tr><td>2</td><td>B</td><td>loop ends (2 is not less than 1)</td><td>B</td></tr>
+</table>
+<p><strong>B is never checked.</strong> When A was removed, B moved into index 0, but the loop
+had already moved on to index 1.</p>
+<h3>The fix: loop backwards</h3>
+<pre class="highlight"><code class="language-js">for (let i = bulletList.length - 1; i &gt;= 0; i--) {</code></pre>
+<p>Starting at the end, removing an item only moves the items <em>after</em> it, which have
+already been checked. The items still to be checked never move. This is the standard way to
+remove items from an array while looping over it.</p>
+<h3>Arrays passed to a function are shared</h3>
+<pre class="highlight"><code class="language-js">removeOffScreenBullets(bullets);</code></pre>
+<p>When you pass an array to a function, the function gets the <em>same</em> array, not a copy.
+So when <code>removeOffScreenBullets()</code> splices <code>bulletList</code>, it's changing
+<code>bullets</code>. (Numbers are different: stage 3 showed that numbers are copied.) Because the
+function works on whatever array it's given, the tests can pass in their own arrays without
+touching the game's bullets.</p>
+<h3>Toggling a boolean: <code>!</code></h3>
+<pre class="highlight"><code class="language-js">showDebug = !showDebug;</code></pre>
+<p><code>!</code> means "not": <code>!true</code> is <code>false</code> and <code>!false</code> is
+<code>true</code>. Setting a boolean to its own opposite flips it, which is ideal for an on/off
+switch.</p>
+<h3>A debug overlay</h3>
+<p>A <strong>debug overlay</strong> is information drawn on screen for the developer, not the
+player, and switched on and off with a key. It shows what's happening inside the program while
+you play, without pausing it or filling the console. Here it shows the number of bullets in the
+array and the frame rate.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

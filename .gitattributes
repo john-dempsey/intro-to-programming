@@ -1,0 +1,15 @@
+# Normalise line endings to LF for everything Git considers text, on both
+# checkin and checkout — regardless of a contributor's local core.autocrlf
+# setting. Without this, a file edited on Windows can end up with CRLF line
+# endings; that's usually harmless for a .js file, but Docker's COPY (and
+# the docker-compose.override.yml bind mount) copy files byte-for-byte into
+# a Linux container as-is, so CRLF creeps in there too. That's mostly a
+# latent risk on this project right now (no shell scripts yet — a CRLF
+# shebang line is the classic case: `#!/bin/sh\r` fails to exec), but it
+# also matters for anyone reading files line-by-line, and for keeping git
+# diffs/Docker layer hashes stable instead of churning on line-ending-only
+# changes.
+* text=auto eol=lf
+
+# Windows batch files, if any get added, genuinely need CRLF.
+*.bat text eol=crlf

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 — A createBall() Function – Explore &amp; modify · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="03-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="05-projects.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">07 — A createBall() Function</a></p>
+<h1>Explore &amp; modify</h1>
+<p>Working copy: <code>exercises/07-create-ball-function/</code>.</p>
+<ol>
+<li>Add a fifth parameter to <code>createBall()</code> (e.g. a <code>label</code> string), store it as a property, and
+   pass a label when you call it in <code>setup()</code>. Display the label near the ball with <code>text()</code>
+   every time the ball itself is displayed.</li>
+<li>Call <code>createBall()</code> a second time in <code>setup()</code>, storing the result in a second variable (e.g.
+   <code>ball2</code>), giving it a different random <code>color()</code> object from the first ball's. You'll need a
+   second display step to show it — add one, and confirm both balls appear when you click. Note
+   in a comment what's awkward about having two separate ball variables as more get added.</li>
+<li>Look up <code>random()</code> in the p5 reference. Instead of picking a random colour once in <code>setup()</code>,
+   modify <code>keyPressed()</code> so that every time a key is pressed, each ball's <code>col</code> property is
+   replaced with a new random <code>color()</code> object — random red, green and blue values, with alpha
+   (150) kept fixed. <code>keyPressed()</code> should still clear the background as before; click again
+   afterwards and confirm each ball reappears in its new colour.</li>
+</ol>
+<p><img alt="Ball A and ball B, labelled, in a random green shade from one run" src="../images/07-random-colour-1.png" loading="lazy"> <img alt="The same sketch reloaded — ball A and ball B now a different random shade" src="../images/07-random-colour-2.png" loading="lazy"></p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

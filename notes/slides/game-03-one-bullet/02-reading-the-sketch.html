@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 03 — Firing a Bullet – Reading the sketch · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-03-one-bullet/01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-03-one-bullet/03-how-i-developed-this.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 03 — Firing a Bullet</a></p>
+<h1>Reading the sketch</h1>
+<h3>Changes to <code>Ship</code></h3>
+<pre class="highlight"><code class="language-js">constructor(x, y, bodyWidth, bodyHeight, speed, shipColour) {
+    // ...
+    this.cannonWidth = bodyWidth / 5;
+    this.cannonHeight = bodyHeight / 2;
+}
+
+// The y position of the top of the cannon, where bullets come from.
+cannonTopY() {
+    return this.y - this.bodyHeight / 2 - this.cannonHeight;
+}</code></pre>
+<p>The cannon's size used to be worked out inside <code>display()</code>. Now
+<code>cannonTopY()</code> needs it too, so it's worked out once, in the constructor, and stored as a
+property. The top of the cannon is the ship's centre, minus half the body, minus the
+cannon.</p>
+<h3>The <code>Bullet</code> class</h3>
+<pre class="highlight"><code class="language-js">move() {
+    this.y -= this.speed;    // up the screen, so y gets smaller
+}
+
+isOffScreen() {
+    return this.y + this.bulletHeight / 2 &lt; 0;    // bottom edge past the top
+}</code></pre>
+<p>A bullet only goes up, so it needs a single <code>speed</code> rather than <code>vx</code> and
+<code>vy</code>. It's off screen once its <em>bottom</em> edge has passed the top, so the whole
+bullet has gone, not just half of it.</p>
+<h3>Firing</h3>
+<pre class="highlight"><code class="language-js">function fireBullet() {
+    // Only fire if there isn't already a bullet on screen.
+    if (bullet === null) {
+        let startY = ship.cannonTopY() - BULLET_HEIGHT / 2;
+        bullet = new Bullet(ship.x, startY, BULLET_WIDTH, BULLET_HEIGHT, BULLET_SPEED, color(255));
+    }
+}</code></pre>
+<p>The new bullet's bottom edge sits exactly on top of the cannon. If a bullet already exists,
+nothing happens.</p>
+<h3>Each frame</h3>
+<pre class="highlight"><code class="language-js">function updateBullet() {
+    if (bullet !== null) {
+        bullet.move();
+
+        if (bullet.isOffScreen()) {
+            bullet = null;   // gone, so the player can fire again
+        } else {
+            bullet.display();
+        }
+    }
+}</code></pre>
+<p>Setting <code>bullet</code> back to <code>null</code> is what allows the next shot: it makes the
+check in <code>fireBullet()</code> true again.</p>
+<h3>The new tests</h3>
+<pre class="highlight"><code class="language-js">function testOnlyOneBullet() {
+    bullet = null;
+    fireBullet();
+    check("firing creates a bullet", bullet !== null, true);
+
+    let firstBullet = bullet;
+    fireBullet();
+    check("firing again while a bullet is on screen does nothing", bullet, firstBullet);
+
+    bullet = null;
+}</code></pre>
+<p>This test uses the game's real <code>bullet</code> variable, so it <strong>cleans up</strong>
+after itself by setting it back to <code>null</code>. Otherwise the game would start with a bullet
+already on screen. The second check compares objects: <code>===</code> on two objects is
+<code>true</code> only if they're the very same object, which proves no new bullet was made.</p>
+<p><code>testBulletOffScreen()</code> checks the exact boundary: a 12-pixel bullet at
+<code>y = -6</code> is just touching the top (on screen), and at <code>y = -7</code> it's gone. Bugs
+often hide at boundaries like this.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

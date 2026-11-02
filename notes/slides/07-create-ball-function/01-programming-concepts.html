@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 — A createBall() Function – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">07 — A createBall() Function</a></p>
+<h1>Programming concepts</h1>
+<h3>Function declarations with parameters and <code>return</code></h3>
+<pre class="highlight"><code class="language-js">function createBall(x, y, d, c) {
+    let b = {
+        x: x,
+        y: y,
+        diameter: d,
+        col: c
+    };
+    return b;
+}</code></pre>
+<p><code>createBall</code> is a function declaration with <strong>parameters</strong> — <code>x</code>, <code>y</code>, <code>d</code>, <code>c</code> — names listed in
+parentheses that stand for whatever values the function is called with. Calling
+<code>createBall(320, 180, 150, col)</code> runs the function with <code>x</code> bound to <code>320</code>, <code>y</code> to <code>180</code>, and so
+on. <code>return b;</code> hands a value back to wherever the function was called from — the caller can
+store it, exactly like <code>color(...)</code>'s result was stored in <code>col</code> back in sketch 05. A function
+with no <code>return</code> hands back nothing usable; <code>setup()</code>/<code>draw()</code>/<code>mousePressed()</code> never <code>return</code>
+anything, because p5 doesn't use a return value from them.</p>
+<h3>Parameters are local variables too</h3>
+<p>Like the <code>col</code> declared inside <code>setup()</code> in sketch 06, <code>x</code>, <code>y</code>, <code>d</code> and <code>c</code> exist only for the
+duration of one call to <code>createBall()</code> — but where <code>col</code>'s value came from an assignment written
+inside the function, a parameter's value comes from whatever the caller passed as an argument.
+Every call to <code>createBall()</code> gets its own independent <code>x</code>, <code>y</code>, <code>d</code>, <code>c</code>, regardless of what any
+other call used.</p>
+<h3>A function as a factory</h3>
+<p><code>createBall()</code>'s whole job is to build and hand back an object — a common pattern often called a
+<strong>factory function</strong>. Instead of writing the object literal directly in <code>setup()</code> (as sketch 06
+did), <code>setup()</code> now just calls <code>createBall(...)</code> and stores whatever comes back. The object
+itself is built once, in one place, and can be built again with different arguments any time more
+balls are needed.</p>
+<h3>Passing arguments to customise what's built</h3>
+<p>Each argument to <code>createBall()</code> customises one part of the ball it builds — its position, size,
+or colour. This is the point of parameters: the same function produces a different object
+depending on what it's called with, rather than needing a separate, near-identical block of code
+for every ball.</p>
+<p><strong>Why functions exist at all:</strong> without <code>createBall()</code>, building a second or third ball would mean
+copying the whole <code>{ x: ..., y: ..., diameter: ..., col: ... }</code> block again, with just the numbers
+changed — and fixing a mistake in that shape later would mean finding and fixing every copy.
+Wrapping it in a function means the object-building logic exists in exactly one place, and every
+call site just states <em>what</em> ball it wants, not <em>how</em> to build one. Rule of thumb: reach for a
+function when you're about to write the same (or near-identical) block of code more than once, or
+when a chunk of code does one clearly nameable job — naming and isolating it makes the rest of the
+sketch easier to read even the first time it's called, before a second copy ever comes up.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

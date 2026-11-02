@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00 — Getting Started: How Computer Graphics Work – Drawing modes: CORNER vs CENTER · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="04-drawing-shapes.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="06-colour-models-rgb.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">00 — Getting Started: How Computer Graphics Work</a></p>
+<h1>Drawing modes: CORNER vs CENTER</h1>
+<p>That last point matters enough that p5 lets you change it. <code>rectMode()</code> and <code>ellipseMode()</code>
+control how the position arguments to <code>rect()</code> and <code>ellipse()</code>/<code>circle()</code> are interpreted:</p>
+<pre class="highlight"><code class="language-js">rectMode(CORNER);            // the default: (x, y) is the top-left corner
+rect(50, 50, 120, 80);       // a 120×80 rectangle with its corner at (50, 50)
+
+rectMode(CENTER);
+rect(50, 50, 120, 80);       // the same size rectangle, now centred on the point (50, 50)</code></pre>
+<p>The same applies to <code>ellipse()</code> (and, since <code>circle()</code> is really just an ellipse with equal width
+and height, <code>circle()</code> too) — except its <strong>default is already <code>CENTER</code></strong>, the opposite of
+<code>rect()</code>'s default. That inconsistency is worth knowing about deliberately, rather than
+discovering it by accident: <code>rect(x, y, w, h)</code> and <code>circle(x, y, d)</code> place their shapes
+differently <em>by default</em>, even though both take <code>(x, y)</code> as their first two arguments.</p>
+<pre class="highlight"><code class="language-js">ellipseMode(CORNER);
+ellipse(50, 50, 120, 80);    // now the ellipse's bounding box has its corner at (50, 50)</code></pre>
+<p>A mode set with <code>rectMode()</code>/<code>ellipseMode()</code> is <em>state</em>, exactly like <code>fill()</code> or <code>noStroke()</code> —
+it applies to every matching shape drawn after it, until changed again.</p>
+<p><img alt="Two rectangles, one drawn with rectMode(CORNER) and one with rectMode(CENTER), each with its reference point marked" src="../images/00-rect-mode.png" loading="lazy"></p>
+<p><em>Figure: two identical rectangles side by side, one drawn with <code>rectMode(CORNER)</code> and one with
+<code>rectMode(CENTER)</code> from the same <code>(x, y)</code> coordinates, with the reference point marked on both so
+the difference in placement is visible.</em></p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

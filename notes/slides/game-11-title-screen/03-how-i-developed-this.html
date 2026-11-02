@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 11 — Title Screen and High Score – How I developed this · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-11-title-screen/02-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-11-title-screen/04-exercises.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 11 — Title Screen and High Score</a></p>
+<h1>How I developed this</h1>
+<h3>Planning the states on paper</h3>
+<p>Before writing code, I drew the four states as boxes with arrows between them, labelled with
+what causes each move. That drawing became the table on the concepts page, then
+<code>handleEnter()</code>, then the tests: one check per arrow.</p>
+<h3>The title screen that never appeared</h3>
+<p>My first <code>handleEnter()</code> had two separate <code>if</code>s. After a game, Enter
+went straight into a new game, and the title screen never showed. A logpoint on the first line of
+<code>handleEnter()</code> printed the state once per press, so <code>handleEnter()</code> wasn't
+being called twice. Stepping through it showed both <code>if</code>s running in the same call:
+the first set the state to title, then the second saw title and started a game. Changing the
+second <code>if</code> to <code>else if</code> fixed it. This is the stage's bug hunt.</p>
+<h3>Testing without wiping my own high score</h3>
+<p>The first version of <code>loadHighScore()</code> and <code>saveHighScore()</code> always used
+the real key. My test saved <code>120</code>, and my real high score was replaced with 120. So I
+made the key a parameter: the game passes <code>HIGH_SCORE_KEY</code>, and the test passes a
+test-only key that it deletes at the end.</p>
+<h3>Checking the error handling actually works</h3>
+<p>The <code>catch</code> blocks only run when something goes wrong, so normal play never tests
+them. To check them, I temporarily added <code>throw new Error("Storage is switched off");</code>
+inside each <code>try</code>, finished a game, and checked that a warning appeared and the game
+carried on. Then I removed the <code>throw</code>. I also used DevTools' Application tab to edit
+the saved value to <code>hello</code>, which is how I found I needed the
+<code>Number.isNaN()</code> check: without it, the title screen said "HIGH SCORE NaN".</p>
+<h3>Updating the plan</h3>
+<p>This finished the "should have" list, so I added a "Progress" section to <code>PLAN.md</code>.
+The plan had said "start screen and game-over screen"; the game-over screen already existed, so
+I noted what this stage added instead.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>The page opens on the title screen, showing four aliens and their points.</li>
+<li>Enter starts a game; Enter during a game does nothing.</li>
+<li>After a game, the message shows the score, and says when it's a new high score.</li>
+<li>Enter after a game goes to the title screen, showing the updated high score.</li>
+<li>Reloading the page keeps the high score.</li>
+<li>In a private window, the game still works.</li>
+<li>The console shows only PASS lines and the one expected warning.</li>
+</ul>
+<h3>The commits</h3>
+<pre class="highlight"><code class="language-plaintext">git switch -c title-screen
+git commit -am "Title screen state and handleEnter()"
+git commit -am "Fix Enter skipping the title screen"
+git commit -am "Save high score in localStorage"
+git commit -am "Update plan: should-have features done"
+git switch main
+git merge title-screen
+git branch -d title-screen
+git tag should-haves-done</code></pre>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

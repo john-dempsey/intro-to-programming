@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 05 — A Grid of Aliens – How I developed this · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-05-alien-grid/02-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-05-alien-grid/04-exercises.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 05 — A Grid of Aliens</a></p>
+<h1>How I developed this</h1>
+<h3>One alien first</h3>
+<p>I didn't start with the grid. I drew a single alien in the middle of the screen, adjusted its
+eyes until it looked right, and committed. Only then did I build the grid. If something looked
+wrong in the grid, I already knew the alien itself was fine, so the problem had to be in the
+loop.</p>
+<h3>Decision: one array, not a 2D array</h3>
+<p>A grid of aliens sounds like a 2D array, and I considered one. But I thought about what the
+next stages need to do: move every alien (stage 6), check every alien against every bullet
+(stage 7), and count the aliens left (stage 8). All of those are "every alien", which is one
+simple loop over a single array. A 2D array would need a nested loop every time. When aliens are
+destroyed, removing one from a single array is also easier than leaving a gap in a 2D one.</p>
+<h3>The bug: a diagonal of aliens</h3>
+<p>My first grid showed only four aliens, in a diagonal staircase. The debug overlay said
+<code>aliens in array: 32</code>, so they were all there: some were drawn on top of each other.
+The failing test said:</p>
+<pre class="highlight"><code class="language-plaintext">FAIL: second alien is one column right (expected 130, got 80)</code></pre>
+<p>So <code>x</code> wasn't changing along a row. I'd typed <code>row</code> where I meant
+<code>column</code> in the <code>x</code> calculation. Every alien in a row had the same
+<code>x</code>, so all eight were drawn in the same place. The exercises' bug hunt is the same
+mistake.</p>
+<p>That's why the loop variables are called <code>row</code> and <code>column</code> and not
+<code>i</code> and <code>j</code>: <code>x = ... + row * ...</code> looks wrong when you read it
+back; <code>x = ... + i * ...</code> doesn't.</p>
+<h3>Adjusting the layout</h3>
+<p>With the overlay on, its text overlapped the top-left alien. I moved the grid down by
+changing one constant, <code>ALIEN_GRID_TOP</code>, and every test still passed because they
+use the constants rather than fixed numbers. I also checked there's room for the grid to
+march sideways in stage 6: it's 380 pixels wide on a 640-pixel canvas.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>Four rows of eight, evenly spaced, each row a different colour.</li>
+<li>Every alien has two eyes, in the same place.</li>
+<li>The debug overlay doesn't cover any aliens, and shows 32.</li>
+<li>Bullets still fire, and pass through the aliens (expected, for now).</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits</h3>
+<pre class="highlight"><code class="language-plaintext">git commit -am "Game stage 5: Alien class, one alien"
+git commit -am "Game stage 5: grid of aliens with row colours"</code></pre>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

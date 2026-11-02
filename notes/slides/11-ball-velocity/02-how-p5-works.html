@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11 — Ball Velocity – How p5 works · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="03-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">11 — Ball Velocity</a></p>
+<h1>How p5 works</h1>
+<ul>
+<li><strong>Moving the loop from <code>setup()</code> into <code>draw()</code> is what turns a static picture into an
+  animation.</strong> Sketch 10 called <code>.display()</code> on every ball inside <code>setup()</code> — once. Here, the
+  identical-looking loop is inside <code>draw()</code> instead, and p5 calls <code>draw()</code> ~60 times a second (the
+  render loop, from sketch 02). Each call, every ball moves by one small step (<code>.move()</code>) and is
+  redrawn at its new position (<code>.display()</code>) — individually tiny changes that, repeated 60 times a
+  second, accumulate into visible motion. This is the render loop mechanic from sketch 02, now
+  combined with the objects-in-an-array mechanic from sketches 09–10, for the first time.</li>
+</ul>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

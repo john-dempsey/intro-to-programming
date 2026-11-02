@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13 — Ball Bounce – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">13 — Ball Bounce</a></p>
+<h1>Programming concepts</h1>
+<h3>Boolean expressions and comparisons</h3>
+<pre class="highlight"><code class="language-js">this.x + radius &gt; width</code></pre>
+<p>An expression like this one doesn't produce a number — it produces one of exactly two values,
+<code>true</code> or <code>false</code>, depending on whether the comparison holds. Values of this kind are called
+<strong>booleans</strong>. <code>&gt;</code> (greater than) is a <strong>comparison operator</strong>; others include <code>&lt;</code> (less than),
+<code>&gt;=</code>/<code>&lt;=</code> (greater/less than or equal to), <code>===</code> (equal to) and <code>!==</code> (not equal to). Every
+condition an <code>if</code> checks is a boolean expression like this one.</p>
+<h3>Branching: <code>if</code> / <code>else if</code></h3>
+<p>A generic example, unrelated to balls — grading a score:</p>
+<pre class="highlight"><code class="language-js">if (score &gt;= 90) {
+    console.log("A");
+} else if (score &gt;= 80) {
+    console.log("B");
+} else if (score &gt;= 70) {
+    console.log("C");
+} else {
+    console.log("F");
+}</code></pre>
+<p><code>if</code> runs its block only when its condition is <code>true</code>; otherwise it skips straight past it.
+<code>else if</code> attaches an alternative condition, checked only if every earlier condition in the chain
+was <code>false</code>. <strong>Only one block in the whole chain ever runs</strong> — as soon as one condition is
+<code>true</code>, its block runs and every later <code>else if</code>/<code>else</code> in that chain is skipped, even if their
+conditions would also have been <code>true</code>. With <code>score</code> at <code>85</code>, only <code>"B"</code> prints, even though
+<code>score &gt;= 70</code> is also true — the chain never reaches it. An optional final <code>else</code> (no condition)
+catches everything not matched by any branch above it.</p>
+<p>Sketch 13's chains have no final <code>else</code> — if none of the conditions are true, nothing in that
+chain runs at all, which is exactly right here: a ball that hasn't touched an edge needs no
+correction.</p>
+<h3>Collision detection against a boundary</h3>
+<p>"Has this ball touched the edge of the canvas?" becomes a boolean comparison between the ball's
+position and the canvas edge: <code>this.x + radius &gt; width</code> is true exactly when the ball's right
+edge has gone past the canvas's right edge. Checking a moving object's position against a
+boundary like this, every frame, is the general idea behind <strong>collision detection</strong> — used here
+against the canvas edge, and reused (against other balls, then against rectangles) in the
+exercises below.</p>
+<h3>Reflecting velocity: negation</h3>
+<pre class="highlight"><code class="language-js">this.vx *= -1;</code></pre>
+<p>Multiplying a number by <code>-1</code> flips its sign — a positive velocity becomes negative and vice
+versa. Since <code>vx</code>/<code>vy</code> control direction as well as speed (from sketch 11), flipping their sign
+is exactly what makes a ball bounce: same speed, opposite direction.</p>
+<h3>Correcting position while reacting to a collision</h3>
+<pre class="highlight"><code class="language-js">} else if (this.x + radius &gt; width) {
+    this.x = width - radius;
+    this.vx *= -1;
+}</code></pre>
+<p>Two things happen together on a collision: the velocity is reflected (so the ball starts moving
+the other way), and the position is <strong>clamped</strong> — snapped back to exactly touch the edge
+(<code>width - radius</code>), not left wherever it happened to land. Without the clamp, a fast-moving ball
+could end up drawn partly off-canvas for one frame before bouncing back.</p>
+<h3>Edge case handling</h3>
+<pre class="highlight"><code class="language-js">if (this.diameter &gt; width) {
+    this.x = width / 2;
+    this.vx = 0;
+}</code></pre>
+<p>A ball wider than the canvas itself breaks the ordinary bounce logic — it could never simultaneously
+satisfy "left edge inside the canvas" and "right edge inside the canvas". This extra branch is
+<strong>edge case handling</strong>: a special situation that the general-purpose logic doesn't cover
+correctly, checked and handled separately, before the general case runs.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

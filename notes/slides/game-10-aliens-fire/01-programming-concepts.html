@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 10 — The Aliens Fire Back – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-10-aliens-fire/index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-10-aliens-fire/02-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 10 — The Aliens Fire Back</a></p>
+<h1>Programming concepts</h1>
+<h3>A chance each frame</h3>
+<pre class="highlight"><code class="language-js">if (aliens.length &gt; 0 &amp;&amp; random() &lt; ALIEN_FIRE_CHANCE) {</code></pre>
+<p><code>random()</code> with no arguments returns a number from 0 up to (but not including) 1.
+It's below 0.02 about 2% of the time. <code>draw()</code> runs 60 times a second, so on average an
+alien fires 60 &times; 0.02 = 1.2 times a second, but at unpredictable moments.</p>
+<p><code>random()</code> given an <em>array</em> returns one item from it, chosen at random:
+<code>random(aliens)</code> picks the shooter.</p>
+<p>The check <code>aliens.length &gt; 0</code> comes first. With no aliens left,
+<code>random(aliens)</code> would have nothing to pick. Because <code>&amp;&amp;</code> stops as
+soon as one side is false, <code>random()</code> isn't even called when the array is empty.</p>
+<h3>Randomness makes testing harder</h3>
+<p>A test needs to know what result to expect, and random code gives a different result each
+time. Two ways round it are used here:</p>
+<ul>
+<li><strong>Split the random decision from the action.</strong> <code>maybeAlienFires()</code>
+decides <em>whether</em> and <em>which</em>, using <code>random()</code>.
+<code>alienFires(shooter)</code> does the firing, with no randomness, so it can be tested with a
+specific alien. (The same split as <code>readDirection()</code> and <code>move()</code> in stage
+2.)</li>
+<li><strong><code>randomSeed()</code></strong> makes <code>random()</code> produce the same
+sequence of numbers every time the program runs. That's very useful for debugging: a bug that
+only happens "sometimes" happens the same way every run.</li>
+</ul>
+<h3>One class, two directions: velocity</h3>
+<p>Up to now, <code>Bullet</code> had a <code>speed</code> and always moved up. Alien bullets move
+down. Rather than writing a second, almost identical class, <code>Bullet</code> now has a vertical
+<strong>velocity</strong>, <code>vy</code>, exactly like <code>vx</code>/<code>vy</code> on the
+balls in sketch 11:</p>
+<pre class="highlight"><code class="language-js">move() {
+    this.y += this.vy;    // negative vy: up the screen; positive vy: down
+}</code></pre>
+<p>The player's bullets are created with <code>-BULLET_SPEED</code>, the aliens' with
+<code>ALIEN_BULLET_SPEED</code>.</p>
+<h3>An event that should happen once</h3>
+<p>A bullet overlaps the ship for several frames as it passes through. If every one of those
+frames cost a life, one bullet would take all three. When the ship is hit, every alien bullet
+is removed, which ends the overlap straight away and gives the player a moment to recover.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 09 — Score – How I developed this · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-09-score/02-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-09-score/04-exercises.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 09 — Score</a></p>
+<h1>How I developed this</h1>
+<h3>A branch for the feature</h3>
+<p>Before writing anything, I made a branch:</p>
+<pre class="highlight"><code class="language-plaintext">git switch -c score</code></pre>
+<p>Everything below happened on that branch. <code>main</code> kept the stage 8 game, working,
+the whole time.</p>
+<h3>The parameter I forgot to pass</h3>
+<p>I added <code>pointsList</code> to <code>createAlienGrid()</code> and updated the call in
+<code>resetGame()</code>. When I ran the game, the tests crashed:</p>
+<pre class="highlight"><code class="language-plaintext">A test crashed: Cannot read properties of undefined (reading 'length')</code></pre>
+<p>The tests called <code>createAlienGrid()</code> with three arguments, so
+<code>pointsList</code> was <code>undefined</code>, and <code>pointsList.length</code> failed. The
+error was reported inside <code>createAlienGrid()</code>, but the cause was in the tests. I
+searched the project for <code>createAlienGrid(</code> (Ctrl+Shift+F in VS Code) and found four
+calls in <code>tests.js</code> that needed updating.</p>
+<p>Whenever you change a function's parameters, search for every call to it.</p>
+<h3>The bug the tests missed</h3>
+<p>With the tests passing, I played the game. The score flickered: it showed 10 or 20 for a
+moment after a hit, then went back to 0. Every test passed.</p>
+<p>I added <code>score</code> to the debugger's <strong>Watch</strong> panel and stepped through
+<code>updateGame()</code>. The line was:</p>
+<pre class="highlight"><code class="language-js">score = handleCollisions(bullets, aliens);</code></pre>
+<p><code>=</code> instead of <code>+=</code>. Every frame, the score was <em>replaced</em> by that
+frame's points, which is usually 0. One character.</p>
+<p>The tests didn't catch it because they test <code>handleCollisions()</code>, which was correct.
+The bug was in the line that <em>uses</em> it, inside <code>updateGame()</code>, which no test
+calls. Tests only check the code they actually run. The bug hunt in this stage's exercises is
+this same bug, and asks how you could make that line testable.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>The score starts at 0, top right.</li>
+<li>Each row scores what it should: 30, 20, 20, 10.</li>
+<li>The score keeps growing, and never drops back.</li>
+<li>A perfect game scores 640.</li>
+<li>The end-of-game message shows the final score.</li>
+<li>Enter starts a new game with a score of 0.</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits, and the merge</h3>
+<pre class="highlight"><code class="language-plaintext">git commit -am "Add points to aliens, by row"
+git commit -am "handleCollisions returns points; show score"
+git commit -am "Fix score being replaced instead of added to"
+git switch main
+git merge score
+git branch -d score</code></pre>
+<p>Nothing had changed on <code>main</code> while I worked, so the merge was a
+<strong>fast-forward</strong>: Git just moved <code>main</code> forward to include the three new
+commits.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 06 — The Alien March – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-06-alien-march/index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-06-alien-march/02-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 06 — The Alien March</a></p>
+<h1>Programming concepts</h1>
+<h3>Group behaviour: one decision for everyone</h3>
+<p>In sketch 13, each ball checked its own position and reversed its own velocity. That's right
+for balls, which move independently. The aliens move as one formation, so the decision "should we
+turn round?" is made <strong>once, for the whole group</strong>, and then every alien does the
+same thing.</p>
+<p>So the direction isn't stored in each alien. There's one variable for the whole formation:</p>
+<pre class="highlight"><code class="language-js">let alienDirection = 1;   // 1 = formation moving right, -1 = moving left</code></pre>
+<h3>"Is any item...?": searching with an early <code>return</code></h3>
+<pre class="highlight"><code class="language-js">for (let i = 0; i &lt; alienList.length; i++) {
+    if (/* this alien is at an edge */) {
+        return true;   // one alien is enough: no need to check the rest
+    }
+}
+return false;          // only reached if no alien was at an edge</code></pre>
+<p><code>return</code> ends the whole function immediately, even from inside a loop. As soon as
+one alien is found at an edge, the answer is <code>true</code> and there's no need to check the
+others. <code>return false</code> is <em>after</em> the loop, so it's only reached once every
+alien has been checked. Putting <code>return false</code> inside the loop is a common mistake: the
+function would give up after checking only the first item.</p>
+<h3>Looking ahead</h3>
+<p>The edge check asks where each alien is <em>about to be</em> (<code>x</code> plus one step),
+not where it is now. That way the formation turns round <em>before</em> any alien crosses the
+edge, so the aliens never end up past the edge at all. The "How I developed this" page shows
+what goes wrong without this.</p>
+<h3>A function that returns the new value</h3>
+<pre class="highlight"><code class="language-js">alienDirection = marchAliens(aliens, alienDirection);</code></pre>
+<p><code>marchAliens()</code> is given the current direction and returns the direction for the
+next frame. It doesn't change the global variable itself; the caller stores the result. That
+means a test can give it any formation and any direction, and check exactly what comes back,
+without touching the game.</p>
+<h3><code>||</code> in a condition</h3>
+<pre class="highlight"><code class="language-js">if (nextX - halfWidth &lt; 0 || nextX + halfWidth &gt; width) {</code></pre>
+<p>"Past the left edge <em>or</em> past the right edge." One check covers both directions, so the
+same function works whichever way the formation is moving.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

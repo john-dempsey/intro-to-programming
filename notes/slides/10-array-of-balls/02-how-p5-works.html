@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 — An Array of Balls – How p5 works · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="03-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">10 — An Array of Balls</a></p>
+<h1>How p5 works</h1>
+<ul>
+<li><strong>Everything here still runs inside <code>setup()</code> — called once.</strong> The <code>for</code> loop that builds and
+  displays all five balls is entirely inside <code>setup()</code>, and p5 only calls <code>setup()</code> <strong>once</strong>, at
+  the start. So all five balls are drawn a single time when the sketch loads, and then nothing
+  further happens — <code>draw()</code> is empty, exactly as in sketch 01. This is the setup-once/draw-
+  repeatedly split from sketch 01, seen concretely from the "only <code>setup</code> runs" side.</li>
+<li><strong><code>text()</code> is a drawing call, <code>textAlign()</code> is a style call.</strong> <code>text(str, x, y)</code> draws a string
+  onto the canvas at a given position — a drawing call just like <code>circle()</code>, and it uses whatever
+  fill colour is currently set, exactly the same way <code>circle()</code> does. <code>textAlign(CENTER, CENTER)</code>
+  is a <em>style</em> call (like <code>noStroke()</code> or <code>fill()</code>): it doesn't draw anything itself, it sets how
+  later <code>text()</code> calls position their text relative to the <code>(x, y)</code> they're given — here, centred
+  on that point rather than starting from it.</li>
+</ul>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

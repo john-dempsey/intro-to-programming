@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00 — Getting Started: How Computer Graphics Work – HSB and HSL: colour by hue, saturation and brightness · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="07-cmyk-colour-on-paper.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="09-grayscale-colour.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">00 — Getting Started: How Computer Graphics Work</a></p>
+<h1>HSB and HSL: colour by hue, saturation and brightness</h1>
+<p>RGB is how a screen thinks about colour; it's not always how a <em>person</em> thinks about colour. If
+you want "the same blue, but darker" in RGB, you have to work out new red, green <em>and</em> blue values
+by hand. <strong>HSB</strong> (Hue, Saturation, Brightness — sometimes called HSV) and the closely related
+<strong>HSL</strong> (Hue, Saturation, Lightness) describe colour in a way closer to how people actually
+choose colours:</p>
+<ul>
+<li><strong>Hue</strong> — which colour, as a position around a colour wheel (<code>0</code>–<code>360</code>, since a wheel is a
+  circle of degrees): <code>0</code> is red, <code>120</code> is green, <code>240</code> is blue, and so on back around to red.</li>
+<li><strong>Saturation</strong> — how vivid or washed-out the colour is: <code>100</code> is the fully saturated pure hue,
+  <code>0</code> is completely washed out to grey.</li>
+<li><strong>Brightness / Lightness</strong> — how light or dark the colour is: pushing this toward <code>0</code> fades
+  any colour to black.</li>
+</ul>
+<p>p5 uses RGB by default, but <code>colorMode()</code> switches what <code>fill()</code>, <code>stroke()</code> and <code>background()</code>
+expect:</p>
+<pre class="highlight"><code class="language-js">colorMode(HSB, 360, 100, 100); // hue 0-360, saturation 0-100, brightness 0-100
+fill(200, 80, 90);              // a bright, vivid, sky blue
+fill(200, 20, 90);               // the *same hue*, but pale/washed out
+fill(200, 80, 30);               // the *same hue*, but dark</code></pre>
+<p>Changing just one number — saturation or brightness — while leaving hue fixed is exactly the kind
+of thing that's awkward in RGB (all three of red, green and blue usually have to change together)
+but direct in HSB. <code>colorMode(RGB)</code> switches back to the default at any point.</p>
+<p><img alt="An HSB colour cylinder, with hue around the rim, saturation from centre to edge, and brightness from bottom to top" src="../images/00-hsb.png" loading="lazy"></p>
+<p><em>Figure: an HSB colour wheel/cylinder — hue running around the outside, saturation running from
+the centre (grey) to the edge (vivid), brightness running from the bottom (black) to the top
+(full colour).</em></p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

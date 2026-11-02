@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 — Drawing a Circle – Explore &amp; modify · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="03-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="05-projects.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">01 — Drawing a Circle</a></p>
+<h1>Explore &amp; modify</h1>
+<p>Working copy: <code>exercises/01-drawing-a-circle/</code>.</p>
+<ol>
+<li>Change the circle's <code>x</code>, <code>y</code>, <code>d</code> and colour arguments — predict the result before running,
+   then check. Add a second <code>fill()</code>/<code>circle()</code> pair to draw a second circle elsewhere on the
+   canvas.</li>
+<li>Move the <code>background(230)</code> call to <em>after</em> the <code>circle()</code> call (still inside <code>setup()</code>) and
+   run it. Explain in a comment why the circle disappears.</li>
+<li>Add <code>console.log("draw ran")</code> inside the empty <code>draw()</code>. Open the browser console and confirm
+   p5 really does call <code>draw()</code> continuously, even though <code>setup()</code> already drew everything and
+   nothing changes on screen.</li>
+<li>Give the circle a black border: add <code>stroke(0)</code> before the <code>circle()</code> call and remove (or
+   comment out) <code>noStroke()</code>.</li>
+</ol>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

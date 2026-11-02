@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 10 — The Aliens Fire Back – How I developed this · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-10-aliens-fire/02-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-10-aliens-fire/04-exercises.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 10 — The Aliens Fire Back</a></p>
+<h1>How I developed this</h1>
+<h3>Refactor first: velocity</h3>
+<p>On a new branch, before adding any alien firing, I changed <code>Bullet</code> from
+<code>speed</code> to <code>vy</code>. The game should behave exactly as before, so I ran the
+tests:</p>
+<pre class="highlight"><code class="language-plaintext">FAIL: bullet moves up by its speed (expected 292, got 308)</code></pre>
+<p>The tests still created bullets with <code>8</code>, which now meant "8 pixels <em>down</em>".
+I changed the test helpers to <code>-8</code>, and searched for every <code>new Bullet(</code> to
+check the game's own bullets too. Once everything passed, I committed the refactor on its own.
+Then I started on the feature.</p>
+<h3>Bullets that never went away</h3>
+<p>The aliens fired, the bullets fell, and the game seemed fine. After a minute I turned on the
+debug overlay:</p>
+<pre class="highlight"><code class="language-plaintext">alien bullets in array: 71</code></pre>
+<p>The same problem as stage 4, upside down: <code>isOffScreen()</code> only checked the top, so
+falling bullets were never removed. Stage 3's exercises had asked exactly this question. I added
+the <code>pastBottom</code> check, and a test for it.</p>
+<h3>Three lives, one bullet</h3>
+<p>My first version of being hit was:</p>
+<pre class="highlight"><code class="language-js">if (shipIsHit(alienBullets, ship.getBounds())) {
+    lives -= 1;
+}</code></pre>
+<p>The first time I was hit, the game ended. I set a breakpoint on <code>lives -= 1</code> and it
+paused three frames in a row, with the <em>same</em> bullet each time, a little lower. A bullet
+takes several frames to pass through the ship, and every one of those frames cost a life. Clearing
+the alien bullets after a hit fixed it, and also gives the player a moment to recover.</p>
+<h3>Debugging something random</h3>
+<p>Some games felt much harder than others, and I wanted to check that the firing rate was
+right. Each game was different, so it was hard to compare. Adding <code>randomSeed(1)</code> to
+<code>setup()</code> while I tested made every game identical, as long as I didn't fire, so I
+could count shots and compare changes fairly. I removed it once I was done; with it, every game
+would be the same.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>Aliens fire about once a second, from random aliens.</li>
+<li>Alien bullets fall straight down and disappear at the bottom (overlay count goes back
+down).</li>
+<li>Being hit loses exactly one life and clears the alien bullets.</li>
+<li>Losing the third life ends the game with "GAME OVER".</li>
+<li>Enter starts a new game with three lives.</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits</h3>
+<pre class="highlight"><code class="language-plaintext">git switch -c aliens-fire
+git commit -am "Refactor: Bullet uses velocity vy instead of speed"
+git commit -am "Aliens fire at random; bullets removed at the bottom too"
+git commit -am "Three lives; clear alien bullets after a hit"
+git switch main
+git merge aliens-fire
+git branch -d aliens-fire</code></pre>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

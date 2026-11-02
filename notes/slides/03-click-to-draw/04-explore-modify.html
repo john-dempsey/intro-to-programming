@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 — Click to Draw – Explore &amp; modify · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="03-reading-the-sketch.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="05-projects.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">03 — Click to Draw</a></p>
+<h1>Explore &amp; modify</h1>
+<p>Working copy: <code>exercises/03-click-to-draw/</code>.</p>
+<ol>
+<li>Add a <code>console.log()</code> inside both <code>draw()</code> and <code>mousePressed()</code>, with different messages. Move
+   the mouse around without clicking, then click a few times, and use the console output to
+   confirm exactly which function fires on which event.</li>
+<li>p5 also provides a <code>doubleClicked()</code> event callback function, wired up exactly like
+   <code>mousePressed()</code> and <code>keyPressed()</code>. Look it up, then move the circle-stamping code out of
+   <code>mousePressed()</code> and into <code>doubleClicked()</code>, so a circle is only stamped when the mouse is
+   double-clicked.</li>
+<li>p5 also provides <code>mouseDragged()</code> and <code>mouseReleased()</code> event callback functions, wired up the
+   same way. Add both, and a <code>console.log()</code> in each of <code>mousePressed()</code>, <code>mouseDragged()</code> and
+   <code>mouseReleased()</code> printing <code>"pressed"</code>, <code>"dragged"</code> and <code>"released"</code> respectively — then press,
+   drag and release the mouse and watch the console to see each event fire separately.</li>
+</ol>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

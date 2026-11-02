@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 — Circle Follows the Mouse – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="02-how-p5-works.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">02 — Circle Follows the Mouse</a></p>
+<h1>Programming concepts</h1>
+<h3><code>console.log()</code> — printing a value to inspect it</h3>
+<pre class="highlight"><code class="language-js">console.log(mouseX, mouseY);</code></pre>
+<p><code>console.log()</code> is a function (built into JavaScript itself, not p5) that prints whatever
+arguments it's given to the browser's <strong>developer console</strong> — a panel separate from the canvas,
+opened from the browser's dev tools. It doesn't affect what's drawn; it's a way to <em>look inside</em>
+a running program and check what values it's actually working with, rather than guessing from
+the visible output alone. This is the first debugging technique students meet, and one they'll
+reach for constantly: whenever the code isn't doing what's expected, printing a suspicious value
+is usually the fastest way to find out why.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

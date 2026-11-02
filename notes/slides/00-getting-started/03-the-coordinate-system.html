@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00 — Getting Started: How Computer Graphics Work – The coordinate system · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="02-the-canvas-your-drawing-surface.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="04-drawing-shapes.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">00 — Getting Started: How Computer Graphics Work</a></p>
+<h1>The coordinate system</h1>
+<p>To draw anything, code needs a way to say <em>where</em> on the canvas it goes. p5 (like almost every
+computer graphics system) uses a <strong>coordinate system</strong> with two numbers, <code>x</code> and <code>y</code>, that
+together pinpoint one location:</p>
+<ul>
+<li><code>x</code> is the distance across, measured from the <strong>left edge</strong>. It increases as you move right.</li>
+<li><code>y</code> is the distance down, measured from the <strong>top edge</strong>. It increases as you move <em>down</em> the
+  canvas.</li>
+<li>The point <code>(0, 0)</code> — where both are zero — is the <strong>top-left corner</strong> of the canvas.</li>
+</ul>
+<pre class="highlight"><code class="language-js">createCanvas(640, 360);
+circle(320, 180, 50); // centred in the middle of the canvas
+circle(0, 0, 50);     // centred on the top-left corner
+circle(640, 360, 50); // centred on the bottom-right corner</code></pre>
+<p>If you've done coordinate geometry in maths, this will feel almost right and subtly wrong: maths
+graphs usually put <code>(0, 0)</code> at the bottom-left, with <code>y</code> increasing <em>upward</em>. Screen coordinates
+flip the <code>y</code> axis — <code>y</code> grows downward instead. This isn't a p5 quirk; it comes from how early
+displays drew images one row at a time starting from the top, and it has stuck ever since. It's
+worth deliberately unlearning the maths-graph instinct now, because every position, every
+movement, and every collision check in this module depends on <code>y</code> meaning "down".</p>
+<p><img alt="Graph paper places (0,0) at the centre with y increasing upward; a computer screen places (0,0) at the top-left corner with y increasing downward" src="../images/00-graph-paper-vs-computer-screen.png" loading="lazy"></p>
+<p><em>Figure: graph paper (left) puts the origin in the middle, with both axes running in the
+"expected" mathematical directions and negative values in three of the four quadrants; a computer
+screen (right) puts the origin at the top-left corner, with <code>x</code> and <code>y</code> both only ever positive,
+and <code>y</code> increasing </em>downward<em>.</em></p>
+<p><img alt="Origin at top-left, x increasing right, y increasing down" src="../images/00-coordinate-system.jpg" loading="lazy"></p>
+<p><em>Figure: a diagram of a 640×360 canvas with the origin <code>(0, 0)</code> marked at the top-left corner, an
+arrow labelled <code>x</code> pointing right, an arrow labelled <code>y</code> pointing down, and a point plotted at
+<code>(320, 180)</code>.</em></p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game 11 — Title Screen and High Score – Programming concepts · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="../game-11-title-screen/index.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="../game-11-title-screen/02-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">Game 11 — Title Screen and High Score</a></p>
+<h1>Programming concepts</h1>
+<h3>Four states</h3>
+<table>
+<tr><th>From</th><th>To</th><th>When</th></tr>
+<tr><td>title</td><td>playing</td><td>Enter</td></tr>
+<tr><td>playing</td><td>won</td><td>no aliens left</td></tr>
+<tr><td>playing</td><td>lost</td><td>no lives left, or an alien reaches the ship</td></tr>
+<tr><td>won or lost</td><td>title</td><td>Enter</td></tr>
+</table>
+<p>Enter now does different things in different states, so it has its own function,
+<code>handleEnter()</code>. Each row of the table with "Enter" in it is one branch of that
+function, and one check in <code>testEnterChangesState()</code>.</p>
+<h3><code>if</code> / <code>else if</code> versus two <code>if</code>s</h3>
+<pre class="highlight"><code class="language-js">if (gameState === STATE_WON || gameState === STATE_LOST) {
+    gameState = STATE_TITLE;
+} else if (gameState === STATE_TITLE) {
+    resetGame();
+}</code></pre>
+<p>The first branch <em>changes</em> <code>gameState</code> to the very value the second branch
+checks for. With <code>else if</code>, only one branch runs, so the title screen appears. With two
+separate <code>if</code>s, both would run one after the other: the title screen would be skipped
+and a new game would start straight away. Compare <code>readDirection()</code> in stage 2, where
+two separate <code>if</code>s were exactly what was needed, because both keys had to be
+checked.</p>
+<h3>Saving data: <code>localStorage</code></h3>
+<p>Variables disappear when the page is closed. <code>localStorage</code> is storage the browser
+keeps for each website, even after it's closed:</p>
+<pre class="highlight"><code class="language-js">localStorage.setItem("spaceInvadersHighScore", 640);       // save
+let saved = localStorage.getItem("spaceInvadersHighScore");  // load: "640", or null</code></pre>
+<p>Two things to know:</p>
+<ul>
+<li>It stores <strong>text</strong>. Save <code>640</code> and you get back the string
+<code>"640"</code>. <code>Number(saved)</code> turns it back into a number. If the text isn't a
+number, <code>Number()</code> gives <code>NaN</code>, which <code>Number.isNaN()</code> can
+check for.</li>
+<li><code>getItem()</code> returns <code>null</code> if nothing has been saved under that name
+yet, as on the very first visit.</li>
+</ul>
+<h3>Error handling: <code>try</code> / <code>catch</code></h3>
+<p>You met <code>try</code>/<code>catch</code> in stage 1, protecting the tests. Here it protects
+the game from something outside its control: some browsers, or settings, don't allow
+<code>localStorage</code>, and using it causes an error. Without <code>catch</code>, that error
+would stop the game at the moment it tried to save the high score.</p>
+<pre class="highlight"><code class="language-js">try {
+    localStorage.setItem(storageKey, scoreToSave);
+} catch (error) {
+    console.warn("Couldn't save the high score: " + error.message);
+}</code></pre>
+<p>Good error handling asks: <em>if this fails, what's the most sensible thing to do?</em> Here:
+carry on playing without saving, and leave a message in the console for the developer.
+<code>console.warn()</code> prints in yellow, for problems that aren't serious enough to be red
+errors.</p>
+<h3>Code that runs once when a state changes</h3>
+<p><code>endGame()</code> must run exactly once per game, not every frame. Because
+<code>updateGame()</code> only runs while playing, checking "has the state just stopped being
+playing?" at the end of <code>updateGame()</code> can only be true once.</p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 — Drawing a Circle – How p5 works · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="01-programming-concepts.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="03-reading-the-sketch.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">01 — Drawing a Circle</a></p>
+<h1>How p5 works</h1>
+<p>p5.js is a JavaScript library for drawing and animation. It works differently from a plain
+script that just runs top to bottom once — understanding its execution model is the single most
+important thing for being able to <em>read</em> a sketch and predict what it will do before running it.</p>
+<ul>
+<li><strong>p5 calls your functions for you.</strong> Loading the sketch doesn't run <code>setup()</code> or <code>draw()</code>
+  directly — it defines them. p5 itself decides when to call them, by name. You never write
+  <code>setup();</code> anywhere; p5 finds the function you named <code>setup</code> and calls it for you.</li>
+<li><strong>The lifecycle has two parts.</strong> p5 calls <code>setup()</code> exactly <strong>once</strong>, when the sketch starts.
+  Then it calls <code>draw()</code> automatically and repeatedly — by default about <strong>60 times a second</strong> —
+  for as long as the sketch keeps running. In this sketch <code>draw()</code> is empty, so nothing visible
+  happens after <code>setup()</code> finishes, but p5 is still calling it, 60 times a second, doing nothing.
+  (Later sketches make good use of this repeated calling — that's how animation happens.)</li>
+<li><strong><code>createCanvas(width, height)</code></strong> creates the rectangular drawing surface the sketch draws
+  onto, and also sets two system variables, <code>width</code> and <code>height</code>, that the rest of the sketch can
+  read later (used from sketch 12 onwards).</li>
+<li><strong>The coordinate system:</strong> <code>(0, 0)</code> is the <strong>top-left</strong> corner of the canvas. <code>x</code> increases
+  moving right, <code>y</code> increases moving <em>down</em> the screen — the opposite of a maths graph, where <code>y</code>
+  increases upward. <code>circle(320, 180, 150)</code> is centred 320 pixels from the left and 180 pixels
+  down from the top.</li>
+<li><strong>The canvas is a persistent bitmap</strong>, not a picture that redraws itself from a description.
+  Whatever is drawn stays exactly where it is, pixel for pixel, until something else draws over
+  it. <code>background(230)</code> works by painting the <em>entire</em> canvas a flat grey — it's not a
+  special "clear" operation, just an ordinary drawing call that happens to cover everything.
+  This matters from sketch 02 onwards, where <code>background()</code> has to be called every frame to stop
+  old frames piling up.</li>
+<li><strong>Style calls vs. drawing calls.</strong> <code>noStroke()</code> and <code>fill(255, 0, 100, 150)</code> don't draw
+  anything themselves — they set <em>state</em>: "don't outline shapes" and "fill shapes with this
+  colour", respectively. That state applies to whatever is drawn <em>after</em> it. <code>circle(320, 180,
+  150)</code> is the actual drawing call — it's the one line in this sketch that puts something on
+  screen, and it uses whatever fill/stroke state was set before it ran. Order matters: calling
+  <code>fill()</code> after <code>circle()</code> would have no visible effect on that circle.</li>
+</ul>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>

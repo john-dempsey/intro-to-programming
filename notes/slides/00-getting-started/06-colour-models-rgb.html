@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00 — Getting Started: How Computer Graphics Work – Colour models: RGB · Programming with p5.js</title>
+<link rel="stylesheet" href="../css/tutorial.css">
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-prev" href="05-drawing-modes-corner-vs-center.html">&laquo; Previous</a>
+  <a class="nav-up" href="../index.html">&#8962; <span>Tutorial Home</span></a>
+  <a class="nav-next" href="07-cmyk-colour-on-paper.html">Next &raquo;</a>
+</nav>
+<main class="page">
+<p class="eyebrow"><a href="index.html">00 — Getting Started: How Computer Graphics Work</a></p>
+<h1>Colour models: RGB</h1>
+<p>A screen pixel produces colour by mixing coloured light — specifically, by combining red, green
+and blue light at different intensities. This is why <strong>RGB</strong> (Red, Green, Blue) is the standard
+way to describe colour on screens, and it's the colour model p5 uses by default. Each channel is a
+number from <code>0</code> (none of that colour) to <code>255</code> (as much as possible):</p>
+<pre class="highlight"><code class="language-js">fill(255, 0, 0);     // pure red
+fill(0, 255, 0);     // pure green
+fill(0, 0, 255);     // pure blue
+fill(255, 255, 0);   // red + green light mixed = yellow
+fill(255, 255, 255); // all three at full strength = white
+fill(0, 0, 0);        // none of any colour = black</code></pre>
+<p>This is called an <strong>additive</strong> colour model, because colours are built by <em>adding</em> light together
+— starting from black (no light at all) and adding red, green and blue light gets you toward
+white. It matches how a screen physically works: each pixel is made of tiny red, green and blue
+light-emitting elements, and what you see is those three lights blending together at a distance.</p>
+<p><img alt="Three overlapping circles of red, green and blue light, mixing additively to white where all three overlap" src="../images/00-rgb.png" loading="lazy"></p>
+<p><em>Figure: three overlapping circles of red, green and blue light, with their pairwise overlaps
+showing yellow, magenta and cyan, and the centre where all three overlap showing white — the
+classic RGB additive mixing diagram.</em></p>
+
+</main>
+<script>document.addEventListener("DOMContentLoaded", function () { hljs.highlightAll(); });</script>
+</body>
+</html>
