@@ -229,14 +229,13 @@ pages (front matter + HTML). The home page contents list has entries for them.
 - The "How I developed this" pages are written as first-person stories built from the code,
   comments and bug hunts. Some details are illustrative (e.g. trying top speeds 6 and 3 in
   stage 12, the frame rate staying at 60 in stage 13); the lecturer should check them.
-- **Known problem in the source, not fixed:** in `src/game/12-speed-up/tests.js` (and later
-  stages, and `exercises/game-12-speed-up/`), the comment in `testAlienSpeed()` says the
-  hand-worked expected speed differs from `alienSpeedFor(8)` in the 16th decimal place, so
-  `check()` would fail. It doesn't: both give exactly 3.32258064516129, so README exercise 3.1
-  ("change checkClose to check... how different are the two numbers?") just passes. Working
-  out the expected value as
-  `ALIEN_START_SPEED + (ALIEN_TOP_SPEED - ALIEN_START_SPEED) * (fullGrid - 8) / (fullGrid - 1)`
-  gives 3.3225806451612905, which really does differ. The notes avoid repeating the claim.
+- **Fixed 2026-11-03:** the comment in `testAlienSpeed()` (stages 12–15, in `src/game/` and
+  in each `exercises/` working copy and bug-hunt copy, 12 files) said the hand-worked expected
+  speed differs from `alienSpeedFor(8)` in the 16th decimal place, but it didn't: both were
+  exactly 3.32258064516129, so README exercise 3.1 just passed. The expected value is now
+  `ALIEN_START_SPEED + (ALIEN_TOP_SPEED - ALIEN_START_SPEED) * (fullGrid - 8) / (fullGrid - 1)`,
+  which gives 3.3225806451612905, so `check()` fails as the comment and exercise say, and
+  `checkClose()` passes. All four stages' tests were run afterwards: only PASS lines.
 
 ## Gotchas
 - **Markdown files get converted.** GitHub Pages turns `.md` files into `.html` even

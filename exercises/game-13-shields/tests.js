@@ -612,8 +612,7 @@ function testAlienSpeed() {
     // way from the start speed to the top speed. Worked out this way, the
     // answer differs from alienSpeedFor()'s in the 16th decimal place, so
     // check() would fail here. Use checkClose() for decimals.
-    let fraction = (fullGrid - 8) / (fullGrid - 1);
-    let expectedSpeed = ALIEN_START_SPEED + fraction * (ALIEN_TOP_SPEED - ALIEN_START_SPEED);
+    let expectedSpeed = ALIEN_START_SPEED + (ALIEN_TOP_SPEED - ALIEN_START_SPEED) * (fullGrid - 8) / (fullGrid - 1);
     checkClose("speed rises steadily as aliens are destroyed", alienSpeedFor(8), expectedSpeed, 0.0001);
 }
 
