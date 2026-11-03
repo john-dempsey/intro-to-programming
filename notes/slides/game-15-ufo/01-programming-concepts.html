@@ -1,0 +1,58 @@
+---
+title: "Programming concepts"
+parent: "Game 15 — The Mystery UFO"
+grand_parent: "Developing a game"
+nav_order: 1
+---
+
+<h1>Programming concepts</h1>
+<h3>Time, not frames: <code>millis()</code></h3>
+<p>Until now, everything has been counted in frames: move 2 pixels per frame, a small chance of
+firing each frame. But "every 15 to 25 seconds" is about time. A game doesn't always run at
+exactly 60 frames a second, so counting frames would make the wait longer on a slow computer.</p>
+<p>p5's <code>millis()</code> gives the number of <strong>milliseconds</strong> (thousandths of a
+second) since the sketch started. 15 seconds is <code>15000</code> milliseconds.</p>
+<h3>Scheduling: "when is the next one due?"</h3>
+<p>To make something happen later, store <em>when</em> it should happen, then keep checking whether
+that time has come:</p>
+<pre class="highlight"><code class="language-js">nextUfoTime = now + random(UFO_MIN_WAIT, UFO_MAX_WAIT);   // decide when
+
+if (now &gt;= nextUfoTime) {                                // check, every frame
+    ufo = spawnUfo();
+}</code></pre>
+<p><code>random(15000, 25000)</code> gives any number from 15000 up to (but not including) 25000,
+so each wait is different. The check uses <code>&gt;=</code>, not <code>===</code>: <code>millis()</code>
+jumps by about 16 each frame, so it would almost never be <em>exactly</em> equal to
+<code>nextUfoTime</code>.</p>
+<h3>Passing the time in</h3>
+<p><code>updateUfo()</code> needs to know the time. It could call <code>millis()</code> itself, but
+then a test would have to really wait 15 seconds to see a UFO arrive. Instead, the time is a
+parameter:</p>
+<pre class="highlight"><code class="language-js">updateUfo(millis());   // the game: the real time
+updateUfo(5000);       // a test: "pretend it's 5 seconds in"</code></pre>
+<p>The function can't tell the difference. The tests can now jump to any moment instantly: just
+before the UFO is due, just after, or ten seconds later. It's the same idea as stage 12's speed
+parameter, and stage 2's <code>move(direction)</code>: a function that's given what it needs is
+easy to test.</p>
+<h3><code>null</code> again: "no UFO"</h3>
+<p>Most of the time there isn't a UFO. As with the single bullet in stage 3, <code>ufo</code> is
+<code>null</code> when there's nothing there, and the code checks <code>ufo === null</code> or
+<code>ufo !== null</code> before using it.</p>
+<h3>Picking from a list: <code>random(array)</code></h3>
+<p>Given an array, p5's <code>random()</code> returns one item from it, chosen at random:</p>
+<pre class="highlight"><code class="language-js">random([50, 100, 150, 300])   // 50, 100, 150 or 300</code></pre>
+<h3>One function, used in two places</h3>
+<p>A UFO goes away in two ways: it flies off the screen, or it's shot. Either way, two things must
+happen: <code>ufo</code> becomes <code>null</code>, and the next UFO is scheduled. Writing those two
+lines in both places would let them get out of step: fix one, forget the other. So they're in one
+function, <code>removeUfo()</code>, and both places call it.</p>
+<h3>Finishing a project</h3>
+<p>The last feature isn't the last job. This stage also:</p>
+<ul>
+<li>adds a <strong>Retrospective</strong> to <code>PLAN.md</code>: what went well, what to do
+differently, and ideas for a version 2;</li>
+<li>writes a <strong>changelog</strong>: every version, in words a player understands (commit
+messages are written for developers);</li>
+<li><strong>tags</strong> the release in Git as <code>v1.0</code>, so it can always be found
+again.</li>
+</ul>

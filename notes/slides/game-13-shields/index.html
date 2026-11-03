@@ -1,0 +1,19 @@
+---
+title: "Game 13 — Shields"
+parent: "Developing a game"
+nav_order: 14
+has_children: true
+---
+
+<h1>Game 13 — Shields</h1>
+<p><a class="btn btn-run" href="../../../src/game/13-shields/index.html" target="_blank" rel="noopener"><span aria-hidden="true">&#9654;&#xFE0E;</span> Run this sketch</a> Sketch: <code>src/game/13-shields/sketch.js</code>
+&middot; Tests: <code>src/game/13-shields/tests.js</code></p>
+<p>Four shields between the ship and the aliens. Each shield is built from small square blocks,
+and a bullet from either side that hits a block destroys it, so the shields wear away during the
+game.</p>
+<p>Bullets now have to be checked against shield blocks as well as aliens. Rather than write the
+collision code a second (and third) time, this stage changes it into one function that works with
+<em>any</em> list of targets. That kind of change, which improves the code without changing what
+the game does, is called <strong>refactoring</strong>, and the tests from stage 7 prove it worked.
+The exercises use the debugger to watch one function do three jobs, and show how to commit just
+part of a file.</p>

@@ -1,0 +1,93 @@
+---
+title: "Reading the sketch"
+parent: "Game 14 — Sound and Sprites"
+grand_parent: "Developing a game"
+nav_order: 2
+---
+
+<h1>Reading the sketch</h1>
+<h3>One more library</h3>
+<pre class="highlight"><code class="language-html">&lt;script src="../../libraries/p5.min.js"&gt;&lt;/script&gt;
+&lt;script src="../../libraries/p5.sound.min.js"&gt;&lt;/script&gt;</code></pre>
+<p>Sound isn't part of p5 itself. <code>p5.sound</code> is an extra library, loaded in
+<code>index.html</code> straight after p5, which adds <code>loadSound()</code>,
+<code>userStartAudio()</code> and the <code>play()</code> method.</p>
+<h3>Loading the sprites</h3>
+<pre class="highlight"><code class="language-js">function preload() {
+    loadSprite("squid", "assets/alien-squid.png");
+    loadSprite("crab", "assets/alien-crab.png");
+    loadSprite("octopus", "assets/alien-octopus.png");
+    loadSprite("ship", "assets/ship.png");
+}</code></pre>
+<p><code>loadSprite()</code> calls <code>loadImage()</code> with the two callbacks from the concepts
+page: one adds the image to <code>sprites</code>, the other prints a warning.</p>
+<h3>Loading the sounds</h3>
+<pre class="highlight"><code class="language-js">function setup() {
+    createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+    noSmooth();   // keep the pixel-art edges sharp when sprites are resized
+    loadSounds();</code></pre>
+<p>The sounds are loaded from <code>setup()</code>, not <code>preload()</code>, so p5 doesn't wait
+for them. The game starts straight away and each sound is added to <code>sounds</code> when it
+arrives. A sound file that's slow, or missing, can never hold up the start.</p>
+<p><code>noSmooth()</code> matters because the sprites are drawn smaller than their files (the crab
+file is 44 &times; 32 pixels, drawn at 30 &times; 20). Normally p5 blends neighbouring pixels when
+resizing, which makes pixel art look blurred.</p>
+<h3>Drawing an alien</h3>
+<pre class="highlight"><code class="language-js">display() {
+    let sprite = sprites[spriteNameForPoints(this.points)];
+    if (sprite) {
+        push();
+        imageMode(CENTER);
+        tint(this.col);
+        image(sprite, this.x, this.y, this.alienWidth, this.alienHeight);
+        pop();
+    } else {
+        this.displayShapes();
+    }
+}</code></pre>
+<ul>
+<li><code>spriteNameForPoints()</code> turns an alien's points into a name: 30 is a squid, 20 a
+crab, 10 an octopus.</li>
+<li><code>imageMode(CENTER)</code> works like <code>rectMode(CENTER)</code>: the image is centred on
+<code>x</code> and <code>y</code>.</li>
+<li>The sprite files are white. <code>tint()</code> colours an image the way <code>fill()</code>
+colours a shape, so each row keeps its own colour, and one file serves both crab rows.</li>
+<li>The old drawing code moved, unchanged, into <code>displayShapes()</code>.</li>
+</ul>
+<h3>Playing the sounds</h3>
+<pre class="highlight"><code class="language-js">let pointsScored = handleCollisions(bullets, aliens);
+if (pointsScored &gt; 0) {
+    playSound(sounds.explosion);
+}
+score += pointsScored;</code></pre>
+<p><code>handleCollisions()</code> returns 0 when nothing was hit, so points mean an explosion.
+<code>fireBullet()</code> ends with <code>playSound(sounds.shoot)</code>, and losing a life plays
+<code>sounds.playerHit</code>. If a sound hasn't loaded, <code>sounds.explosion</code> is
+<code>undefined</code>, and <code>playSound()</code> skips it.</p>
+<h3>The keys</h3>
+<pre class="highlight"><code class="language-js">function keyPressed() {
+    // Browsers don't allow a page to play sound until the user has
+    // pressed a key or clicked. This tells p5 the user has done that.
+    userStartAudio();</code></pre>
+<p>Further down, <strong>M</strong> flips <code>soundOn</code> with <code>!</code>, just as
+<strong>D</strong> does for the debug overlay. When sound is off, the score panel says
+<code>SOUND OFF</code>.</p>
+<h3>The new tests</h3>
+<pre class="highlight"><code class="language-js">function makeFakeSound() {
+    return {
+        timesPlayed: 0,
+        play: function () {
+            this.timesPlayed += 1;
+        }
+    };
+}</code></pre>
+<ul>
+<li><code>testPlaySound()</code> plays a fake with sound on, then off, then plays
+<code>undefined</code> to check that a missing sound doesn't cause an error.</li>
+<li><code>testFiringPlaysSound()</code> swaps the real shoot sound for a fake, fires, checks the
+fake was played once, and puts the real sound back.</li>
+<li><code>testDrawingWithoutSprites()</code> empties <code>sprites</code> and draws a ship and an
+alien, to prove the shapes still work.</li>
+</ul>
+<p>Tests that swap something real for a fake always put the real one back at the end, so the game
+isn't affected.</p>

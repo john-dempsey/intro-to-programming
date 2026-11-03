@@ -1,0 +1,60 @@
+---
+title: "Programming concepts"
+parent: "Game 12 — The Aliens Speed Up"
+grand_parent: "Developing a game"
+nav_order: 1
+---
+
+<h1>Programming concepts</h1>
+<h3>One range to another: <code>map()</code></h3>
+<p>The speed should depend on how many aliens are left: 1 pixel per frame with all 32, rising
+steadily to 4 pixels per frame with just one. That's a question of turning a number in one range
+(32 down to 1) into a number in another range (1 up to 4). p5's <code>map()</code> does exactly
+that:</p>
+<pre class="highlight"><code class="language-js">map(value, start1, stop1, start2, stop2)</code></pre>
+<p>When <code>value</code> is <code>start1</code>, you get <code>start2</code>. When it's
+<code>stop1</code>, you get <code>stop2</code>. In between, you get the number the same fraction
+of the way along. Read the five values in pairs: <code>start1</code> goes with
+<code>start2</code>, and <code>stop1</code> goes with <code>stop2</code>.</p>
+<table>
+<tr><th>Aliens left</th><th>Speed (pixels per frame)</th></tr>
+<tr><td>32</td><td>1.00</td></tr>
+<tr><td>24</td><td>1.77</td></tr>
+<tr><td>16</td><td>2.55</td></tr>
+<tr><td>8</td><td>3.32</td></tr>
+<tr><td>1</td><td>4.00</td></tr>
+</table>
+<p><code>map()</code> doesn't stop at the ends of the range: give it a value outside the first range
+and you get one outside the second. Exercise 5 asks whether that matters here.</p>
+<h3>A constant becomes a parameter</h3>
+<p>Until now, <code>marchAliens()</code> used the constant <code>ALIEN_SPEED</code>. A constant
+can't change while the game runs, so the speed is now a <strong>parameter</strong>:</p>
+<pre class="highlight"><code class="language-js">function marchAliens(alienList, direction, speed) {</code></pre>
+<p><code>marchAliens()</code> doesn't know or care where the speed comes from. The game passes in
+<code>alienSpeedFor(aliens.length)</code>; the tests pass in <code>1</code>. This is the same idea as
+stage 2's <code>move(direction)</code>: a function that is <em>given</em> what it needs is easier
+to reuse and easier to test than one that reaches out for it.</p>
+<h3>Decimals aren't exact</h3>
+<p>Type this into the console:</p>
+<pre class="highlight"><code class="language-js">0.1 + 0.2           // 0.30000000000000004
+0.1 + 0.2 === 0.3   // false</code></pre>
+<p>Computers store most decimal numbers as very close approximations, not exactly. Usually you'd
+never notice, but <code>===</code> notices: two calculations that should give the same answer can
+differ in the last few decimal places. So the tests have a new helper for decimals,
+<code>checkClose()</code>, which passes if the answer is close enough:</p>
+<pre class="highlight"><code class="language-js">function checkClose(description, actual, expected, tolerance) {
+    if (abs(actual - expected) &lt;= tolerance) {
+        console.log("PASS: " + description);
+    } else {
+        console.error("FAIL: " + description + " (expected " + expected + " +/- " + tolerance + ", got " + actual + ")");
+    }
+}</code></pre>
+<p><code>abs()</code> gives the size of a number without its sign, so
+<code>abs(actual - expected)</code> is how far apart the two numbers are, whichever is bigger. The
+<strong>tolerance</strong> is how far apart they're allowed to be. Use <code>check()</code> for
+whole numbers, text and booleans, and <code>checkClose()</code> for decimals that come out of a
+calculation.</p>
+<h3>Numbers you tune by playing</h3>
+<p>Nobody can work out the "right" top speed on paper. It has to be tried, and changed, and tried
+again, ideally by someone who isn't the programmer. Because the two speeds are constants at the
+top of the sketch, tuning them is a one-line change that can't break anything else.</p>

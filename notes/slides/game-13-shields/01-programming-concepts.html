@@ -1,0 +1,54 @@
+---
+title: "Programming concepts"
+parent: "Game 13 — Shields"
+grand_parent: "Developing a game"
+nav_order: 1
+---
+
+<h1>Programming concepts</h1>
+<h3>One function, any kind of target</h3>
+<p>Since stage 7, <code>handleCollisions()</code> has checked bullets against aliens. Shields need
+the same check, twice: player bullets against blocks, and alien bullets against blocks. That's
+three almost identical nested loops.</p>
+<p>Look at what the check actually uses from an alien: only <code>getBounds()</code>. It never
+looks at the alien's colour or points. So if a shield block also has a <code>getBounds()</code>
+method, returning the same kind of object, the same loop works for blocks:</p>
+<pre class="highlight"><code class="language-js">collideBulletsWith(bullets, aliens);          // player bullets against aliens
+collideBulletsWith(bullets, shieldBlocks);    // player bullets against shields
+collideBulletsWith(alienBullets, shieldBlocks);  // alien bullets against shields</code></pre>
+<p>JavaScript doesn't check what kind of object is in the list. When the loop calls
+<code>targetList[targetIndex].getBounds()</code>, all that matters is that the object has a method
+with that name. Stage 15 will use the same function for the UFO.</p>
+<h3>Return what happened; let the caller decide what it means</h3>
+<p>The old function returned points. But a shield block isn't worth any points, so a general
+function can't add them up. Instead, <code>collideBulletsWith()</code> returns an
+<strong>array of the targets that were hit</strong>, and the code that called it decides what to
+do with them. For aliens, that means adding up their points. For shield blocks, it means nothing:
+the blocks are already removed, and the return value is ignored.</p>
+<h3>Refactoring, with the tests as a safety net</h3>
+<p><strong>Refactoring</strong> means changing how code is written without changing what it does.
+<code>handleCollisions()</code> still exists, with the same name, the same parameters and the same
+result. Inside, it's now two lines built from smaller functions. The tests written for it in
+stages 7 and 9 didn't change at all, and they all still pass. That's how you know the refactor
+didn't break anything.</p>
+<p>Refactor first, check the tests pass, commit, and only then add the new feature. If something
+breaks, you'll know whether it was the refactor or the feature.</p>
+<h3>Spacing things evenly</h3>
+<p>To spread 4 shields across a 640-pixel canvas with equal gaps, divide the width into
+<strong>5</strong> equal parts (one more than the number of shields) and put a shield at each
+dividing line:</p>
+<pre class="highlight"><code class="language-js">let centreX = width * (shield + 1) / (shieldCount + 1);</code></pre>
+<table>
+<tr><th><code>shield</code></th><th><code>centreX</code></th></tr>
+<tr><td>0</td><td>640 &times; 1 / 5 = 128</td></tr>
+<tr><td>1</td><td>640 &times; 2 / 5 = 256</td></tr>
+<tr><td>2</td><td>640 &times; 3 / 5 = 384</td></tr>
+<tr><td>3</td><td>640 &times; 4 / 5 = 512</td></tr>
+</table>
+<p>This works for any number of shields: change <code>SHIELD_COUNT</code> and they spread out
+evenly on their own.</p>
+<h3>One array for every block</h3>
+<p>The four shields could have been four arrays. But nothing in the game ever needs to know which
+shield a block belongs to: a bullet either hits a block or it doesn't. So all the blocks go in one
+array, <code>shieldBlocks</code>, and the game handles them with one loop. Store data in the shape
+the code needs, not the shape it looks like on screen.</p>

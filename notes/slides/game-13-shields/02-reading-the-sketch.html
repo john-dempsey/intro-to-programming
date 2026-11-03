@@ -1,0 +1,104 @@
+---
+title: "Reading the sketch"
+parent: "Game 13 — Shields"
+grand_parent: "Developing a game"
+nav_order: 2
+---
+
+<h1>Reading the sketch</h1>
+<h3>The <code>ShieldBlock</code> class</h3>
+<pre class="highlight"><code class="language-js">class ShieldBlock {
+    // x and y are the centre of the block.
+    constructor(x, y, size, blockColour) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.col = blockColour;
+    }
+
+    // The rectangle around the block, for collisions.
+    getBounds() {
+        return {
+            left: this.x - this.size / 2,
+            right: this.x + this.size / 2,
+            top: this.y - this.size / 2,
+            bottom: this.y + this.size / 2
+        };
+    }</code></pre>
+<p>A block is about the simplest class in the game: a square that can draw itself and report its
+rectangle. Its <code>getBounds()</code> returns an object with the same four properties as an
+alien's, which is what lets the collision code treat them the same way.</p>
+<h3>Building one shield</h3>
+<pre class="highlight"><code class="language-js">for (let row = 0; row &lt; SHIELD_ROWS; row++) {
+    for (let column = 0; column &lt; SHIELD_COLUMNS; column++) {
+        let x = firstBlockX + column * SHIELD_BLOCK_SIZE;
+        let y = topY + row * SHIELD_BLOCK_SIZE;
+        blocks.push(new ShieldBlock(x, y, SHIELD_BLOCK_SIZE, blockColour));
+    }
+}</code></pre>
+<p>The same nested loop as the alien grid in stage 5, with blocks packed edge to edge: each one is
+exactly <code>SHIELD_BLOCK_SIZE</code> from the last.</p>
+<h3>Building all four</h3>
+<pre class="highlight"><code class="language-js">for (let shield = 0; shield &lt; shieldCount; shield++) {
+    let centreX = width * (shield + 1) / (shieldCount + 1);
+    let blocks = createShield(centreX, SHIELD_TOP, blockColour);
+    for (let i = 0; i &lt; blocks.length; i++) {
+        allBlocks.push(blocks[i]);
+    }
+}</code></pre>
+<p><code>createShield()</code> returns one shield's blocks in an array. The inner loop copies them
+one by one into <code>allBlocks</code>, so the result is one long array of all 96 blocks
+(4 shields &times; 4 rows &times; 6 columns).</p>
+<h3>The collisions, each frame</h3>
+<pre class="highlight"><code class="language-js">// Shields stop bullets from both sides.
+collideBulletsWith(bullets, shieldBlocks);
+collideBulletsWith(alienBullets, shieldBlocks);
+
+score += handleCollisions(bullets, aliens);</code></pre>
+<p>The return values of the two shield lines aren't used: all that matters is that the bullets and
+blocks are removed.</p>
+<h3>The general collision function</h3>
+<pre class="highlight"><code class="language-js">function collideBulletsWith(bulletList, targetList) {
+    let targetsHit = [];
+
+    for (let bulletIndex = bulletList.length - 1; bulletIndex &gt;= 0; bulletIndex--) {
+        let bulletBounds = bulletList[bulletIndex].getBounds();
+
+        for (let targetIndex = 0; targetIndex &lt; targetList.length; targetIndex++) {
+            if (boundsOverlap(bulletBounds, targetList[targetIndex].getBounds())) {
+                targetsHit.push(targetList[targetIndex]);
+                bulletList.splice(bulletIndex, 1);
+                targetList.splice(targetIndex, 1);
+                break;   // this bullet is gone: stop checking it against other targets
+            }
+        }
+    }
+
+    return targetsHit;
+}</code></pre>
+<p>Compare it with stage 7's <code>handleCollisions()</code>: the loops, the backwards outer loop,
+the two <code>splice()</code>s and the <code>break</code> are all the same. "Alien" has become
+"target", and instead of adding points, it remembers <em>which</em> targets were hit.</p>
+<p>The target is added to <code>targetsHit</code> <em>before</em> it's spliced out of
+<code>targetList</code>. After the splice, <code>targetList[targetIndex]</code> would be a
+different target.</p>
+<h3><code>handleCollisions()</code>, rebuilt</h3>
+<pre class="highlight"><code class="language-js">function handleCollisions(bulletList, alienList) {
+    let aliensHit = collideBulletsWith(bulletList, alienList);
+    return totalPoints(aliensHit);
+}</code></pre>
+<p>The same name, parameters and result as before, so nothing that calls it had to change.
+<code>totalPoints()</code> is a plain loop that adds up the <code>points</code> of each alien in a
+list.</p>
+<h3>The new tests</h3>
+<ul>
+<li><code>testShieldSize()</code>: one shield has the right number of blocks, and is centred.</li>
+<li><code>testShieldsFitTheGap()</code>: the shields sit below the aliens' starting position and
+above the ship.</li>
+<li><code>testCollideReturnsTargetsHit()</code>: a miss returns an empty array; a hit returns the
+target that was hit, and removes it.</li>
+<li><code>testBulletsHitShields()</code>: bullets from both directions destroy a block and are
+used up.</li>
+<li><code>testTotalPoints()</code>: including an empty list, which should give 0.</li>
+</ul>
+<p><code>testResetGame()</code> also checks that a new game rebuilds every shield.</p>

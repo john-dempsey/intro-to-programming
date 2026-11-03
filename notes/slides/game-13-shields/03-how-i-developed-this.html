@@ -1,0 +1,58 @@
+---
+title: "How I developed this"
+parent: "Game 13 — Shields"
+grand_parent: "Developing a game"
+nav_order: 3
+---
+
+<h1>How I developed this</h1>
+<h3>Refactor first</h3>
+<pre class="highlight"><code class="language-plaintext">git switch -c shields</code></pre>
+<p>Before drawing a single shield, I changed the collision code into
+<code>collideBulletsWith()</code> and rebuilt <code>handleCollisions()</code> on top of it. The
+game should behave exactly as before, so I didn't add any tests yet: the old ones were the
+check.</p>
+<h3>One wrong word</h3>
+<p>I renamed <code>alienIndex</code> to <code>targetIndex</code> by hand, line by line. One test
+failed:</p>
+<pre class="highlight"><code class="language-plaintext">FAIL: first survivor is the left alien (expected 100, got 300)</code></pre>
+<p>That's <code>testRightAlienRemoved()</code>, from stage 7: three aliens in a row, one bullet on
+the middle one. The right <em>number</em> of aliens was removed, but the wrong one. In the game,
+shooting an alien in the middle of the grid made one disappear from the top-left corner.</p>
+<p>The test's name told me where to look: whichever alien gets removed. There are two
+<code>splice()</code>s, and I'd written <code>bulletIndex</code> in the second:</p>
+<pre class="highlight"><code class="language-js">targetList.splice(bulletIndex, 1);   // should be targetIndex</code></pre>
+<p>Both variables are numbers, and both are valid indexes, so JavaScript has no way to know it's
+wrong. This is the stage's bug hunt. When a function has two arrays and two index variables, check
+that each index is only ever used with its own array.</p>
+<p>Once every test passed, I committed the refactor on its own, before starting on the shields.</p>
+<h3>Where to put the shields</h3>
+<p>Before choosing <code>SHIELD_TOP</code>, I wrote <code>testShieldsFitTheGap()</code>: the shields
+must start below the lowest row of aliens and end above the ship. Then I tried values until the
+test passed and the gap looked right. The test also protects that gap later: if someone moves the
+aliens or the ship, it will say so.</p>
+<h3>Is 96 blocks too many?</h3>
+<p>Every frame, every bullet is now checked against up to 96 blocks. I wasn't sure whether that
+would slow the game down, so rather than guess, I fired as fast as I could and watched the frame
+rate in the debug overlay. It stayed at 60. I also added the blocks' hitboxes to the overlay, which
+showed that the blocks fit together with no gaps a bullet could slip through.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>Four shields, evenly spaced, between the aliens and the ship.</li>
+<li>A player bullet that hits a shield removes one block and disappears.</li>
+<li>So does an alien bullet.</li>
+<li>Repeated shots wear a hole right through a shield.</li>
+<li>Shooting an alien still destroys the alien that was hit, and scores its points.</li>
+<li>A new game has four complete shields.</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits</h3>
+<pre class="highlight"><code class="language-plaintext">git commit -am "Refactor: collideBulletsWith() for any targets"
+git commit -am "Shields made of blocks"
+git commit -am "Bullets from both sides wear the shields away"
+git commit -am "Show shield hitboxes in the debug overlay"
+git switch main
+git merge shields
+git branch -d shields</code></pre>
+<p>The refactor and its fix were one commit: the bug never reached a commit, because I ran the
+tests before committing.</p>

@@ -1,0 +1,62 @@
+---
+title: "How I developed this"
+parent: "Game 15 — The Mystery UFO"
+grand_parent: "Developing a game"
+nav_order: 3
+---
+
+<h1>How I developed this</h1>
+<h3>A test that would take 15 seconds</h3>
+<pre class="highlight"><code class="language-plaintext">git switch -c ufo</code></pre>
+<p>My first <code>updateUfo()</code> called <code>millis()</code> itself. It worked in the game, but
+when I came to write <code>testUfoArrivesOnTime()</code>, I couldn't: the tests run once, as the
+page loads, when <code>millis()</code> is close to 0. The only way to see a UFO arrive would be to
+wait at least 15 seconds.</p>
+<p>So I made the time a parameter, <code>updateUfo(now)</code>. The game passes in
+<code>millis()</code>; the tests pass in whatever time they need. The retrospective in
+<code>PLAN.md</code> lists this as one of the lessons of the whole project.</p>
+<h3>The UFO that came straight back</h3>
+<p>In my first version, the code for a UFO leaving the screen set <code>ufo</code> to
+<code>null</code> and scheduled the next one. The code for shooting it only set <code>ufo</code> to
+<code>null</code>. So after I shot a UFO, <code>nextUfoTime</code> was still the time the old one had
+been due, which was already in the past, and a new UFO appeared on the very next frame.</p>
+<p>I shot a UFO, and another was already flying in from the edge, worth different points. I added
+a check to <code>testShootingTheUfo()</code> that shooting the UFO schedules the next one, watched
+it fail, and then put both lines into <code>removeUfo()</code>, called from both places. Now the two
+can't get out of step.</p>
+<p>The bug hunt plants a different bug in the same spot: <code>removeUfo()</code> forgets to schedule
+the next UFO. Because both places use it, that one mistake shows up both ways.</p>
+<h3>Making it testable without waiting</h3>
+<p>Even with tests, I wanted to see each case in the real game without waiting up to 25 seconds
+each time. The console let me summon a UFO whenever I liked:</p>
+<pre class="highlight"><code class="language-js">nextUfoTime = millis()</code></pre>
+<h3>Version 1.0</h3>
+<p>With the UFO merged, every feature in the plan was done. Before tagging a release, I:</p>
+<ul>
+<li>updated the <strong>Progress</strong> section of <code>PLAN.md</code> for stages 12 to 15;</li>
+<li>wrote a <strong>Retrospective</strong>: what went well, what I'd do differently, and ideas for
+version 2;</li>
+<li>wrote <code>CHANGELOG.md</code>, one entry per version, using the stage tags to find each
+version's commits.</li>
+</ul>
+<p>Then I tagged the release with an <strong>annotated</strong> tag, which stores a message, the
+date and who made it, unlike the plain tags from stages 8 and 11.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>A UFO appears 15 to 25 seconds after the game starts (watch the overlay's countdown).</li>
+<li>It comes from the left sometimes and the right sometimes, and crosses the whole screen.</li>
+<li>Shooting it scores 50, 100, 150 or 300, and plays the explosion.</li>
+<li>After it leaves or is shot, the next one is 15 to 25 seconds away.</li>
+<li>A new game has no UFO on screen.</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits, and the release</h3>
+<pre class="highlight"><code class="language-plaintext">git commit -am "UFO crosses the screen at random times"
+git commit -am "Pass the time into updateUfo() so it can be tested"
+git commit -am "Fix: schedule the next UFO after shooting one"
+git commit -am "Shooting the UFO scores random points"
+git switch main
+git merge ufo
+git branch -d ufo
+git commit -am "Plan: progress and retrospective; add changelog"
+git tag -a v1.0 -m "Version 1.0: every feature in the plan"</code></pre>

@@ -1,0 +1,45 @@
+---
+title: "Reading the sketch"
+parent: "Game 12 — The Aliens Speed Up"
+grand_parent: "Developing a game"
+nav_order: 2
+---
+
+<h1>Reading the sketch</h1>
+<h3>Two speeds instead of one</h3>
+<pre class="highlight"><code class="language-js">const ALIEN_START_SPEED = 1;  // pixels per frame, sideways, with every alien alive
+const ALIEN_TOP_SPEED = 4;    // pixels per frame, sideways, with one alien left</code></pre>
+<p><code>ALIEN_SPEED</code> is gone. These two constants describe the slowest and fastest the
+formation can go.</p>
+<h3>Working out the speed</h3>
+<pre class="highlight"><code class="language-js">function alienSpeedFor(aliensLeft) {
+    let fullGrid = ALIEN_ROWS * ALIEN_COLUMNS;
+    return map(aliensLeft, fullGrid, 1, ALIEN_START_SPEED, ALIEN_TOP_SPEED);
+}</code></pre>
+<p>A full grid gives the start speed, one alien gives the top speed. <code>fullGrid</code> is worked
+out from the grid's size rather than written as <code>32</code>, so the function still works if the
+grid changes.</p>
+<p>It's given the number of aliens rather than looking at the <code>aliens</code> array itself, so a
+test can ask "how fast with 8 aliens?" without building 8 aliens.</p>
+<h3>Using it every frame</h3>
+<pre class="highlight"><code class="language-js">alienDirection = marchAliens(aliens, alienDirection, alienSpeedFor(aliens.length));</code></pre>
+<p>This line in <code>updateGame()</code> works the speed out again every frame. There's no
+"current speed" variable that has to be updated whenever an alien is destroyed: the speed always
+matches the number of aliens, because it's calculated from it.</p>
+<h3>Looking ahead needs the speed too</h3>
+<pre class="highlight"><code class="language-js">function formationAtEdge(alienList, direction, speed) {
+    for (let i = 0; i &lt; alienList.length; i++) {
+        let nextX = alienList[i].x + direction * speed;</code></pre>
+<p>Stage 6's <code>formationAtEdge()</code> checks where each alien is <em>about</em> to be. A faster
+alien's next step is bigger, so the check has to know the speed as well. If it still assumed a
+step of 1, a fast formation would overshoot the edge before turning.</p>
+<h3>The debug overlay</h3>
+<pre class="highlight"><code class="language-js">text("alien speed: " + alienSpeedFor(aliens.length).toFixed(2), 10, 120);</code></pre>
+<p><code>toFixed(2)</code> turns a number into text with exactly two decimal places, so the overlay
+shows <code>2.55</code> rather than <code>2.5483870967741935</code>.</p>
+<h3>The tests</h3>
+<p><code>testAlienSpeed()</code> checks both ends of the range, that fewer aliens means faster, and
+one value in the middle, using <code>checkClose()</code> because it's a decimal.</p>
+<p>The stage 6 march tests now pass a speed of <code>1</code>, written out as a number. If they used
+<code>ALIEN_START_SPEED</code>, tuning the game would change what the tests check. The tests are
+about marching and turning, not about how fast the game should feel.</p>

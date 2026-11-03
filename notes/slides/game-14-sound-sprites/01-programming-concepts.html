@@ -1,0 +1,67 @@
+---
+title: "Programming concepts"
+parent: "Game 14 — Sound and Sprites"
+grand_parent: "Developing a game"
+nav_order: 1
+---
+
+<h1>Programming concepts</h1>
+<h3>Loading files: <code>preload()</code></h3>
+<p>An image file takes time to arrive, even from your own computer. If <code>draw()</code> tried to
+use it before then, there'd be nothing to draw. p5 has a third special function for this:</p>
+<ul>
+<li><code>preload()</code> runs first. Start loading files here.</li>
+<li>p5 waits until every file started in <code>preload()</code> has loaded, or failed.</li>
+<li>Only then does it call <code>setup()</code>, and then <code>draw()</code> over and over.</li>
+</ul>
+<h3>Callbacks: "call this when you're done"</h3>
+<p><code>loadImage()</code> can be given two extra values, and both are <strong>functions</strong>:</p>
+<pre class="highlight"><code class="language-js">loadImage(filePath,
+    function (loadedImage) {
+        sprites[name] = loadedImage;
+    },
+    function () {
+        console.warn("Couldn't load " + filePath + ", so shapes will be drawn instead");
+    });</code></pre>
+<p>Neither function runs straight away. p5 keeps them, and calls the <em>first</em> when the file
+has loaded, or the <em>second</em> if it can't be loaded. A function passed in to be called later
+like this is called a <strong>callback</strong>. These two have no names, because nothing else
+ever needs to call them.</p>
+<p>You've used this idea since sketch 02: you write <code>draw()</code>, but p5 decides when to call
+it.</p>
+<h3>Looking things up by name</h3>
+<pre class="highlight"><code class="language-js">let sprites = {};</code></pre>
+<p><code>sprites</code> starts as an empty object. Each image is added under a name as it loads:
+<code>sprites["crab"] = loadedImage</code>. Square brackets let the name be a variable;
+<code>sprites.ship</code> means the same as <code>sprites["ship"]</code>.</p>
+<p>Ask for a name that was never added and you get <code>undefined</code>. In an <code>if</code>,
+<code>undefined</code> counts as false, so this is how the game asks "did this sprite load?":</p>
+<pre class="highlight"><code class="language-js">if (sprites.ship) {
+    // draw the image
+} else {
+    // draw the shapes from stage 1
+}</code></pre>
+<h3>Carry on without it</h3>
+<p>If a file can't be loaded, the game could stop with an error, or it could do the next best
+thing. Here the next best thing is easy: draw the shapes the game used before, or play no sound.
+Doing the next best thing instead of failing completely is called
+<strong>graceful degradation</strong>. It's the same question as stage 11's
+<code>try</code>/<code>catch</code>: <em>if this fails, what's the most sensible thing to do?</em></p>
+<h3>Browsers and sound</h3>
+<p>Browsers don't let a web page play sound until the person using it has clicked or pressed a key
+on that page. Without this rule, any page could start making noise the moment it opened. p5's
+<code>userStartAudio()</code> tells the browser that the player has now done something, so sound
+can start. The game calls it on every key press, before anything else.</p>
+<h3>Every sound through one function</h3>
+<pre class="highlight"><code class="language-js">function playSound(sound) {
+    if (soundOn &amp;&amp; sound) {
+        sound.play();
+    }
+}</code></pre>
+<p>Every sound in the game is played by calling <code>playSound()</code>, never
+<code>.play()</code> directly. So the M key's setting, and the check that the sound actually loaded,
+are written once, in one place. A new sound added later can't forget either check.</p>
+<h3>Testing without hearing</h3>
+<p>A test can't listen. Instead, the tests swap in a <strong>fake</strong>: a plain object that has a
+<code>play()</code> method, like a real sound, but only counts how many times it was called.
+<code>playSound()</code> can't tell the difference, so the test can check the count.</p>

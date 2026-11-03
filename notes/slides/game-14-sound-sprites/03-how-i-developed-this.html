@@ -1,0 +1,66 @@
+---
+title: "How I developed this"
+parent: "Game 14 — Sound and Sprites"
+grand_parent: "Developing a game"
+nav_order: 3
+---
+
+<h1>How I developed this</h1>
+<h3>Making the sprites</h3>
+<pre class="highlight"><code class="language-plaintext">git switch -c sound-sprites</code></pre>
+<p>The sprites are small pixel-art images, drawn in white on a transparent background so the game
+can colour them with <code>tint()</code>. The images and the sound effects went in an
+<code>assets</code> folder next to <code>sketch.js</code>.</p>
+<h3>Nothing loaded</h3>
+<p>I double-clicked <code>index.html</code> as usual, and the page said "Loading..." and never
+started. The console was full of red errors about the files being blocked.</p>
+<p>A page opened straight from a folder isn't allowed to load other files, for security. I
+started VS Code's Live Server instead, which serves the folder the way a real website would, and
+the sprites appeared. From this stage on, the game always runs through a server.</p>
+<h3>Stuck on "Loading..."</h3>
+<p>Then I tried a missing file on purpose, by renaming <code>ship.png</code>. The page was stuck on
+"Loading..." again: one missing image, and the whole game never started. My first version of
+<code>loadSprite()</code> only gave <code>loadImage()</code> the "it worked" callback. With nothing to
+call on failure, p5 waited for that file forever.</p>
+<p>Adding the second callback, which prints a warning, fixed it: now a missing file is reported and
+the game draws shapes instead. I added <code>testDrawingWithoutSprites()</code> to make sure the
+shapes keep working.</p>
+<h3>A typo no test could see</h3>
+<p>Later, playing the game, the two middle rows of aliens were drawn as shapes, while the others
+were sprites. Every test passed. The console had the answer:</p>
+<pre class="highlight"><code class="language-plaintext">Couldn't load assets/alien-crabs.png, so shapes will be drawn instead</code></pre>
+<p>The file was <code>alien-crab.png</code>; I'd typed <code>alien-crabs.png</code>. DevTools'
+<strong>Network</strong> tab showed the same thing as a 404, "not found". The tests didn't catch it
+because they're written to pass with or without sprites, on purpose. Only looking at the game, and
+reading the console, could find this one. This is the stage's bug hunt.</p>
+<h3>The first shot was silent</h3>
+<p>With the sounds added, the first shot of every game made no sound, and the console said:</p>
+<pre class="highlight"><code class="language-plaintext">The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page.</code></pre>
+<p>That's the browser's rule about sound. Calling <code>userStartAudio()</code> at the start of
+<code>keyPressed()</code> fixed it.</p>
+<h3>Testing sound</h3>
+<p>I wanted a test that firing plays a sound, without the tests making a noise every time the page
+loads. Swapping the real sound for a fake that counts its plays did both.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>With Live Server, the ship and aliens are sprites, each row in its own colour.</li>
+<li>The pixel edges are sharp, not blurred.</li>
+<li>Shooting, destroying an alien and being hit each play their sound.</li>
+<li>M turns sound off (the screen says SOUND OFF) and on again.</li>
+<li>With a sprite file renamed, that sprite is drawn as shapes and the console warns.</li>
+<li>With a sound file renamed, the game is silent for that sound and the console warns.</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits</h3>
+<pre class="highlight"><code class="language-plaintext">git add assets
+git commit -m "Add sprite images and sound effects"
+git commit -am "Draw sprites, with shapes if they don't load"
+git commit -am "Fix crab sprite file name"
+git commit -am "Sound effects; M turns sound on and off"
+git switch main
+git merge sound-sprites
+git branch -d sound-sprites</code></pre>
+<p>The images and sounds are new files, so they needed <code>git add</code>:
+<code>git commit -am</code> only includes files Git already knows about. <code>git add assets</code>
+adds everything in the folder, so it's worth a <code>.gitignore</code> file first, to keep out files
+the operating system makes, such as <code>Thumbs.db</code> on Windows. Exercise 8 shows how.</p>

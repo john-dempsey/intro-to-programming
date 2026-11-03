@@ -1,0 +1,52 @@
+---
+title: "How I developed this"
+parent: "Game 12 — The Aliens Speed Up"
+grand_parent: "Developing a game"
+nav_order: 3
+---
+
+<h1>How I developed this</h1>
+<h3>A branch, and a constant that disappeared</h3>
+<pre class="highlight"><code class="language-plaintext">git switch -c speed-up</code></pre>
+<p>I started by replacing <code>ALIEN_SPEED</code> with the two new constants. The game stopped
+working, and the console said:</p>
+<pre class="highlight"><code class="language-plaintext">A test crashed: ALIEN_SPEED is not defined</code></pre>
+<p>Removing a constant is like changing a function's parameters (stage 9): everything that used it
+has to change too. I searched the project for <code>ALIEN_SPEED</code> (Ctrl+Shift+F in VS Code)
+and found it in <code>marchAliens()</code>, <code>formationAtEdge()</code> and two of the march
+tests. I added the <code>speed</code> parameter to both functions, passed it everywhere they were
+called, and ran the tests again before going any further.</p>
+<h3>Aliens that slowed down</h3>
+<p>Next I wrote <code>alienSpeedFor()</code> and its tests. Three tests failed at once:</p>
+<pre class="highlight"><code class="language-plaintext">FAIL: full grid marches at the start speed (expected 1, got 4)
+FAIL: one alien left marches at top speed (expected 4, got 1)
+FAIL: fewer aliens march faster (expected true, got false)</code></pre>
+<p>The game agreed: the aliens raced at the start and crawled at the end. I'd written the last two
+values of <code>map()</code> the wrong way round:</p>
+<pre class="highlight"><code class="language-js">return map(aliensLeft, fullGrid, 1, ALIEN_TOP_SPEED, ALIEN_START_SPEED);</code></pre>
+<p>Reading the p5 reference again, the values go in pairs: <code>fullGrid</code> goes with the
+<em>start</em> speed. Swapping the last two fixed it. This is the stage's bug hunt.</p>
+<p>The tests found this before I'd played a single game. Testing both ends of a range is cheap,
+and catches exactly this kind of mix-up.</p>
+<h3>Tuning the top speed</h3>
+<p>My first top speed was 6. I could beat the game, but only because I knew it was coming. I asked
+someone else to play three games without any help from me. They never hit the last alien, and
+gave up. I tried 3 next: the end of the game felt flat. 4 was hard but fair. I only changed the
+constant; no other line of code was touched.</p>
+<h3>Manual checks</h3>
+<ul>
+<li>With a full grid, the aliens march at the same speed as in stage 11.</li>
+<li>They speed up a little with every alien destroyed (watch the overlay).</li>
+<li>The last alien is fast, but can be hit.</li>
+<li>Even at top speed, the formation turns at the edges without crossing them.</li>
+<li>A new game starts slow again.</li>
+<li>The console shows only PASS lines.</li>
+</ul>
+<h3>The commits</h3>
+<pre class="highlight"><code class="language-plaintext">git commit -am "Pass the alien speed into marchAliens()"
+git commit -am "Aliens speed up as their numbers fall"
+git commit -am "Add checkClose() for decimal tests"
+git commit -am "Tune top speed after playtesting"
+git switch main
+git merge speed-up
+git branch -d speed-up</code></pre>

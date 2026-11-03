@@ -1,0 +1,106 @@
+---
+title: "Reading the sketch"
+parent: "Game 15 — The Mystery UFO"
+grand_parent: "Developing a game"
+nav_order: 2
+---
+
+<h1>Reading the sketch</h1>
+<h3>The constants</h3>
+<pre class="highlight"><code class="language-js">const UFO_SPEED = 2;          // pixels per frame
+const UFO_POINTS = [50, 100, 150, 300];   // one is picked at random for each UFO
+const UFO_MIN_WAIT = 15000;   // milliseconds from one UFO to the next: at least...
+const UFO_MAX_WAIT = 25000;   // ...and at most</code></pre>
+<h3>The <code>Ufo</code> class</h3>
+<p>Like a bullet, a UFO has a velocity, <code>vx</code>: positive when moving right, negative when
+moving left. Like everything else that can be hit, it has a <code>getBounds()</code> method. The
+interesting method is the one that decides when it has gone:</p>
+<pre class="highlight"><code class="language-js">isOffScreen() {
+    let halfWidth = this.ufoWidth / 2;
+    if (this.vx &gt; 0) {
+        return this.x - halfWidth &gt; width;
+    }
+    return this.x + halfWidth &lt; 0;
+}</code></pre>
+<p>It only checks the edge the UFO is heading for. A UFO <em>starts</em> just off the screen on the
+other side, so that edge is behind it and doesn't matter. One of the tests checks that a brand-new
+UFO isn't counted as gone before it has even appeared.</p>
+<h3>Sending one in</h3>
+<pre class="highlight"><code class="language-js">function spawnUfo() {
+    let startX;
+    let vx;
+    if (random() &lt; 0.5) {
+        startX = -UFO_WIDTH / 2;           // from the left, heading right
+        vx = UFO_SPEED;
+    } else {
+        startX = width + UFO_WIDTH / 2;    // from the right, heading left
+        vx = -UFO_SPEED;
+    }
+    return new Ufo(startX, UFO_Y, UFO_WIDTH, UFO_HEIGHT, vx, random(UFO_POINTS));
+}</code></pre>
+<p><code>random()</code> with nothing in the brackets gives a number from 0 up to 1, so
+<code>random() &lt; 0.5</code> is true half the time: a coin toss.</p>
+<h3>Each frame</h3>
+<pre class="highlight"><code class="language-js">function updateUfo(now) {
+    if (ufo === null) {
+        if (now &gt;= nextUfoTime) {
+            ufo = spawnUfo();
+            playSound(sounds.ufo);
+        }
+    } else {
+        ufo.move();
+        if (ufo.isOffScreen()) {
+            removeUfo(now);
+        }
+    }
+}</code></pre>
+<p>Either there's no UFO, and the question is "is one due?", or there is one, and it moves until it
+leaves.</p>
+<h3>Taking it away</h3>
+<pre class="highlight"><code class="language-js">function removeUfo(now) {
+    ufo = null;
+    scheduleNextUfo(now);
+}</code></pre>
+<p>Called when the UFO flies off the screen, and when it's shot.</p>
+<h3>Shooting it</h3>
+<pre class="highlight"><code class="language-js">function handleUfoHit(now) {
+    if (ufo === null) {
+        return 0;
+    }
+
+    let ufosHit = collideBulletsWith(bullets, [ufo]);
+    if (ufosHit.length === 0) {
+        return 0;
+    }
+
+    let points = ufo.points;
+    playSound(sounds.explosion);
+    removeUfo(now);
+    return points;
+}</code></pre>
+<ul>
+<li>Stage 13's <code>collideBulletsWith()</code> works with any list of targets, so the UFO is put
+in a list of one: <code>[ufo]</code>. No new collision code was needed.</li>
+<li>The points are saved in a variable <em>before</em> <code>removeUfo()</code>, because after it,
+<code>ufo</code> is <code>null</code> and has no points to read. Exercise 3 swaps these two lines
+to see what happens.</li>
+</ul>
+<h3>In <code>updateGame()</code></h3>
+<pre class="highlight"><code class="language-js">let now = millis();
+updateUfo(now);</code></pre>
+<p>The time is read once, near the top, and passed to everything that needs it.
+Further down, <code>score += handleUfoHit(now);</code> adds the UFO's points, if it was hit.</p>
+<h3>The debug overlay</h3>
+<p>When there's no UFO, the overlay counts down to the next one:
+<code>(nextUfoTime - millis()) / 1000</code> turns the milliseconds left into seconds. When there is
+one, it shows how many points it's worth.</p>
+<h3>The new tests</h3>
+<ul>
+<li><code>testUfoMoves()</code> and <code>testUfoOffScreen()</code>: movement in both directions,
+and leaving the screen at exactly the right moment, including where a UFO starts.</li>
+<li><code>testScheduleNextUfo()</code>: the time is random, so the test checks it's in the right
+<em>range</em>, with <code>&gt;=</code> and <code>&lt;=</code>.</li>
+<li><code>testUfoArrivesOnTime()</code>: no UFO at 4999 milliseconds, a UFO at 5000.</li>
+<li><code>testUfoLeavesAndReschedules()</code> and <code>testShootingTheUfo()</code>: both ways a
+UFO can go, and in both, the next one is scheduled.</li>
+</ul>

@@ -1,0 +1,24 @@
+---
+title: "Game 14 — Sound and Sprites"
+parent: "Developing a game"
+nav_order: 15
+has_children: true
+---
+
+<h1>Game 14 — Sound and Sprites</h1>
+<p><a class="btn btn-run" href="../../../src/game/14-sound-sprites/index.html" target="_blank" rel="noopener"><span aria-hidden="true">&#9654;&#xFE0E;</span> Run this sketch</a> Sketch: <code>src/game/14-sound-sprites/sketch.js</code>
+&middot; Tests: <code>src/game/14-sound-sprites/tests.js</code></p>
+<p>The ship and the aliens are now drawn with pixel-art images, called <strong>sprites</strong>,
+with three kinds of alien as in the original game. Shooting, destroying an alien and being hit
+each play a sound, and <strong>M</strong> turns the sound on and off.</p>
+<p>This is the first stage that loads files: images and sounds from an <code>assets</code> folder.
+Files can go missing, so the game is written to carry on without them: it draws the old shapes,
+or stays silent.</p>
+<p>New ideas: loading files in <code>preload()</code>; <strong>callbacks</strong>, functions you hand
+to another function to call later; looking things up by name in an object; why browsers won't
+play sound straight away; and testing sound without hearing it. The exercises use DevTools'
+Network tab and add a <code>.gitignore</code> file to your repository.</p>
+<p><strong>Running your own copy:</strong> the Run button above works, because this site is served
+by a web server. A copy opened straight from a folder can't load its files. Open your working copy
+with VS Code's <strong>Live Server</strong> extension instead (right-click <code>index.html</code>,
+then <strong>Open with Live Server</strong>).</p>
