@@ -49,7 +49,8 @@ Things about the existing pages worth knowing:
   `../../../src/13-ball-bounce/index.html` and `../../../src/game/01-ship/PLAN.md`.
   These links only work if the **whole repo** is published, not just `notes/`.
 - No page contains `{{` or `{%`, so Liquid will not mangle any content as it stands.
-- Slides exist for game-00 to game-11 only; `exercises/` and `src/game/` go up to 15.
+- Slides originally existed for game-00 to game-11 only; notes for game-12 to game-15 were
+  written on 2026-11-03 (see "Game 12–15 notes" below).
 
 ## Target structure
 
@@ -214,6 +215,28 @@ Phase 3 decisions and findings:
   when stacked. Not yet checked on a real phone.
 - Editing pages while `jekyll serve` runs can make `sed -i` fail on Windows
   ("Device or resource busy"); use Python to edit files instead.
+
+## Game 12–15 notes (written 2026-11-03)
+
+New sections `notes/slides/game-12-speed-up/`, `game-13-shields/`, `game-14-sound-sprites/`,
+`game-15-ufo/`, with the same five pages as earlier game stages, written directly as Jekyll
+pages (front matter + HTML). The home page contents list has entries for them.
+- Sources: the diff of `src/game/NN/sketch.js` and `tests.js` against the stage before,
+  `exercises/game-NN/README.md` (the 04-exercises pages summarise it), the bug-hunt diff
+  (each "How I developed this" tells the bug hunt as a real bug, as Game 11 does), and the
+  final `PLAN.md` / `CHANGELOG.md`.
+- Every code excerpt was checked line by line against the source files.
+- The "How I developed this" pages are written as first-person stories built from the code,
+  comments and bug hunts. Some details are illustrative (e.g. trying top speeds 6 and 3 in
+  stage 12, the frame rate staying at 60 in stage 13); the lecturer should check them.
+- **Known problem in the source, not fixed:** in `src/game/12-speed-up/tests.js` (and later
+  stages, and `exercises/game-12-speed-up/`), the comment in `testAlienSpeed()` says the
+  hand-worked expected speed differs from `alienSpeedFor(8)` in the 16th decimal place, so
+  `check()` would fail. It doesn't: both give exactly 3.32258064516129, so README exercise 3.1
+  ("change checkClose to check... how different are the two numbers?") just passes. Working
+  out the expected value as
+  `ALIEN_START_SPEED + (ALIEN_TOP_SPEED - ALIEN_START_SPEED) * (fullGrid - 8) / (fullGrid - 1)`
+  gives 3.3225806451612905, which really does differ. The notes avoid repeating the claim.
 
 ## Gotchas
 - **Markdown files get converted.** GitHub Pages turns `.md` files into `.html` even
